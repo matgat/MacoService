@@ -1,0 +1,2183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="Interface2XHTML.xsl"?>
+<!--
+    Unified Interface Dictionary for Macotec Machines
+-->
+<interface version="2025-06-20"
+           name="MacoLayer"
+           xmlns="http://www.macotec.it">
+
+<!--
+  ┌──────────┬───────────────────────────────────┬───────────────────────────┐
+  │ type     │ description                       │ examples                  │
+  ├──────────┼───────────────────────────────────┼─────────┬─────────┬───────┤
+  │ bool     │ boolean (0,1)                     │   0     │   1     │       │
+  │ int      │ signed integer literal (32bit)    │ -42     │  0xEF   │ 1000  │
+  │ double   │ floating-point literal (base 10)  │  32.465 │ -1.3E-6 │ 1000  │
+  │ string   │ UTF-8/ASCII encoded string        │ "Γειά σου, κόσμε"         │
+  │ datetime │ ISO 8601 timestamp                │ 2025-04-23T08:39:04+02:00 │
+  │ ints     │ comma separated list of integers  │ 123,4,34,0                │
+  │ strings  │ comma separated list of strings   │ "aaa,bbb,ccc"             │
+  │ tuple    │ a pair of elements                │ (123.4,abc)               │
+  └──────────┴───────────────────────────────────┴───────────────────────────┘
+
+  ┌─────────────┬───────┬───────────────────┬───────┬────────────────────────┐
+  │ attribute   │ type  │ description       │default│ values                 │
+  ├─────────────┼───────┼───────────────────┼───────┼────────────────────────┤
+  │id           │strings│unique id/aliases  │       │                        │
+  │group        │string │main grouping      │       │                        │
+  │tags         │strings│grouping tags      │       │                        │
+  │type         │string │data type          │       │<see types table above> │
+  │quantity     │string │physical quantity  │       │[length,time,force,     │
+  │             │       │                   │       │speed,percentage,angle] │
+  │unit         │string │measure unit suffix│ ""    │                        │
+  │unit-coeff   │double │SI conversion coeff│ 1.0   │                        │
+  │gran         │double │granularity        │ 1.0   │                        │
+  │default      │       │default value      │       │                        │
+  │range        │min:max│numeric range      │       │                        │
+  │             │string │expected pattern   │       │                        │
+  │             │strings│possible values    │       │                        │
+  │access       │string │accessibility      │       │r:read-only             │
+  │             │       │                   │       │rw:read+write           │
+  │             │       │                   │       │empty:not-accessible    │
+  └─────────────┴───────┴───────────────────┴───────┴────────────────────────┘
+-->
+
+
+
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ Connection and authentication                                    ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<group name="connection">
+
+    <res    id="machine,machine-name" tags="name,identifier" access="rw"
+            type="string">
+        <text lang="en" label="Machine">Machine unique name</text>
+        <text lang="it" label="Macchina">Nome identificativo macchina</text>
+    </res>
+
+    <res    id="machines" tags="sequence,name,identifier" access="r"
+            type="strings">
+        <text lang="en" label="Machines">Available machines</text>
+        <text lang="it" label="Macchine">Lista macchine presenti</text>
+    </res>
+
+    <res    id="auth-key" tags="authentication,authorization,key,password" access="rw"
+            type="int">
+        <text lang="en" label="auth-key">Authentication public key</text>
+        <text lang="it" label="auth-key">Chiave pubblica di autenticazione</text>
+    </res>
+
+</group> <!-- connection -->
+
+
+
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ Status monitors                                                  ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<group name="status">
+
+    <res    id="emg-list" tags="status,list,emergencies,alarms,errors" access="r"
+            type="ints">
+        <text lang="en" label="Emergencies">Current active alarms/emergencies in the machine</text>
+        <text lang="it" label="Emergenze">Lista allarmi/emergenze attive sulla macchina</text>
+    </res>
+
+    <res    id="msg-list" tags="status,list,alarms,messages,requests" access="r"
+            type="ints">
+        <text lang="en" label="Messages">Current active messages in the machine</text>
+        <text lang="it" label="Messaggi">Lista messaggi attivi sulla macchina</text>
+    </res>
+
+    <res    id="user-buttons" tags="status,user,buttons,commands"
+            type="strings" range="stop,start,emergency">
+        <text lang="en" label="Buttons">Current pressed user buttons</text>
+        <text lang="it" label="Pusanti">Stato corrente dei pulsanti operatore</text>
+    </res>
+
+    <res    id="working" tags="status,light,executing,working,job,progress" access="r"
+            type="bool">
+        <text lang="en" label="Job in progress">The machine is executing a job</text>
+        <text lang="it" label="In lavorazione">Lavoro in esecuzione</text>
+    </res>
+
+    <res    id="can-receive-job" tags="status,job,project,synch,send,receive" access="r"
+            type="bool">
+        <text lang="en" label="Synch ok">The machine is available to receive job data</text>
+        <text lang="it" label="Sincr ok">Macchina disponibile per la ricezione dei dati di lavoro</text>
+    </res>
+
+    <res    id="job-loaded" tags="status,job,loaded,valid" access="r"
+            type="bool">
+        <text lang="en" label="Job loaded">Job arguments are loaded and valid</text>
+        <text lang="it" label="Lavoro caricato">Argomenti della lavorazione caricati e validi</text>
+    </res>
+
+    <res    id="mach-status" tags="status,main,machine" access="r"
+            type="string" range="booting,error,not-ready,ready,stopping,test,homing,operating,working">
+        <text lang="en" label="Machine status">Machine main status</text>
+        <text lang="it" label="Stato macchina">Stato generale macchina</text>
+    </res>
+
+    <res    id="op-status" tags="status,execution,operation" access="r"
+            type="string" range="none,pre,post,shifting,rotating,aligning,dumping,delivering,shifting-remn,inserting,lifting,loading,unloading,processing,probing,scraping,deleting,scoring,opening,detaching,waiting-user,waiting-data,initializing,halted,parking">
+        <text lang="en" label="Current op">Operations currently executed</text>
+        <text lang="it" label="Operazione corrente">Operazioni correntemente in esecuzione</text>
+    </res>
+
+    <!--
+    <res    id="step-status" tags="status,strato,execution,step" access="r"
+            type="string" range="extracted,rotated,placed,aligned,processed,post-rotated">
+        <text lang="en" label="Step execution status">Done operations of the current step</text>
+        <text lang="it" label="Stato esecuzione passo">Operazioni eseguite del passo di lavorazione corrente</text>
+    </res>
+
+    <res    id="cut-phase" tags="status,strato,execution,cut" access="r"
+            type="string" range="probing,deleting,scoring,opening,detaching">
+        <text lang="en" label="Cut execution status">Current phase of the cut sequence</text>
+        <text lang="it" label="Stato esecuzione taglio">Stato esecuzione sequenza di taglio</text>
+    </res>
+    -->
+
+    <res    id="piece-delivering" tags="status,piece,id,deliver,out" access="r"
+            type="int">
+        <text lang="en" label="Piece delivering">Identificative of piece that machine is delivering</text>
+        <text lang="it" label="Pezzo in consegna">Identificativo del pezzo in consegna</text>
+    </res>
+
+    <res    id="piece-taken" tags="status,piece,id,taken,out" access="r"
+            type="int">
+        <text lang="en" label="Piece taken">Identificative of last piece taken by operator</text>
+        <text lang="it" label="Pezzo prelevato">Identificativo dell'ultimo pezzo prelevato dall'operatore</text>
+    </res>
+
+
+    <!-- Job status -->
+    <res    id="proc-done" tags="status,strato,job,step,processing,cut,executed,done" access="r"
+            type="bool">
+        <text lang="en" label="Cut done">The glass processing in the current step was completed</text>
+        <text lang="it" label="Taglio completato">La processazione del vetro del passo di lavorazione corrente è stata eseguita con successo</text>
+    </res>
+
+    <res    id="scheme-done" tags="status,job,executed,scheme,done" access="r"
+            type="bool">
+        <text lang="en" label="Scheme done">A scheme was executed</text>
+        <text lang="it" label="Schema completato">Uno schema è stato completamente eseguito</text>
+    </res>
+
+    <res    id="scheme-progress" tags="status,job,progress,scheme,execution,percentage" access="r"
+            type="int" quantity="percentage" unit="%" unit-coeff="0.01" range="0:100">
+        <text lang="en" label="Scheme progress">Completion percentage of the current scheme</text>
+        <text lang="it" label="Completamento schema">Percentuale di completamento dello schema corrente</text>
+    </res>
+
+    <res    id="scheme-remaining-time" tags="status,job,progress,scheme,execution,time" access="r"
+            type="double" quantity="time" unit="s" range="0:" gran="1">
+        <text lang="en" label="Rem time">Estimated time for scheme completion</text>
+        <text lang="it" label="Tempo rim">Tempo stimato al completamento dello schema</text>
+    </res>
+
+    <res    id="sheet-position" tags="status,job,glass,sheet,position,reference,vertex,coordinate" access="r"
+            type="tuple" range="(double,double)" quantity="length" unit="mm" unit-coeff="0.001">
+        <text lang="en" label="SheetPos">Position of glass sheet reference point</text>
+        <text lang="it" label="PosVetro">Posizione sul tavolo del vetro in lavorazione</text>
+    </res>
+
+    <res    id="sheet-angle" tags="status,job,glass,sheet,position,angle" access="r"
+            type="double" quantity="angle" unit="deg" unit-coeff="0.01745329252"
+            range="-89:89" gran="0.001" default="0">
+        <text lang="en" label="SheetAngle">Angle of glass sheet respect x axis</text>
+        <text lang="it" label="InclVetro">Inclinazione rispetto il tavolo del vetro in lavorazione</text>
+    </res>
+
+    <!--
+    <res    id="tools-work-area" tags="status,job,work,area,boundary,tools,rect" access="r"
+            type="tuple" range="(xmin:xmax,ymin:ymax)" quantity="length" unit="mm" unit-coeff="0.001">
+        <text lang="en" label="Work area">Work area for current tool</text>
+        <text lang="it" label="Area lav">Area di lavoro consentita lavorazione corrente</text>
+    </res>
+    -->
+
+
+    <!-- Job data -->
+    <res    id="steps-count" tags="status,job,auto,steps,count,total,number" access="r"
+            type="int" range="0:">
+        <text lang="en" label="Steps count">Total number of steps of the current unit</text>
+        <text lang="it" label="Passo">Numero passi di lavorazione dello schema corrente</text>
+    </res>
+
+    <res    id="schemes-count" tags="status,job,auto,schemes,count,total,number"
+            type="int" range="0:">
+        <text lang="en" label="Schemes count">How many cutting layouts are in current project</text>
+        <text lang="it" label="Num schemi">Numero schemi di taglio nel progetto caricato</text>
+    </res>
+
+    <res    id="job-descr" tags="status,job,step,description" access="r"
+            type="string">
+        <text lang="en" label="Job descr">A descriptive string of the loaded job/step</text>
+        <text lang="it" label="Descr passo">Descrizione della lavorazione caricata</text>
+    </res>
+
+
+    <res    id="status-lights" tags="status,machine,light,led" access="r"
+            type="strings">
+        <text lang="en" label="Lights">Machine status lights</text>
+        <text lang="it" label="Spie">Spie segnalazione macchina</text>
+    </res>
+
+
+    <!-- Float status lights -->
+
+    <res    id="float-status-lights" tags="status,light,led,float"
+            type="strings" range="cnc-error,air-ok,power-on,parked,ready-to-work,may-enter">
+        <text lang="en" label="Float Status Lights">Float machines status lights</text>
+        <text lang="it" label="Spie float">Spie segnalazione macchine monolitico</text>
+    </res>
+
+        <!--
+        <res    id="led-cnc-error" tags="status,float,light,led,cnc,error" group="float-status-lights"
+                type="bool" range="cnc-error">
+            <text lang="en" label="CNC Error">Controller in error state</text>
+            <text lang="it" label="Errore Cnc">Controllore in errore</text>
+        </res>
+
+        <res    id="led-air-ok" tags="status,float,light,led,air" group="float-status-lights"
+                type="bool" range="air-ok">
+            <text lang="en" label="Air Ok">Pneumatic actuators ready</text>
+            <text lang="it" label="Aria Ok">Attuatori pneumatici pronti</text>
+        </res>
+
+        <res    id="led-power-on" tags="status,float,light,led,power,line" group="float-status-lights"
+                type="bool" range="power-on">
+            <text lang="en" label="Power">Power given, axes enabled and ready</text>
+            <text lang="it" label="Linea">Potenza inserita, assi abilitati e pronti</text>
+        </res>
+
+        <res    id="led-parked" tags="status,float,light,led,park" group="float-status-lights"
+                type="bool" range="parked">
+            <text lang="en" label="Park">Axes in safe position</text>
+            <text lang="it" label="Parcheggio">Assi in posizione sicura</text>
+        </res>
+
+        <res    id="led-ready-to-work" tags="status,float,light,led,start,ready" group="float-status-lights"
+                type="bool" range="ready-to-work">
+            <text lang="en" label="Ready to start">Machine ready with job loaded</text>
+            <text lang="it" label="Pronta per start">Macchina pronta con lavoro caricato</text>
+        </res>
+
+        <res    id="led-may-enter" tags="status,float,light,led,may,enter" group="float-status-lights"
+                type="bool" range="may-enter">
+            <text lang="en" label="May Enter">Operator can invade machine space without danger</text>
+            <text lang="it" label="Possibile entrare">Possibile avvicinarsi alla macchina</text>
+        </res>
+
+        <res    id="led-scoring" tags="status,float,light,led,score" group="float-status-lights"
+                type="bool" range="scoring">
+            <text lang="en" label="Scoring">Scoring in progress</text>
+            <text lang="it" label="Incisione">Sezione di incisione in corso</text>
+        </res>
+
+        <res    id="led-loweing" tags="status,float,light,led,lowe" group="float-status-lights"
+                type="bool" range="loweing">
+            <text lang="en" label="LowEing">low-E deletion in progress</text>
+            <text lang="it" label="Rimozione low-E">Sezione di asportazione basso emissivo in corso</text>
+        </res>
+        -->
+
+
+    <!-- Scheme/Stripe breakout -->
+
+    <res    id="ebrk-scheme" tags="status,float,post,execution,breakout" access="r"
+            type="int" range="0:999999">
+        <text lang="en" label="Scheme at brk">Scheme index currently in breakout phase</text>
+        <text lang="it" label="Schema in tronc">Indice schema in troncaggio</text>
+    </res>
+
+    <res    id="ebrk-stripe" tags="status,float,post,execution,breakout" access="r"
+            type="int" range="0:999999">
+        <text lang="en" label="Stripe at brk">Stripe index currently in breakout phase</text>
+        <text lang="it" label="Trav in tronc">Indice traverso in troncaggio</text>
+    </res>
+
+    <res    id="ebrk-scheme-done" tags="status,float,post,execution,breakout,done" access="r"
+            type="bool">
+        <text lang="en" label="Scheme brk done">Scheme in breakout was fully opened</text>
+        <text lang="it" label="Schema troncato">Schema in troncaggio completamente aperto</text>
+    </res>
+
+</group> <!-- status -->
+
+
+
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ Axes                                                             ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<group name="axes">
+
+    <!-- Strato machine specific axes -->
+    <res    id="align-pos" tags="status,strato,position,axis,align" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="-500:10000" gran="0.1" default="0">
+        <text lang="en" label="Xr">Align blocks current position</text>
+        <text lang="it" label="Xr">Posizione corrente dei piedini di riscontro</text>
+    </res>
+
+
+    <!-- Float machine specific axes -->
+    <res    id="x-pos" tags="status,float,absolute,position,axis,x" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="-5000:10000" gran="0.1" default="0">
+        <text lang="en" label="X pos">X axis current position</text>
+        <text lang="it" label="Pos X">Posizione corrente asse X</text>
+    </res>
+
+    <res    id="y-pos" tags="status,float,absolute,position,axis,y" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="-5000:10000" gran="0.1" default="0">
+        <text lang="en" label="Y pos">Y axis current position</text>
+        <text lang="it" label="Pos Y">Posizione corrente asse Y</text>
+    </res>
+
+    <res    id="z-pos" tags="status,float,absolute,position,axis,z,orientation" access="r"
+            type="double" quantity="angle" unit="deg" unit-coeff="0.01745329252"
+            range="-360:360" gran="0.001" default="0">
+        <text lang="en" label="Z pos">Z axis current position</text>
+        <text lang="it" label="Pos Z">Posizione corrente asse Z</text>
+    </res>
+
+    <res    id="x-tool-pos" tags="status,float,tool,relative,position,axis,x" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="-5000:10000" gran="0.1" default="0">
+        <text lang="en" label="Tool X pos">X position of the current tool relative to glass</text>
+        <text lang="it" label="Pos ut X">Posizione X relativa al vetro dell'utensile corrente</text>
+    </res>
+
+    <res    id="y-tool-pos" tags="status,float,tool,relative,position,axis,y" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="-5000:10000" gran="0.1" default="0">
+        <text lang="en" label="Tool Y pos">Y position of the current tool relative to glass</text>
+        <text lang="it" label="Pos ut Y">Posizione Y relativa al vetro dell'utensile corrente</text>
+    </res>
+
+    <res    id="z-tool-pos" tags="status,float,tool,relative,position,axis,z,orientation" access="r"
+            type="double" quantity="angle" unit="deg" unit-coeff="0.01745329252"
+            range="-360:360" gran="0.001" default="0">
+        <text lang="en" label="Tool Z pos">Z orientation of the current tool relative to glass</text>
+        <text lang="it" label="Pos ut Z">Orientazione Z relativa al vetro dell'utensile corrente</text>
+    </res>
+
+
+    <!-- Common stroke limits -->
+    <res    id="x-min" tags="machine,settings,features,characteristics,limits,limit,interval,span,area,boundary,x,negative,min,stroke" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="-20000:0" gran="0.1" default="0">
+        <text lang="en" label="X min">X axis negative stroke limit</text>
+        <text lang="it" label="X min">Limite negativo corsa asse X</text>
+    </res>
+
+    <res    id="x-max" tags="machine,settings,features,characteristics,limits,limit,interval,span,area,boundary,x,positive,max,stroke" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:20000" gran="0.1" default="0">
+        <text lang="en" label="X max">X axis positive stroke limit</text>
+        <text lang="it" label="X max">Limite positivo corsa asse X</text>
+    </res>
+
+    <res    id="y-min" tags="machine,settings,features,characteristics,limits,limit,interval,span,area,boundary,y,negative,min,stroke" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="-20000:0" gran="0.1" default="0">
+        <text lang="en" label="Y min">Y axis negative stroke limit</text>
+        <text lang="it" label="Y min">Limite negativo corsa asse Y</text>
+    </res>
+
+    <res    id="y-max" tags="machine,settings,features,characteristics,limits,limit,interval,span,area,boundary,y,positive,max,stroke" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:20000" gran="0.1" default="0">
+        <text lang="en" label="Y max">Y axis positive stroke limit</text>
+        <text lang="it" label="Y max">Limite positivo corsa asse Y</text>
+    </res>
+
+</group> <!-- axes -->
+
+
+
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ Tools                                                            ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<group name="tools">
+
+    <res    id="t2-offset" tags="tools,settings,offset,score,t2" access="r"
+            type="tuple" range="(double,double)" quantity="length" unit="mm" unit-coeff="0.001">
+        <text lang="en" label="T2 offset">Displacement of the secondary scoring head</text>
+        <text lang="it" label="T2 offset">Posizione relativa testina incisione secondaria</text>
+    </res>
+
+    <res    id="probe-offset" tags="tools,settings,offset,search,probe" access="r"
+            type="tuple" range="(double,double)" quantity="length" unit="mm" unit-coeff="0.001">
+        <text lang="en" label="Probe offset">Displacement of the primary probe</text>
+        <text lang="it" label="Probe offset">Posizione relativa sonda ricerca vetro primaria</text>
+    </res>
+
+    <res    id="probe2-offset" tags="tools,settings,offset,search,probe" access="r"
+            type="tuple" range="(double,double)" quantity="length" unit="mm" unit-coeff="0.001">
+        <text lang="en" label="Probe2 offset">Displacement of the secondary probe</text>
+        <text lang="it" label="Probe2 offset">Posizione relativa sonda ricerca vetro secondaria</text>
+    </res>
+
+    <res    id="lowe-offset" tags="tools,settings,offset,lowe,wheel" access="r"
+            type="tuple" range="(double,double)" quantity="length" unit="mm" unit-coeff="0.001">
+        <text lang="en" label="GrLe offset">Displacement of the low-E wheel</text>
+        <text lang="it" label="GrLe offset">Posizione relativa mola basso emissivo</text>
+    </res>
+
+    <res    id="tpf-offset" tags="tools,settings,offset,tpf,scraper" access="r"
+            type="tuple" range="(double,double)" quantity="length" unit="mm" unit-coeff="0.001">
+        <text lang="en" label="Tpf offset">Displacement of the TPF removal tool</text>
+        <text lang="it" label="Tpf offset">Posizione relativa utensile rimozione TPF</text>
+    </res>
+
+
+    <res    id="lowe-width" tags="tools,settings,transversal,size,width,lowe,wheel" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:100" gran="0.1" default="20">
+        <text lang="en" label="GrLe Width">Width of the low-E wheel tool</text>
+        <text lang="it" label="Largh mola">Dimensione trasversale al taglio della mola basso emissivo</text>
+    </res>
+
+    <res    id="tpf-width" tags="tools,settings,transversal,size,width,tpf,scraper" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:100" gran="0.1" default="20">
+        <text lang="en" label="Tpf Width">Width of the TPF removal tool</text>
+        <text lang="it" label="Largh Tpf">Dimensione trasversale al taglio dell'utensile rimozione TPF</text>
+    </res>
+
+
+    <res    id="lowe-margin" tags="tools,settings,job,edge,border,margin,lowe,wheel" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:100" gran="0.1" default="1">
+        <text lang="en" label="GrLe Margin">Margin from glass edges used for the low-E wheel tool</text>
+        <text lang="it" label="Margine mola">Margine dai bordi usato per la mola basso emissivo</text>
+    </res>
+
+    <res    id="tpf-margin" tags="tools,settings,job,edge,border,margin,tpf,scraper" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:100" gran="0.1" default="1">
+        <text lang="en" label="Tpf Margin">Margin from glass edges used for the TPF removal tool</text>
+        <text lang="it" label="Margine Tpf">Margine dai bordi usato per l'utensile rimozione TPF</text>
+    </res>
+
+
+    <!--
+    <res    id="lowe-length" tags="tools,settings,longitudinal,size,length,lowe,wheel" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:100" gran="0.1" default="1">
+        <text lang="en" label="GrLe Length">Length of the low-E wheel tool</text>
+        <text lang="it" label="Lungh mola">Dimensione lungo il taglio della mola basso emissivo</text>
+    </res>
+
+    <res    id="tpf-length" tags="tools,settings,longitudinal,size,length,tpf,scraper" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:100" gran="0.1" default="1">
+        <text lang="en" label="Tpf Length">Length of the TPF removal tool</text>
+        <text lang="it" label="Lungh Tpf">Dimensione lungo il taglio dell'utensile rimozione TPF</text>
+    </res>
+    -->
+
+    <res    id="tpf-max-length" tags="tools,settings,job,max,length,tpf,scraper" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="10:999999" gran="1" default="3210">
+        <text lang="en" label="Tpf max length">Length beyond which the film must be cut to be aspirated</text>
+        <text lang="it" label="Lungh max Tpf">Lunghezza oltre la quale il plastico va reciso per poter essere aspirato</text>
+    </res>
+
+
+    <res    id="score-edges-margin" tags="tools,settings,job,edge,border,margin,score,head" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:100" gran="0.1" default="2">
+        <text lang="en" label="Score Edge Margin">Minimum distance of scores from glass edges</text>
+        <text lang="it" label="Margine T bordi">Margine incisioni dai bordi</text>
+    </res>
+
+    <res    id="score-cross-margin" tags="tools,settings,job,cross,intersection,margin,score,head" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:100" gran="0.1" default="2">
+        <text lang="en" label="Score Cross Margin">Minimum distance of scores from intersections</text>
+        <text lang="it" label="Margine T incociati">Margine incisioni dai tagli incrociati</text>
+    </res>
+
+
+    <res    id="t1-hlevel" tags="tools,status,vertical,position,height,level,elevation,score,t1" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="-5:200" gran="0.1">
+        <text lang="en" label="T1 height">Elevation of the primary scoring head over the table reference plane</text>
+        <text lang="it" label="Altezza T1">Livello altezza testina incisione primaria sopra il piano di riferimento del tavolo</text>
+    </res>
+
+    <res    id="t2-hlevel" tags="tools,status,vertical,position,height,level,elevation,score,t2" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="-5:200" gran="0.1">
+        <text lang="en" label="T2 height">Elevation of the secondary scoring head over the table reference plane</text>
+        <text lang="it" label="Altezza T2">Livello altezza testina incisione secondaria sopra il piano di riferimento del tavolo</text>
+    </res>
+
+    <res    id="lowe-hlevel" tags="tools,status,vertical,position,height,level,elevation,lowe,wheel" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="-5:200" gran="0.1">
+        <text lang="en" label="GrLe height">Elevation of the low-E wheel over the table reference plane</text>
+        <text lang="it" label="Altezza Mola">Livello altezza mola basso emissivo sopra il piano di riferimento del tavolo</text>
+    </res>
+
+    <res    id="tpf-hlevel" tags="tools,status,vertical,position,height,level,elevation,tpf,scraper" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="-5:200" gran="0.1">
+        <text lang="en" label="TPF height">Elevation of the TPF removal tool over the table reference plane</text>
+        <text lang="it" label="Altezza TPF">Livello altezza utensile rimozione TPF sopra il piano di riferimento del tavolo</text>
+    </res>
+
+    <res    id="probe-status" tags="tools,status,vertical,position,height,level,elevation,tpf,scraper" access="r"
+            type="bool">
+        <text lang="en" label="Probe-status">Glass detection probe status</text>
+        <text lang="it" label="Stato sonda">Lettura corrente della sonda rilevazione vetro</text>
+    </res>
+
+</group> <!-- tools -->
+
+
+
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ Shape scanning service                                           ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<group name="shape-scan">
+    <!-- See also probe-status, probe-offset, x-tool-pos,y-tool-pos, x-min,x-max,y-min,y-max -->
+
+    <res    id="command" tags="shape-scan,command" access="w"
+            type="string" range="move,line,arc+,arc-,line.search,arc+.search,arc-.search">
+        <text lang="en" label="Command">Interactive command (shape scanning)</text>
+        <text lang="it" label="Comando">Comando interattivo (acquisizione dime)</text>
+    </res>
+
+    <res    id="from" tags="shape-scan,argument,movement,point,coordinates" group="shape-scan-argument" access="w"
+            type="tuple" range="(double,double)" quantity="length" unit="mm" unit-coeff="0.001">
+        <text lang="en" label="P-start">Movement starting point</text>
+        <text lang="it" label="P-start">Punto di partenza del movimento</text>
+    </res>
+
+    <res    id="to" tags="shape-scan,argument,movement,point,coordinates" group="shape-scan-argument" access="w"
+            type="tuple" range="(double,double)" quantity="length" unit="mm" unit-coeff="0.001">
+        <text lang="en" label="P-end">Movement destination point</text>
+        <text lang="it" label="P-end">Punto di arrivo del movimento</text>
+    </res>
+
+    <res    id="center" tags="shape-scan,argument,movement,point,coordinates" group="shape-scan-argument" access="w"
+            type="tuple" range="(double,double)" quantity="length" unit="mm" unit-coeff="0.001">
+        <text lang="en" label="P-center">Coordinates of the center of the arc movement</text>
+        <text lang="it" label="P-center">Coordinate del centro dell'arco</text>
+    </res>
+
+    <res    id="edge-type" tags="shape-scan,argument,probe,search,latch,edge,type" group="shape-scan-argument" access="w"
+            type="string" range="rise,fall,both">
+        <text lang="en" label="Edge type">Desired edge for position latch</text>
+        <text lang="it" label="Tipo fronte">Fronte cercato della cattura posizione</text>
+    </res>
+
+    <res    id="speed-perc" tags="shape-scan,argument,movement,speed,acceleration,percentage" group="shape-scan-argument" access="w"
+            type="int" quantity="percentage" unit="%" unit-coeff="0.01"
+            range="0:100" gran="1" default="100">
+        <text lang="en" label="Mov Speed">Speed/acceleration control of commanded movement</text>
+        <text lang="it" label="Vel Mov">Parzializzazione velocità/accelerazione del movimento comandato</text>
+    </res>
+
+
+    <res    id="latches-count" tags="shape-scan,result,latch,points,number,count" group="shape-scan-result" access="r"
+            type="int" range="0:">
+        <text lang="en" label="N latches">Number of latched points</text>
+        <text lang="it" label="Num catture">Numero di punti catturati</text>
+    </res>
+
+    <res    id="latch-*" tags="shape-scan,result,latch,point,coordinates,edge,type" group="shape-scan-result" access="r"
+            type="string" range="r|f(x,y)" quantity="length" unit="mm" unit-coeff="0.001">
+        <text lang="en" label="Latch">Latch coordinates and edge type</text>
+        <text lang="it" label="Cattura">Coordinate e tipo di fronte della cattura</text>
+    </res>
+
+</group> <!-- shape-scan -->
+
+
+
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ Commands and requests                                            ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<group name="commands">
+
+    <res    id="machine-command" tags="command,machine" access="w"
+            type="string" range="start,stop,reset,set-emergency">
+        <text lang="en" label="Command">Direct command to machine</text>
+        <text lang="it" label="Comando">Comando diretto a macchina</text>
+        <text lang="fr" label="Commander">Commande directe à la machine</text>
+        <text lang="es" label="Mando">Comando directo a la máquina</text>
+        <text lang="pt" label="Comando">Comando direto para máquina</text>
+        <text lang="ru" label="Команда">Прямая команда на машину</text>
+        <text lang="pl" label="Komenda">Bezpośrednie polecenie do maszyny</text>
+        <text lang="de" label="Befehl">Direkter Befehl zur Maschine</text>
+        <text lang="nl" label="Command">Direct command to machine</text>
+        <text lang="ro" label="Comanda">Comandă directă la mașină</text>
+        <text lang="ja" label="コマンド">機械への直接コマンド</text>
+    </res>
+
+    <res    id="print-labels" tags="command,print,label,send,transmit" access="r"
+            type="ints">
+        <text lang="en" label="Labels to print">Request to print a set of labels</text>
+        <text lang="it" label="Etichette da stampare">Richiesta di stampare un insieme di etichette</text>
+    </res>
+
+</group> <!-- commands -->
+
+
+
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ Job arguments                                                    ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<group name="job-args">
+
+    <res    id="mode" tags="job,mode,selector" access="rw"
+            type="string" range="manual,auto,slant,shape">
+        <text lang="en" label="Work mode">Work mode selector</text>
+        <text lang="it" label="Modalità">Selettore modalità di lavorazione</text>
+    </res>
+
+    <res    id="glass-id" tags="job,material,glass,name,identifier" access="rw"
+            type="string">
+        <text lang="en" label="Glass-Id">Glass family material identifier</text>
+        <text lang="it" label="Materiale">Identificativo vetro</text>
+    </res>
+
+    <res    id="prj-name" tags="job,auto,project,name,identifier" access="rw"
+            type="string">
+        <text lang="en" label="Project">Current project name</text>
+        <text lang="it" label="Progetto">Nome commessa corrente</text>
+    </res>
+
+    <res    id="prj-path" tags="job,auto,project,path" access="rw"
+            type="string">
+        <text lang="en" label="Project path">Path containing project files</text>
+        <text lang="it" label="Percorso progetto">Percorso alla cartella del lavoro da caricare</text>
+    </res>
+
+    <res    id="shape" tags="job,shape,slant,name,identifier" access="rw"
+            type="string">
+        <text lang="en" label="Shape">Shape name(s)</text>
+        <text lang="it" label="Sagoma">Nome sagoma/e</text>
+    </res>
+
+    <!--
+    <res    id="data-(scheme|step)-\d+" tags="job,auto,project" access="w"
+            type="string">
+        <text lang="en" label="Data">Escaped string containing job data</text>
+        <text lang="it" label="Dati">Stringa contenente dati di lavoro</text>
+    </res>
+    -->
+
+    <res    id="scheme" tags="job,auto,status,navigation,execution" access="rw"
+            type="int" range="0:999999">
+        <text lang="en" label="Scheme">Current selected scheme index in project</text>
+        <text lang="it" label="Schema">Schema di taglio corrente nel progetto</text>
+    </res>
+
+    <res    id="sheet" tags="job,auto,status,navigation,execution" access="w"
+            type="int" range="0:999999">
+        <text lang="en" label="Sheet">Repetition of the current scheme</text>
+        <text lang="it" label="Lastra">Ripetizione corrente dello schema selezionato</text>
+    </res>
+
+    <res    id="step" tags="job,auto,status,navigation,execution" access="rw"
+            type="int" range="0:999999">
+        <text lang="en" label="Step">Current/selected processing step</text>
+        <text lang="it" label="Passo">Passo di lavorazione corrente dello schema</text>
+    </res>
+
+
+    <!-- Manual -->
+    <res    id="sheet-size" tags="job,manual,sheet,glass,measure,size" access="w"
+            type="string" range="{width}x{height}[x{thickness}]" quantity="length" unit="mm" unit-coeff="0.001">
+        <text lang="en" label="Sheet Size">Current glass sheet size</text>
+        <text lang="it" label="Dim lastra">Dimensioni della lastra in lavorazione</text>
+    </res>
+        <res    id="sheet-width" tags="job,manual,sheet,glass,measure,horizontal,longitudinal,size,width" access="rw"
+                type="double" quantity="length" unit="mm" unit-coeff="0.001"
+                range="0:10000" gran="0.1" default="0">
+            <text lang="en" label="Sheet Width">Current sheet longitudinal size</text>
+            <text lang="it" label="Larghezza lastra">Dimensione longitudinale della lastra in lavorazione</text>
+        </res>
+        <res    id="sheet-height" tags="job,manual,sheet,glass,measure,vertical,transversal,size,height" access="rw"
+                type="double" quantity="length" unit="mm" unit-coeff="0.001"
+                range="0:10000" gran="0.1" default="0">
+            <text lang="en" label="Sheet Height">Current sheet transversal size</text>
+            <text lang="it" label="Altezza lastra">Dimensione trasversale della lastra in lavorazione</text>
+        </res>
+        <res    id="sheet-thickness" tags="sheet,glass,measure,thickness" access="r"
+                type="double" quantity="length" unit="mm" unit-coeff="0.001"
+                range="1:50" gran="0.1" default="0">
+            <text lang="en" label="Sheet Thckn">Current sheet overall thickness</text>
+            <text lang="it" label="Spess lastra">Spessore totale della lastra in lavorazione</text>
+        </res>
+
+
+    <res    id="sheet-align" tags="job,manual,sheet,position,align" access="rw"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="-500:10000" gran="0.1" default="400">
+        <text lang="en" label="Align">Align operation final position</text>
+        <text lang="it" label="Riscontro">Quota di riscontro</text>
+    </res>
+
+    <res    id="sheet-rotate" tags="job,manual,sheet,angle,rotation" access="rw"
+            type="int" quantity="angle" unit="deg" unit-coeff="0.01745329252"
+            range="-90:+90" gran="90">
+        <text lang="en" label="Sheet rot">Incoming subsheet rotation</text>
+        <text lang="it" label="Rotaz lastra">Rotazione della sottolastra in arrivo</text>
+    </res>
+
+    <res    id="proc-op" tags="job,operation,processing,step,cut,sequence" access="rw"
+            type="string" range="tpf,lowe,score,open,break,detach,mark,pre-heat,post-heat,full-cut,no-detach,no-lowe">
+        <!--
+            tpf: include the removal of the protective film
+            lowe: include the low-E deletion
+            score: include the scoring phase
+            open/break: include the breakout/opening phase
+            detach: include the separation phase
+            mark: include marking
+            pre-heat: heat before cut
+            post-heat: heat after the (not separated) cut
+            full-cut: complete cut (auto lowe)
+            no-detach: exclude detach (if alone, it means full-cut except detach)
+            no-lowe: exclude lowe (if alone, it means full-cut except lowe)
+        -->
+        <text lang="en" label="Operation">Glass processing sequence operations descriptor</text>
+        <text lang="it" label="Processazione">Descrittore sequenza operazioni di processazione vetro</text>
+    </res>
+
+</group> <!-- job-args -->
+
+
+
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ Material characterization and parameters                         ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<group name="material">
+
+    <!-- Material characteristics -->
+    <res    id="sheet-type,glass-type" tags="material,strato,float,sheet,glass,structure,type" group="material" access="rw"
+            type="string" range="strato,float,vinyl,lowe,tpf,filmsup,filminf">
+        <text lang="en" label="Sheet type">Structure and characteristics of the sheet</text>
+        <text lang="it" label="Tipologia lastra">Struttura e caratteristiche della lastra</text>
+        <text lang="fr" label="Type de feuille"></text>
+        <text lang="es" label="Tipo de hoja"></text>
+        <text lang="pt" label="Tipo de placa"></text>
+    </res>
+
+    <res    id="h-glass" tags="material,strato,float,glass,structure,size,thickness" group="material" access="rw"
+            type="string" quantity="length" unit="mm" unit-coeff="0.001">
+        <!-- A number or more:  4,  3/0.38/3,  6+6,  ...  -->
+        <text lang="en" label="Thickness">Glass thickness</text>
+        <text lang="it" label="Spessore">Spessore vetro</text>
+        <text lang="fr" label="Épaisseur">Épaisseur du verre</text>
+        <text lang="es" label="Espesor">Espesor del vidrio</text>
+        <text lang="pt" label="Espessura">Espessura do vidro</text>
+    </res>
+
+        <!-- Deprecated -->
+        <res    id="h-glass-sup" tags="material,strato,glass,structure,size,thickness" group="material" access="rw"
+                type="double" quantity="length" unit="mm" unit-coeff="0.001"
+                range="0.1:100" gran="0.01">
+            <text lang="en" label="Sup thck">Upper glass layer thickness</text>
+            <text lang="it" label="Spess sup">Spessore strato vetro superiore</text>
+            <text lang="fr" label="Épaiss sup">Épaisseur du verre supérieur</text>
+            <text lang="es" label="Esp sup">Espesor de vidrio superior</text>
+            <text lang="pt" label="Esp sup">Espessura do vidro superior</text>
+        </res>
+
+        <res    id="h-glass-inf" tags="material,strato,glass,structure,size,thickness" group="material" access="rw"
+                type="double" quantity="length" unit="mm" unit-coeff="0.001"
+                range="0.1:100" gran="0.01">
+            <text lang="en" label="Inf thck">Lower glass layer thickness</text>
+            <text lang="it" label="Spess inf">Spessore strato vetro inferiore</text>
+            <text lang="fr" label="Épaiss inf">Épaisseur du verre inférieur</text>
+            <text lang="es" label="Esp inf">Espesor de vidrio inferior</text>
+            <text lang="pt" label="Esp inf">Espessura do vidro inferior</text>
+        </res>
+
+        <res    id="h-plast" tags="material,strato,float,glass,structure,pvb,film,size,thickness" group="material" access="rw"
+                type="double" quantity="length" unit="mm" unit-coeff="0.001"
+                range="0.01:50" gran="0.01">
+            <text lang="en" label="PVB thck">Interlayed plastic layer thickness</text>
+            <text lang="it" label="Spess PVB">Spessore plastico interno</text>
+            <text lang="fr" label="Épaiss PVB">Épaisseur de plastique</text>
+            <text lang="es" label="Esp PVB">Espesor de plástico</text>
+            <text lang="pt" label="Esp PVB">Espessura de plástico</text>
+        </res>
+
+
+    <!-- Cut execution data -->
+    <res    id="cut-recipe" tags="material,strato,float,processing,cut,sequence,recipe" group="material" access="rw"
+            type="string" range="standard,stressed,hybrid,no-heat,no-lamp,no-blade,max-pull,heat-open">
+        <text lang="en" label="Cut recipe">Cut sequence modifiers</text>
+        <text lang="it" label="Ricetta">Modificatori della sequenza di taglio</text>
+        <text lang="fr" label="Recette">Recette de découpe</text>
+        <text lang="es" label="Receta">Receta de corte</text>
+        <text lang="pt" label="Receita">Receita de corte</text>
+    </res>
+        <res    id="cut-recipe-stressed" tags="material,strato,processing,cut,sequence,modifier,recipe" group="cut-recipe" access=""
+                type="bool" range="stressed,hybrid">
+            <text lang="en" label="Stressed">Cut sequence for stressed glasses</text>
+            <text lang="it" label="Ibrido">Ciclo ibrido per vetri tensionati</text>
+            <text lang="fr" label="Hybride">Séquence spéciale pour verre tendu</text>
+            <text lang="es" label="Estresado">Secuencia de corte para anteojos estresados</text>
+            <text lang="pt" label="Estressado">Sequência de corte para óculos estressados</text>
+        </res>
+        <res    id="cut-recipe-noheat" tags="material,strato,processing,cut,sequence,modifier,recipe" group="cut-recipe" access=""
+                type="bool" range="no-heat,no-lamp">
+            <text lang="en" label="No heat">Detach without heating the glass</text>
+            <text lang="it" label="No lampada">Separa senza riscaldare con la lampada</text>
+            <text lang="fr" label="No resistance">Ne pas utiliser la lampe dans la séparation</text>
+            <text lang="es" label="Sin lampara">Separar sin calentar el vidrio</text>
+            <text lang="pt" label="Sem lampada">Destacar sem aquecer o vidro</text>
+        </res>
+        <res    id="cut-recipe-noblade" tags="material,strato,processing,cut,sequence,modifier,recipe" group="cut-recipe" access=""
+                type="bool" range="no-blade">
+            <text lang="en" label="No blade">Detach without cutting the PVB with the blades</text>
+            <text lang="it" label="No lametta">Separa senza tagliare il plastico con la lametta (strappo)</text>
+            <text lang="fr" label="Pas Lame">Ne pas utiliser la lame dans la séparation</text>
+            <text lang="es" label="Sin cuchilla">Separar sin cortar el PVB con la cuchilla</text>
+            <text lang="pt" label="Sem lamina">Separar sem cortar o PVB com a lamina</text>
+        </res>
+        <res    id="cut-recipe-maxpull" tags="material,strato,processing,cut,sequence,modifier,recipe" group="cut-recipe" access=""
+                type="bool" range="max-pull">
+            <text lang="en" label="Max pull">Detach without limiting the pulling force</text>
+            <text lang="it" label="Traz max">Separa tirando al massimo con lo stacco</text>
+            <text lang="fr" label="Traction max">Séparez en tirant au maximum</text>
+            <text lang="es" label="Máxima tracción">Separación sin limitar la fuerza de tracción</text>
+            <text lang="pt" label="Maxima tracao">Separar sem limitar a força de tração</text>
+        </res>
+        <res    id="cut-recipe-heatopen" tags="material,strato,processing,cut,sequence,modifier,recipe" group="cut-recipe" access=""
+                type="bool" range="heat-open">
+            <text lang="en" label="Heat open">Heat the glass before opening it</text>
+            <text lang="it" label="Risc apert">Scalda il vetro prima dell'apertura</text>
+            <text lang="fr" label="Chauffage rompage">Chauffer le verre avant de l'ouvrir</text>
+            <text lang="es" label="Calentamiento apertura">Calentar el vidrio antes de abrirlo</text>
+            <text lang="pt" label="Aquecimento abertura">Aquecer o vidro antes de o abrir</text>
+        </res>
+
+    <res    id="wheel-angle" tags="material,strato,float,tool,score,head,wheel,angle" group="material" access="rw"
+            type="int" quantity="angle" unit="deg" unit-coeff="0.01745329252"
+            range="25:180" gran="1" default="0">
+        <text lang="en" label="Wheel angle">Scoring wheel type (0:unknown)</text>
+        <text lang="it" label="Grad rotelle">Gradazione rotelle di incisione (0:non specificata)</text>
+        <text lang="fr" label="Grad roue">Angle de la roue de découpe (0:inconnu)</text>
+        <text lang="es" label="Ángulo de rueda">Tipo de rueda (0:desconocido)</text>
+        <text lang="pt" label="Ângulo da roda">Tipo de roda (0:desconhecido)</text>
+    </res>
+
+
+    <!-- TPF/low-E deletion -->
+    <res    id="f-lowe" tags="material,strato,float,work,lowe,force" group="lowe" access="rw"
+            type="double" quantity="force" unit="N"
+            range="0:250" gran="1" default="0">
+        <text lang="en" label="Low-E Push">low-E wheel push force (0:auto)</text>
+        <text lang="it" label="Press mola">Spinta sul vetro della mola asportazione basso emissivo (0:auto)</text>
+        <text lang="fr" label="Press Meule">Force de meule (0:auto)</text>
+        <text lang="es" label="Presion muela">Presión de la muela abrasiva (0:auto)</text>
+        <text lang="pt" label="Pressão rebolo">Pressão de rebolo (0:auto)</text>
+    </res>
+
+    <res    id="v-lowe" tags="material,strato,float,work,lowe,speed" group="lowe" access="rw"
+            type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
+            range="0:300" gran="0.001" default="0">
+        <text lang="en" label="Low-E Speed">low-E wheel speed (0:auto)</text>
+        <text lang="it" label="Vel mola">Velocità asportazione basso emissivo (0:auto)</text>
+        <text lang="fr" label="Vit meule">Vitesse meule (0:auto)</text>
+        <text lang="es" label="Vel muela">Velocidad muela (0:auto)</text>
+        <text lang="pt" label="Vel rebolo">Velocidade do rebolo (0:auto)</text>
+    </res>
+
+    <res    id="f-tpf" tags="material,float,mach-float,work,tpf,scraper,force" group="lowe" access="rw"
+            type="double" quantity="force" unit="N"
+            range="0:250" gran="1" default="0">
+        <text lang="en" label="Push Low-E">TPF scraper push force (0:auto)</text>
+        <text lang="it" label="Press mola">Spinta sul vetro scalpello raschiatura plastico (0:auto)</text>
+        <text lang="fr" label="Press TPF">Force de poussée du racleur TPF (0:auto)</text>
+        <text lang="es" label="Presion TPF">Fuerza de empuje del rascador TPF (0:auto)</text>
+        <text lang="pt" label="Pres TPF">Força de impulso do raspador TPF (0:auto)</text>
+    </res>
+
+    <res    id="v-tpf" tags="material,float,mach-float,work,tpf,scraper,speed" group="lowe" access="rw"
+            type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
+            range="0:300" gran="0.001" default="0">
+        <text lang="en" label="TPF speed">TPF scraper speed (0:auto)</text>
+        <text lang="it" label="Vel TPF">Velocità raschiatura plastico (0:auto)</text>
+        <text lang="fr" label="Vel TPF">Vitesse du racleur TPF (0:auto)</text>
+        <text lang="es" label="Vel TPF">Velocidad del rascador TPF (0:auto)</text>
+        <text lang="pt" label="Vel TPF">Velocidade do raspador TPF (0:auto)</text>
+    </res>
+
+
+    <!-- Strato scoring -->
+    <res    id="f-score-sup" tags="material,strato,float,mach-strato,work,check-range,score,head,tsup,force" group="score" access="rw"
+            type="double" quantity="force" unit="N"
+            range="0:250" gran="1" default="0">
+        <text lang="en" label="Tsup push">Pushing force of upper scoring head (0:auto)</text>
+        <text lang="it" label="Press Tsup">Spinta sul vetro della testina di incisione superiore (0:auto)</text>
+        <text lang="fr" label="Press Tsup">Pression d'incision supérieure (0:auto)</text>
+        <text lang="es" label="Pres Tsup">Presión de corte superior (0:auto)</text>
+        <text lang="pt" label="Press Tsup">Pressão de corte superior (0:auto)</text>
+    </res>
+
+    <res    id="f-score-inf" tags="material,strato,mach-strato,work,check-range,score,head,tinf,force" group="score" access="rw"
+            type="double" quantity="force" unit="N"
+            range="0:250" gran="1" default="0">
+        <text lang="en" label="Tinf push">Pushing force of lower scoring head (0:auto)</text>
+        <text lang="it" label="Press Tinf">Spinta sul vetro della testina di incisione inferiore (0:auto)</text>
+        <text lang="fr" label="Press Tinf">Pression d'incision inférieur</text>
+        <text lang="es" label="Pres Tinf">Presión de corte inferior</text>
+        <text lang="pt" label="Press Tinf">Pressão de corte inferior</text>
+    </res>
+
+    <res    id="v-score" tags="material,strato,float,mach-strato,work,score,head,tsup,tinf,speed" group="score" access="rw"
+            type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
+            range="0:300" gran="0.001" default="0">
+        <text lang="en" label="Cut speed">Glass scoring speed (0:auto)</text>
+        <text lang="it" label="Vel taglio">Velocità di incisione (0:auto)</text>
+        <text lang="fr" label="V découpe">Vitesse de découpe (0:auto)</text>
+        <text lang="es" label="Vel corte">Velocidad de corte (0:auto)</text>
+        <text lang="pt" label="Vel corte">Velocidade de corte (0:auto)</text>
+    </res>
+
+
+    <!-- Float scoring -->
+    <res    id="f-score-init-1" tags="material,float,strato,mach-float,work,check-range,score,head,T1,init,force" group="score" access="rw"
+            type="double" quantity="force" unit="N"
+            range="0:250" gran="1" default="0">
+        <text lang="en" label="T1 push init">Head 1 initial push force</text>
+        <text lang="it" label="Patt T1">Spinta attacco testina 1</text>
+        <text lang="fr" label="Press. Attaque T1">Force de poussée d'attaque de la tête 1</text>
+        <text lang="es" label="Press inic T1">Fuerza de empuje inicial de cabeza 1</text>
+        <text lang="pt" label="Pres inic T1">Força de impulso inicial da cabeça 1</text>
+    </res>
+    <res    id="f-score-rect-1" tags="material,float,strato,mach-float,work,check-range,score,head,T1,rect,force" group="score" access="rw"
+            type="double" quantity="force" unit="N"
+            range="0:250" gran="1" default="0">
+        <text lang="en" label="T1 push rect">Head 1 rectilinear scoring push force</text>
+        <text lang="it" label="Press T1">Spinta incisione rettilinea testina 1</text>
+        <text lang="fr" label="Press. Linéaire T1">Poussée d'incision linéaire tete 1</text>
+        <text lang="es" label="T1 empuje rect">Fuerza de grabado recto de cabeza 1</text>
+        <text lang="pt" label="T1 empuje rect">Força de impulso retilínea da cabeça 1</text>
+    </res>
+    <res    id="f-score-curv-1" tags="material,float,strato,mach-float,work,check-range,score,head,T1,shape,curv,force" group="score" access="rw"
+            type="double" quantity="force" unit="N"
+            range="0:250" gran="1" default="0">
+        <text lang="en" label="T1 push curv">Head 1 curvilinear scoring push force</text>
+        <text lang="it" label="Pcurv T1">Spinta incisione curvilinea testina 1</text>
+        <text lang="fr" label="Press. Forme T1">Poussée d'incision curviligne tete 1</text>
+        <text lang="es" label="Pres curv. t1">Fuerza de empuje curvilínea de la cabeza 1</text>
+        <text lang="pt" label="Pres curv. t1">Força de impulso curvilínea da cabeça 1</text>
+    </res>
+    <res    id="v-score-rect-1" tags="material,float,strato,mach-float,work,score,head,rect,speed" group="score" access="rw"
+            type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
+            range="0:300" gran="0.001" default="0">
+        <text lang="en" label="T1 rect spd">Head 1 rectilinear scoring speed</text>
+        <text lang="it" label="Vel rett T1">Velocità di incisione rettilinea testina 1</text>
+        <text lang="fr" label="Vit rect T1">Vitesse de marquage rectiligne de la tête 1</text>
+        <text lang="es" label="Vel rect T1">Velocidad rectilínea del cabezal 1</text>
+        <text lang="pt" label="Vel ret T1">Velocidade retilínea da cabeça 1</text>
+    </res>
+    <res    id="v-score-curv-1" tags="material,float,strato,mach-float,work,score,head,T1,shape,curv,speed" group="score" access="rw"
+            type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
+            range="0:300" gran="0.001" default="0">
+        <text lang="en" label="T1 curv spd">Head 1 curvilinear scoring speed</text>
+        <text lang="it" label="Vel curv T1">Velocità di incisione curvilinea testina 1</text>
+        <text lang="fr" label="Vit curv T1">Vitesse curviligne de la tête 1</text>
+        <text lang="es" label="Vel curv T1">Velocidad curvilínea de la cabeza 1</text>
+        <text lang="pt" label="Vel curv T1">Velocidade curvilínea da cabeça 1</text>
+    </res>
+
+
+    <res    id="f-score-init-2" tags="material,float,strato,mach-float,work,score,head,T2,init,force" group="score" access="rw"
+            type="double" quantity="force" unit="N"
+            range="0:250" gran="1" default="0">
+        <text lang="en" label="T2 push init">Head 2 initial push force</text>
+        <text lang="it" label="Patt T2">Spinta attacco testina 2</text>
+        <text lang="fr" label="Press. Attaque T2">Force de poussée initiale de la tête 2</text>
+        <text lang="es" label="Press inic T2">Fuerza de empuje inicial del cabezal 2</text>
+        <text lang="pt" label="Pres inic T2">Força de impulso inicial da cabeça 2</text>
+    </res>
+    <res    id="f-score-rect-2" tags="material,float,strato,mach-float,work,score,head,T2,rect,force" group="score" access="rw"
+            type="double" quantity="force" unit="N"
+            range="0:250" gran="1" default="0">
+        <text lang="en" label="T2 push rect">Head 2 rectilinear scoring push force (0:auto)</text>
+        <text lang="it" label="Prett T2">Spinta incisione rettilinea testina 2 (0:auto)</text>
+        <text lang="fr" label="Press. Linéaire T2">Poussée d'incision linéaire tete 2 (0:auto)</text>
+        <text lang="es" label="T2 empuje rect">Fuerza de grabado recto de cabeza 2 (0:auto)</text>
+        <text lang="pt" label="T2 empuje rect">Força de impulso retilínea da cabeça 2 (0:auto)</text>
+    </res>
+    <res    id="f-score-curv-2" tags="material,float,strato,mach-float,work,score,head,T2,shape,curv,force" group="score" access="rw"
+            type="double" quantity="force" unit="N"
+            range="0:250" gran="1" default="0">
+        <text lang="en" label="T2 push curv">Head 2 curvilinear scoring push force (0:auto)</text>
+        <text lang="it" label="Pcurv T2">Spinta incisione curvilinea testina 2 (0:auto)</text>
+        <text lang="fr" label="Press. Forme T2">Poussée d'incision curviligne tete 2 (0:auto)</text>
+        <text lang="es" label="Pres curv. t2">Fuerza de empuje curvilínea de la cabeza 2 (0:auto)</text>
+        <text lang="pt" label="Pres curv. t2">Força de impulso curvilínea da cabeça 2 (0:auto)</text>
+    </res>
+    <res    id="v-score-rect-2" tags="material,float,strato,mach-float,work,score,head,T2,rect,speed" group="score" access="rw"
+            type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
+            range="0:300" gran="0.001" default="0">
+        <text lang="en" label="T2 rect spd">Head 2 rectilinear scoring speed (0:auto)</text>
+        <text lang="it" label="Vel rett T2">Velocità di incisione rettilinea testina 2 (0:auto)</text>
+        <text lang="fr" label="Vit rect T2">Vitesse de marquage rectiligne de la tête 2 (0:auto)</text>
+        <text lang="es" label="Vel rect T2">Velocidad rectilínea del cabezal 2 (0:auto)</text>
+        <text lang="pt" label="Vel ret T2">Velocidade retilínea da cabeça 2 (0:auto)</text>
+    </res>
+    <res    id="v-score-curv-2" tags="material,float,strato,mach-float,work,score,head,T2,shape,curv,speed" group="score" access="rw"
+            type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
+            range="0:300" gran="0.001" default="0">
+        <text lang="en" label="T2 curv spd">Head 2 curvilinear scoring speed (0:auto)</text>
+        <text lang="it" label="Vel curv T2">Velocità di incisione curvilinea testina 2 (0:auto)</text>
+        <text lang="fr" label="Vit curv T2">Vitesse curviligne de la tête 2 (0:auto)</text>
+        <text lang="es" label="Vel curv T2">Velocidad curvilínea de la cabeza 2 (0:auto)</text>
+        <text lang="pt" label="Vel curv T2">Velocidade curvilínea da cabeça 2 (0:auto)</text>
+    </res>
+
+
+    <!-- Opening -->
+    <res    id="h-brkbar" tags="material,strato,float,work,expert,open,break,bar,elevation" group="open" access="rw"
+            type="int" range="0:2" default="0">
+        <text lang="en" label="BrkBar High">Breakout bar elevation (0:auto 1:normal 2:high)</text>
+        <text lang="it" label="Pos barra">Altezza barra di troncaggio (0:auto 1:normale 2:alta)</text>
+        <text lang="fr" label="H barre">Hauteur de la barre de rompage (0:auto 1:normal 2:haut)</text>
+        <text lang="es" label="Altura barra">Altura de la barra de roptura (0:auto 1:normal 2:alta)</text>
+        <text lang="pt" label="Altura barra">Altura da barra de rutura (0:auto 1:normal 2:alta)</text>
+    </res>
+
+    <res    id="t-brkbar" tags="material,strato,float,work,expert,check-range-min,open,break,bar,time" group="open" access="rw"
+            type="double" quantity="time" unit="s"
+            range="0:10" gran="0.1" default="0">
+        <text lang="en" label="BrkBar time">Breakout bar opening time (0:auto)</text>
+        <text lang="it" label="Tempo barra">Tempo apertura con barra di troncaggio (0:auto)</text>
+        <text lang="fr" label="T barre">Temps de barre de rompage (0:auto)</text>
+        <text lang="es" label="T barra">Tiempo de apertura con barra de rutura (0:auto)</text>
+        <text lang="pt" label="T barra">Tempo de abertura com barra de rutura (0:auto)</text>
+    </res>
+
+    <res    id="f-clamps-brk" tags="material,strato,float,work,open,break,clamps,push,force" group="open" access="rw"
+            type="double" quantity="force" unit="N"
+            range="0:10000" gran="1" default="0">
+        <text lang="en" label="Clamps bar force">Clamps push force during breakout bar (0:auto)</text>
+        <text lang="it" label="Opposiz barra">Spinta premilastra durante apertura con barra (0:auto)</text>
+        <text lang="fr" label="F barre">Force serre-plateau cycle barre de rompage (0:auto)</text>
+        <text lang="es" label="F sujet">Fuerza de empuje de los sujetadores de placa durante la apertura de la barra</text>
+        <text lang="pt" label="F fixac">Força de empurrão das fixações da placa durante a abertura da barra</text>
+    </res>
+
+    <res    id="f-brkwhl-sup" tags="material,strato,mach-strato,work,check-range,open,break,wheel,force" group="open" access="rw"
+            type="double" quantity="force" unit="N"
+            range="0:3500" gran="1" default="0">
+        <text lang="en" label="Push BrkWhl">Pushing force of single breaking wheel (0:auto)</text>
+        <text lang="it" label="Press RotApe">Spinta sul vetro rotella di apertura singola (0:auto)</text>
+        <text lang="fr" label="F galet">Force de galet ouverture sup (0:auto)</text>
+        <text lang="es" label="F rueda unica">Fuerza de empuje de rueda unica de apertura</text>
+        <text lang="pt" label="F roda unica">Força de empurrão de roda única de abertura</text>
+    </res>
+
+    <res    id="v-brkwhl-sup" tags="material,strato,mach-strato,work,check-range-max,open,break,wheel,speed" group="open" access="rw"
+            type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
+            range="0:300" gran="0.001" default="0">
+        <text lang="en" label="BrkWhl speed">Single breaking wheel speed (0:auto)</text>
+        <text lang="it" label="Vel RotApe">Velocità rotella di apertura singola (0:auto)</text>
+        <text lang="fr" label="V galet">Vitesse roue de rompage en ouverture simple </text>
+        <text lang="es" label="V rueda unica">Velocidad de rueda unica de apertura</text>
+        <text lang="pt" label="V roda unica">Velocidade de roda única de abertura</text>
+    </res>
+
+    <res    id="f-brkwhl-sup-trim" tags="material,strato,mach-strato,work,check-range,open,break,wheel,force" group="open" access="rw"
+            type="double" quantity="force" unit="N"
+            range="0:3500" gran="1" default="0">
+        <text lang="en" label="Push BrkWhlSup trim">Pushing force of upper breaking wheel for trim (0:auto)</text>
+        <text lang="it" label="Press RotApeSup rif">Spinta sul vetro rotella di apertura superiore per rifilo (0:auto)</text>
+        <text lang="fr" label="F galet sup deb">Force de galet ouverture debandage sup (0:auto)</text>
+        <text lang="es" label="F rueda unica rec">Fuerza de empuje de rueda unica de apertura para recorte (0:auto)</text>
+        <text lang="pt" label="F roda unica rec">Força de empurrão de roda única de abertura para recorte (0:auto)</text>
+    </res>
+
+    <res    id="f-brkwhl-inf-trim" tags="material,strato,mach-strato,work,check-range,open,break,wheel,force" group="open" access="rw"
+            type="double" quantity="force" unit="N"
+            range="0:3500" gran="1" default="0">
+        <text lang="en" label="Push BrkWhlInf trim">Pushing force of lower breaking wheel for trim (0:auto)</text>
+        <text lang="it" label="Press RotApeInf rif">Spinta sul vetro rotella di apertura inferiore per rifilo (0:auto)</text>
+        <text lang="fr" label="F galet inf deb">Force de galet ouverture debandage inf (0:auto)</text>
+        <text lang="es" label="F rueda inf rec">Fuerza de empuje de rueda inferior de apertura para recorte (0:auto)</text>
+        <text lang="pt" label="F roda inf rec">Força de empurrão de roda inferior de abertura para recorte (0:auto)</text>
+    </res>
+
+    <res    id="v-brkwhl-trim" tags="material,strato,mach-strato,work,check-range-max,open,break,wheel,speed" group="open" access="rw"
+            type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
+            range="0:300" gran="0.001" default="0">
+        <text lang="en" label="BrkWhl speed trim">Single breaking wheel speed during trim passes (0:auto)</text>
+        <text lang="it" label="Vel RotApe rif">Velocità rotella di apertura rifilo (0:auto)</text>
+        <text lang="fr" label="V galet deb">Vitesse roue de rompage pendant ouverture debandage (0:auto)</text>
+        <text lang="es" label="V rueda rec">Velocidad de rueda de apertura para recorte (0:auto)</text>
+        <text lang="pt" label="V roda rec">Velocidade de roda de abertura para recorte (0:auto)</text>
+    </res>
+
+
+    <!-- Detaching -->
+    <res    id="f-dtch-pull" tags="material,strato,mach-strato,work,detach,pull,force" group="detach" access="rw"
+            type="double" quantity="force" unit="N/m"
+            range="0:50000" gran="1" default="0">
+        <text lang="en" label="Detach force">Detach pulling force (0:auto)</text>
+        <text lang="it" label="Trazione stacco">Forza di trazione del plastico durante la separazione (0:auto)</text>
+        <text lang="fr" label="F traction">Force de traction du plastique pendant la séparation (0:auto)</text>
+        <text lang="es" label="F tracciòn">Fuerza de tracción del plástico durante la separación (0:auto)</text>
+        <text lang="pt" label="F tracao">Força de tração do plástico durante a separação (0:auto)</text>
+    </res>
+
+    <res    id="v-dtch-pull" tags="material,strato,mach-strato,work,expert,detach,pull,speed" group="detach" access="rw"
+            type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
+            range="0:5" gran="0.001" default="0.04">
+        <text lang="en" label="Detach speed">Detach pulling speed (0:auto)</text>
+        <text lang="it" label="Vel separaz">Velocità di trazione del plastico durante la separazione (0:auto)</text>
+        <text lang="fr" label="V traction">Vitesse traction de plastique pendant la séparation (0:auto)</text>
+        <text lang="es" label="V tracción">Velocidad de tracción del plástico durante la separación (0:auto)</text>
+        <text lang="pt" label="V tracao">Velocidade de tração do plástico durante a separação (0:auto)</text>
+    </res>
+
+    <res    id="f-clamps-max" tags="material,strato,mach-strato,work,expert,detach,clamps,push,pull,force" group="other" access="rw"
+            type="double" quantity="force" unit="N"
+            range="0:100000" gran="1" default="0">
+        <text lang="en" label="Clamps max force">Maximum admissible clamps push force (0:auto)</text>
+        <text lang="it" label="Max premilastra">Massima spinta premilastra ammessa (0:auto)</text>
+        <text lang="fr" label="F serre max">Force serre-plateau max (0:auto)</text>
+        <text lang="es" label="F sujet max">Máximo empuje de sujetadores admisible (0:auto)</text>
+        <text lang="pt" label="F fixadores max">Força de empurrão de fixadores maxima permitida (0:auto)</text>
+    </res>
+
+
+    <!-- Heating times -->
+    <res    id="t-heat-pre" tags="material,strato,mach-strato,work,detach,heat,time" group="heat" access="rw"
+            type="double" quantity="time" unit="s"
+            range="0:120" gran="0.1" default="0">
+        <text lang="en" label="Preheat time">Heating time before pull</text>
+        <text lang="it" label="Tempo prerisc">Tempo riscaldamento prima di tirare</text>
+        <text lang="fr" label="T ch avant">Temps de chauffage avant dettachement</text>
+        <text lang="es" label="T precalentamiento">Tiempo de calentamiento antes de tirar</text>
+        <text lang="pt" label="T preaquecimento">Tempo de aquecimento antes de tirar</text>
+    </res>
+
+    <res    id="t-heat-pull" tags="material,strato,mach-strato,work,detach,heat,time,pull" group="heat" access="rw"
+            type="double" quantity="time" unit="s"
+            range="0:120" gran="0.1" default="0">
+        <text lang="en" label="Pull heating timeout">Maximum heating time during pull</text>
+        <text lang="it" label="Tempo max lampada">Limite tempo riscaldamento durante trazione</text>
+        <text lang="fr" label="T ch max">Temps de chauffage pendant dettachement</text>
+        <text lang="es" label="T max calent.">Tiempo máximo de calentamiento durante la tracción</text>
+        <text lang="pt" label="T max aquec.">Tempo máximo de aquecimento durante a tração</text>
+    </res>
+
+    <res    id="t-heat-add" tags="material,strato,mach-strato,work,detach,heat,time,trim" group="heat" access="rw"
+            type="double" quantity="time" unit="s"
+            range="0:120" gran="0.1" default="0">
+        <text lang="en" label="Additional heat time">Additonal heating time for trim separation</text>
+        <text lang="it" label="Tempo risc aggiuntivo">Tempo riscaldamento addizionale al preriscaldamento per ciclo rifilo</text>
+        <text lang="fr" label="T ch suppl deb">Temps de chauffage supplémentaire pour le cycle de debandage</text>
+        <text lang="es" label="T adicional calent. rec">Tiempo de calentamiento adicional para la separación de recorte</text>
+        <text lang="pt" label="T adicional aquec. rec">Tempo de aquecimento adicional para a separação do recorte</text>
+    </res>
+
+    <res    id="t-heat-cut" tags="material,strato,mach-strato,work,detach,heat,time,stressed,hybrid" group="heat" access="rw"
+            type="double" quantity="time" unit="s"
+            range="0:120" gran="0.1" default="0">
+        <text lang="en" label="Cut heat time">Heating time for scoring or opening operation for stressed glass</text>
+        <text lang="it" label="Tempo risc taglio">Tempo riscaldamento taglio per cicliche speciali vetro tensionato</text>
+        <text lang="fr" label="T ch découpe">Temps de chauffage découpe pour cycle spécial</text>
+        <text lang="es" label="T calent ciclos especiales">Tiempo de calentamiento para ciclos especiales</text>
+        <text lang="pt" label="T aquec. ciclos especiais">Tempo de aquecimento para ciclos especiais</text>
+    </res>
+
+
+    <!-- Curvilinear shapes on Strato -->
+    <res    id="f-lowe-curv" tags="material,strato,mach-strato,work,lowe,secondary,shape,curv,force" group="shapecurv" access="rw"
+            type="double" quantity="force" unit="N"
+            range="0:250" gran="1" default="0">
+        <text lang="en" label="Shape Low-E Push">Shape low-E wheel force</text>
+        <text lang="it" label="Press mola sag">Spinta mola low-E sagomato curvilineo</text>
+        <text lang="fr" label="F meule BE Forme">Force meule bas èmissif Formes</text>
+        <text lang="es" label="F muela formas">Presion de muela abrasiva para formas</text>
+        <text lang="pt" label="F moagem formas">Força de moagem low-E para formas</text>
+    </res>
+
+    <res    id="v-lowe-curv" tags="material,strato,mach-strato,work,lowe,secondary,shape,curv,speed" group="shapecurv" access="rw"
+            type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
+            range="0:300" gran="0.001" default="0">
+        <text lang="en" label="Shape Low-E Speed">Shape low-E wheel speed</text>
+        <text lang="it" label="Vel mola sag">Velocità mola low-E sagomato curvilineo</text>
+        <text lang="fr" label="V meule BE Forme">Vitesse meule bas èmissif Formes</text>
+        <text lang="es" label="V muela formas">Velocidad de muela abrasiva para formas</text>
+        <text lang="pt" label="V moagem formas">Velocidade de moagem low-E para formas</text>
+    </res>
+
+
+    <res    id="f-score-curv-sup" tags="material,strato,mach-strato,work,score,head,tsup2,shape,curv,force" group="shapecurv" access="rw"
+            type="double" quantity="force" unit="N"
+            range="0:250" gran="1" default="0">
+        <text lang="en" label="Shape Tsup push">Shape upper scoring head push force</text>
+        <text lang="it" label="Press Tsup sag">Spinta testina di incisione superiore sagomato curvilineo</text>
+        <text lang="fr" label="F Tsup Formes">Force tete de coup supérieur Formes</text>
+        <text lang="es" label="Pres Tsup">Presión de corte curvilínea superior</text>
+        <text lang="pt" label="Press Tsup">Pressão de corte curvilínea superior</text>
+    </res>
+
+    <res    id="f-score-curv-inf" tags="material,strato,mach-strato,work,score,head,tinf2,shape,curv,force" group="shapecurv" access="rw"
+            type="double" quantity="force" unit="N"
+            range="0:250" gran="1" default="0">
+        <text lang="en" label="Shape Tinf push">Shape lower scoring head push force</text>
+        <text lang="it" label="Press Tinf sag">Spinta testina di incisione inferiore sagomato curvilineo</text>
+        <text lang="fr" label="F Tinf Formes">Force tete de coup inférieur Formes</text>
+        <text lang="es" label="Pres Tinf">Presión de corte curvilínea inferior</text>
+        <text lang="pt" label="Press Tinf">Pressão de corte curvilínea inferior</text>
+    </res>
+
+    <res    id="v-score-curv" tags="material,strato,mach-strato,work,score,head,tsup2,tinf2,shape,curv,speed" group="shapecurv" access="rw"
+            type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
+            range="0:300" gran="0.001" default="0">
+        <text lang="en" label="Shape Score Speed">Shape scoring speed</text>
+        <text lang="it" label="Vel incis sag">Velocità di incisione sagomato curvilineo</text>
+        <text lang="fr" label="V coup Formes">Vitesse de coup Formes</text>
+        <text lang="es" label="V corte formas">Velocidad de corte curvilínea</text>
+        <text lang="pt" label="V corte formas">Velocidade de corte curvilínea</text>
+    </res>
+
+
+    <res    id="f-brk-curv-sup" tags="material,strato,mach-strato,work,open,break,hammer,rsup2,shape,curv,force" group="shapecurv" access="rw"
+            type="double" quantity="force" unit="N"
+            range="0:2500" gran="1" default="0">
+        <text lang="en" label="Shape Rsup Push">Shape open upper tool push force</text>
+        <text lang="it" label="Press Rsup sag">Spinta utensile superiore apertura sagomato curvilineo</text>
+        <text lang="fr" label="F Rsup Formes">Force outil supérieur Formes</text>
+        <text lang="es" label="F Rsup formas">Fuerza de empuje del útil superior para formas</text>
+        <text lang="pt" label="F Rsup formas">Força de pressão da ferramenta superior para formas</text>
+    </res>
+
+    <res    id="f-brk-curv-inf" tags="material,strato,mach-strato,work,open,break,hammer,rinf2,shape,curv,force" group="shapecurv" access="rw"
+            type="double" quantity="force" unit="N"
+            range="0:2500" gran="1" default="0">
+        <text lang="en" label="Shape Rinf Push">Shape open lower tool push force</text>
+        <text lang="it" label="Press Rinf sag">Spinta utensile inferiore apertura sagomato curvilineo</text>
+        <text lang="fr" label="F Rinf Formes">Force outil inférieur Formes</text>
+        <text lang="es" label="F Rinf formas">Fuerza de empuje del útil inferior para formas</text>
+        <text lang="pt" label="F Rinf formas">Força de pressão da ferramenta inferior para formas</text>
+    </res>
+
+    <res    id="v-brk-curv" tags="material,strato,mach-strato,work,open,break,hammer,rsup2,rinf2,shape,curv,speed" group="shapecurv" access="rw"
+            type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
+            range="0:300" gran="0.001" default="0">
+        <text lang="en" label="Shape Open Speed">Shape open tool speed</text>
+        <text lang="it" label="Vel apert sag">Velocità utensile apertura sagomato curvilineo</text>
+        <text lang="fr" label="V ouverture Formes">Vitesse ouverture Formes</text>
+        <text lang="es" label="V apertura formas">Velocidad del útil para apertura formas</text>
+        <text lang="pt" label="V abertura formas">Velocidade da ferramenta para abertura formas</text>
+    </res>
+
+</group> <!-- material -->
+
+
+
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ Machine limits                                                   ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<group name="limits">
+
+    <!-- Strato alignment limits -->
+    <res    id="align-max" tags="machine,strato,settings,features,characteristics,limits,align,threshold,maximum,width" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="1000:20000" gran="0.1" default="3300">
+        <text lang="en" label="Max align">Maximum align blocks position</text>
+        <text lang="it" label="Quota massima riscontrabile">Massima quota riscontrabile</text>
+    </res>
+
+    <res    id="align-xmin-safe" tags="machine,strato,settings,features,characteristics,limits,align,threshold,minimum,safe,position" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:500" gran="0.1" default="100">
+        <text lang="en" label="Xmin safe">Minimum align blocks position below which they invade the cutting area</text>
+        <text lang="it" label="Xmin sicura">Quota riscontri sotto la quale essi invadono area taglio</text>
+    </res>
+
+    <res    id="align-height-min" tags="machine,strato,settings,features,characteristics,limits,auto,align,threshold,minimum,height" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:1000" gran="1">
+        <text lang="en" label="Align min height">Minimum glass height that can be aligned automatically</text>
+        <text lang="it" label="Altezza minima risc">Altezza minima riscontrabile automaticamente</text>
+    </res>
+
+    <res    id="fall-width" tags="machine,strato,features,characteristics,limits,sheet,fall,threshold,width" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:1000" gran="0.1" default="400">
+        <text lang="en" label="Fall width">Width threshold under which glass may fall in cut area</text>
+        <text lang="it" label="Largh pericolo caduta">Soglia larghezza a rischio caduta in area taglio</text>
+    </res>
+
+
+    <!-- Strato cut limits -->
+    <res    id="cut-length-max" tags="machine,strato,settings,,features,characteristics,limits,cut,maximum,length,height" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="1000:20000" gran="0.1" default="3400">
+        <text lang="en" label="Max cut height">Maximum cuttable piece height</text>
+        <text lang="it" label="Altezza taglio massima">Altezza massima tagliabile</text>
+    </res>
+
+    <res    id="cut-length-min" tags="machine,strato,settings,features,characteristics,limits,cut,minimum,length,height" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:500" gran="0.1" default="20">
+        <text lang="en" label="Min cut height">Minimum piece to cut height, used to detect search errors</text>
+        <text lang="it" label="Altezza taglio minima">Altezza minima del pezzo da tagliare, per discriminare errori di ricerca</text>
+    </res>
+
+    <res    id="layer-thickness-max" tags="machine,strato,settings,features,characteristics,limits,sheet,cut,layer,glass,maximum,thickness" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="1:50" gran="0.1" default="22">
+        <text lang="en" label="Cut max layer thickness">Cuttable glass layer max thickness</text>
+        <text lang="it" label="Max spess taglio strato">Massimo spessore dello strato di vetro tagliabile</text>
+    </res>
+
+    <res    id="pvb-thickness-max" tags="machine,strato,settings,features,characteristics,limits,sheet,cut,pvb,maximum,thickness" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="1:50" gran="0.1" default="22">
+        <text lang="en" label="PVB max thickness">Cuttable plastic layer max thickness</text>
+        <text lang="it" label="Max spess PVB">Massimo spessore del plastico tagliabile</text>
+    </res>
+
+    <res    id="remn-trim-width-max" tags="machine,strato,settings,features,characteristics,limits,remnant,trim,threshold,width" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:500" gran="0.1" default="100">
+        <text lang="en" label="Trim width threshold">Remnant width threshold for detach sequence selection</text>
+        <text lang="it" label="Soglia rifilo">Soglia larghezza rimanenza per selezione ciclica separazione rifilo</text>
+    </res>
+
+    <res    id="remn-open-width-min" tags="machine,strato,settings,features,characteristics,limits,threshold,remnant,open,breakout,minimum,width" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:1000" gran="0.1" default="20">
+        <text lang="en" label="Min remn width for breakout">Remnant minimum width for automatic breakout</text>
+        <text lang="it" label="Rimanenza minima apribile">Larghezza minima rimanenza per apertura automatica</text>
+    </res>
+
+    <res    id="remn-dtch-width-min" tags="machine,strato,settings,features,characteristics,limits,threshold,remnant,trim,detach,minimum,width" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:200" gran="0.1" default="20">
+        <text lang="en" label="Min trim width for detach">Remnant minimum width for automatic detach</text>
+        <text lang="it" label="Rifilo minimo separabile">Larghezza rimanenza minima per separazione automatica</text>
+    </res>
+
+    <res    id="prod-trim-width-max" tags="machine,strato,settings,features,characteristics,limits,product,head,trim,threshold,width" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:500" gran="0.1" default="100">
+        <text lang="en" label="Prod width threshold">Product width threshold for detach sequence selection</text>
+        <text lang="it" label="Soglia rifilo di testa">Soglia larghezza prodotto per selezione ciclica separazione rifilo di testa</text>
+    </res>
+
+    <res    id="prod-open-width-min" tags="machine,strato,settings,features,characteristics,limits,threshold,product,open,breakout,minimum,width" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:1000" gran="0.1" default="100">
+        <text lang="en" label="Min prod width for breakout">Product minimum width for automatic breakout</text>
+        <text lang="it" label="Prod minimo apribile">Larghezza minima prodotto per apertura automatica</text>
+    </res>
+
+    <res    id="prod-dtch-width-min" tags="machine,strato,settings,features,characteristics,limits,threshold,product,detach,minimum,width" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:1000" gran="0.1" default="200">
+        <text lang="en" label="Min prod width for detach">Product minimum width for automatic detach</text>
+        <text lang="it" label="Prod minimo separabile">Larghezza minima prodotto per separazione automatica</text>
+    </res>
+
+
+    <!-- Float cut limits -->
+    <res    id="float-thickness-max" tags="machine,float,settings,features,characteristics,limits,sheet,cut,float,glass,maximum,thickness" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="1:50" gran="0.1" default="22">
+        <text lang="en" label="Float cut max thickness">Cuttable glass max thickness</text>
+        <text lang="it" label="Max spess taglio float">Massimo spessore vetro tagliabile</text>
+    </res>
+
+    <res    id="float-width-min" tags="machine,float,settings,features,characteristics,limits,threshold,float,cut,minimum,width" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:1000" gran="0.1" default="300">
+        <text lang="en" label="Min width for float cut">Product/remnant minimum width for float cut</text>
+        <text lang="it" label="Largh min taglio float">Soglia minima larghezza prodotto/rimanenza per taglio vetro monolitico</text>
+    </res>
+
+
+    <!-- Sheet handling limits -->
+    <res    id="shift-thickness-max" tags="machine,settings,features,characteristics,limits,auto,shift,sheet,size,maximum,thickness" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="1:50" gran="0.1" default="22">
+        <text lang="en" label="Sheet max thickness">Maximum sheet overall thickness that can be processed automatically</text>
+        <text lang="it" label="Max spess lastra">Massimo spessore lastra lavorabile automaticamente</text>
+    </res>
+
+    <res    id="shift-width-min" tags="machine,settings,features,characteristics,limits,auto,shift,threshold,minimum,width" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:1000" gran="1" default="400">
+        <text lang="en" label="Shift min width">Minimum glass width that can be automatically moved with belts across modules</text>
+        <text lang="it" label="Largh min trasf">Larghezza minima trasferibile automaticamente tra i moduli</text>
+    </res>
+
+    <res    id="shift-height-min" tags="machine,settings,features,characteristics,limits,auto,shift,threshold,minimum,height" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:1000" gran="1" default="500">
+        <text lang="en" label="Shift min height">Minimum glass height that can be automatically moved with belts across modules</text>
+        <text lang="it" label="Alt min trasf">Altezza minima trasferibile automaticamente tra i moduli</text>
+    </res>
+
+
+    <!-- Automatic rotation limits -->
+    <res    id="rot-height-min" tags="machine,strato,settings,features,characteristics,limits,rotation,limit,minimum,height" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="1:1000" gran="0.1" default="300">
+        <text lang="en" label="Rot min height">Minimum height that can be automatically rotated</text>
+        <text lang="it" label="Alt min ruot">Altezza -iniziale- minima ruotabile automaticamente</text>
+    </res>
+
+    <res    id="rot-height-max-algn" tags="machine,strato,settings,features,characteristics,limits,rotation,limit,maximum,height,align" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="1:10000" gran="0.1" default="3300">
+        <text lang="en" label="Rot max height algn">Maximum height that can be automatically rotated on alignment side</text>
+        <text lang="it" label="Alt max ruot risc">Altezza -iniziale- massima ruotabile automaticamente lato riscontro</text>
+    </res>
+
+    <res    id="rot-height-max-dtch" tags="machine,strato,settings,features,characteristics,limits,rotation,limit,maximum,height,detach" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="1:10000" gran="0.1" default="3300">
+        <text lang="en" label="Rot max height dtch">Maximum height that can be automatically rotated on detach side</text>
+        <text lang="it" label="Alt max ruot stacco">Altezza -iniziale- massima ruotabile automaticamente lato stacco</text>
+    </res>
+
+    <res    id="rot-width-max-algn" tags="machine,strato,settings,features,characteristics,limits,rotation,limit,maximum,width,align" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="1:10000" gran="0.1" default="3300">
+        <text lang="en" label="Rot max width algn">Maximum width that can be automatically rotated on alignment side</text>
+        <text lang="it" label="Largh max ruot risc">Larghezza -iniziale- massima ruotabile automaticamente lato riscontro</text>
+    </res>
+
+    <res    id="rot-width-max-dtch" tags="machine,strato,settings,features,characteristics,limits,rotation,limit,maximum,width,detach" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="1:10000" gran="0.1" default="3300">
+        <text lang="en" label="Rot max width dtch">Maximum width that can be automatically rotated on detach side</text>
+        <text lang="it" label="Largh max ruot stacco">Larghezza -iniziale- massima ruotabile automaticamente lato stacco</text>
+    </res>
+
+    <res    id="rot-diag-max-proc" tags="machine,strato,settings,features,characteristics,limits,rotation,limit,maximum,diagonal" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="1:10000" gran="0.1" default="4140">
+        <text lang="en" label="Rot max diag">Maximum diagonal that can be automatically rotated in cut zone</text>
+        <text lang="it" label="Diag max ruot">Diagonale massima ruotabile automaticamente in zona taglio</text>
+    </res>
+
+
+    <!-- Other limits -->
+    <res    id="latches-queue-max-size" tags="machine,limits,features,capabilities,characteristics,probe,latch,queue,max,size" access="r"
+            type="int">
+        <text lang="en" label="MaxLatches">Maximum storable latches within the same movement</text>
+        <text lang="it" label="CattureMax">Massimo numero di catture memorizzabili per ogni movimento</text>
+    </res>
+
+</group> <!-- limits -->
+
+
+
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ Machine settings                                                 ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<group name="mach-settings">
+
+    <res    id="mach-type" tags="machine,settings,features,capabilities,type" access="r"
+            type="string" range="float,strato,shifter,loader">
+        <text lang="en" label="Machine type">Type of machine</text>
+        <text lang="it" label="Tipo macchina">Tipologia di macchina</text>
+    </res>
+
+    <res    id="mach-capabilities" tags="machine,settings,features,capabilities,equipment,tools" access="r"
+            type="strings" range="dummy,probe,probe2,T2,lowe,tpf,label,shift,rotate,buffer,sep-align-blocks,yfix,slantcuts,zprescore,shapecurv">
+        <text lang="en" label="Capabilities">Available work skills of the machine</text>
+        <text lang="it" label="Equipaggiamento">Capacità della macchina</text>
+    </res>
+
+    <res    id="using-internal-materials-db" tags="machine,settings,features,capabilities,material,database"
+            type="bool">
+        <text lang="en" label="own-mats-db">The machine uses its own database for material parameters</text>
+        <text lang="it" label="dati-mat-int">La macchina usa i propri parametri materiale</text>
+    </res>
+
+    <res    id="version" tags="machine,settings,features,capabilities,version,info" access="r"
+            type="int">
+        <text lang="en" label="SW Version">Version of the machine software</text>
+        <text lang="it" label="Versione SW">Versione software macchina</text>
+    </res>
+
+
+    <!-- Units of measurement -->
+    <res    id="unit-length" tags="settings,units,conversion,coefficient,length" access="r"
+            type="double" unit="m/unit">
+        <text lang="en" label="length units">Conversion coefficient to meters of entered length values</text>
+        <text lang="it" label="unità spazio">Coefficiente di conversione in metri dei valori di lunghezza in arrivo</text>
+    </res>
+
+    <res    id="unit-time" tags="settings,units,conversion,coefficient,time" access="r"
+            type="double" unit="s/unit">
+        <text lang="en" label="time units">Conversion coefficient to seconds of entered time values</text>
+        <text lang="it" label="unità tempo">Coefficiente di conversione in secondi dei valori di tempo in arrivo</text>
+    </res>
+
+    <res    id="unit-speed" tags="settings,units,conversion,coefficient,speed" access="r"
+            type="double" unit="(m/s)/unit">
+        <text lang="en" label="speed units">Conversion coefficient to meters per second of entered speed values</text>
+        <text lang="it" label="unità velocità">Coefficiente di conversione in metri al secondo dei valori di velocità in arrivo</text>
+    </res>
+
+    <res    id="unit-force" tags="settings,units,conversion,coefficient,force" access="r"
+            type="double" unit="N/unit">
+        <text lang="en" label="force units">Conversion coefficient to newtons of entered force values</text>
+        <text lang="it" label="unità forza">Coefficiente di conversione in newton dei valori di forza in arrivo</text>
+    </res>
+
+
+    <!-- Dimensions -->
+    <res    id="line-height" tags="machine,settings,line,size,y,height,transversal" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="1000:20000" gran="0.1" default="5000">
+        <text lang="en" label="Line height">Overall machine transversal size</text>
+        <text lang="it" label="Altezza linea">Dimensione trasversale complessiva della linea</text>
+    </res>
+
+    <res    id="line-width-front" tags="machine,settings,line,size,width" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:50000" gran="0.1" default="7500">
+        <text lang="en" label="Line upstream width">Overall size of upstream modules before the cut origin</text>
+        <text lang="it" label="Dimensione linea monte">Larghezza totale dei moduli a monte del taglio</text>
+    </res>
+
+    <res    id="line-width-rear" tags="machine,settings,line,size,width" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:50000" gran="0.1" default="4800">
+        <text lang="en" label="Line upstream width">Overall size of downstream modules after the cut origin</text>
+        <text lang="it" label="Dimensione linea valle">Larghezza totale dei moduli a valle del taglio</text>
+    </res>
+
+    <res    id="buffer-width" tags="machine,settings,modules,size,width,buffer" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:6000" gran="0.1" default="2400">
+        <text lang="en" label="Buffer width">Buffer longitudinal size</text>
+        <text lang="it" label="Largh polmone">Larghezza del polmone</text>
+    </res>
+
+    <!-- Specific data for Strato machines
+    <res    id="nominal-bridge-size" tags="machine,strato,settings,strato,nominal,bridge,cut,size,y,height,transversal" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="1000:20000" gran="0.1" default="4900">
+        <text lang="en" label="Cut bridge size">Nominal size of cut bridge (4.0,4.9,6.0)</text>
+        <text lang="it" label="Ponte taglio">Dimensioni nominali del ponte di taglio (4.0,4.9,6.0)</text>
+    </res>
+
+    <res    id="nominal-align-size" tags="machine,strato,settings,strato,nominal,align,size,x,width,longitudinal" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="1000:20000" gran="0.1" default="4600">
+        <text lang="en" label="Align size">Nominal size of align table (3.2,4.6)</text>
+        <text lang="it" label="Taglia riscontri">Taglia del tavolo di riscontro (3.2,4.6)</text>
+    </res>
+    -->
+
+    <!-- Preferred automatic rotations -->
+    <res    id="rot-dir-prod" tags="machine,strato,features,capabilities,characteristics,rotation,direction,product" access="r"
+            type="int" quantity="angle" unit="deg" unit-coeff="0.01745329252"
+            range="-90:+90" gran="90">
+        <text lang="en" label="Prod rot dir">Direction of the automatic rotation after a cut</text>
+        <text lang="it" label="Senso rot prod">Senso della rotazione automatica dopo un taglio</text>
+    </res>
+
+    <res    id="rot-dir-incoming" tags="machine,strato,features,capabilities,characteristics,rotation,direction,incoming,sheet" access="r"
+            type="int" quantity="angle" unit="deg" unit-coeff="0.01745329252"
+            range="-90:+90" gran="90">
+        <text lang="en" label="Sheet rot dir">Direction of the automatic rotation of the incoming sheet</text>
+        <text lang="it" label="Senso rot lastra">Senso della rotazione automatica di una lastra in arrivo</text>
+    </res>
+
+
+    <!-- Slant cuts -->
+    <res    id="slant-angle-score-min" tags="machine,strato,settings,polygon,slant,angle,incidence,edge,min,score" access="r"
+            type="double" quantity="length" unit="deg" unit-coeff="0.01745329252"
+            range="0:90" gran="0.001" default="1">
+        <text lang="en" label="Score min ang">Minimum angle of incidence with glass edge for scoring</text>
+        <text lang="it" label="Ang min incis">Angolo di incidenza minimo con bordo vetro per incisione</text>
+    </res>
+
+    <res    id="slant-angle-open-min" tags="machine,strato,settings,polygon,slant,angle,incidence,edge,min,open" access="r"
+            type="double" quantity="length" unit="deg" unit-coeff="0.01745329252"
+            range="0:90" gran="0.001" default="25">
+        <text lang="en" label="Open min ang">Minimum angle of incidence with glass edge for automatic breaking</text>
+        <text lang="it" label="Ang min apert">Angolo di incidenza minimo con bordo vetro per apertura automatica</text>
+    </res>
+
+    <res    id="slant-fix-da" tags="machine,strato,settings,polygon,slant,angle,block,fix" access="r"
+            type="double" quantity="length" unit="deg" unit-coeff="0.01745329252"
+            range="0:10" gran="0.001" default="3">
+        <text lang="en" label="Fix angle">Surplus angle for block fixing push</text>
+        <text lang="it" label="Ang corr">Sovrarotazione per correzione con piedino</text>
+    </res>
+
+    <res    id="slant-fix-minarm" tags="machine,strato,settings,polygon,slant,minimum,arm,block,fix" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:1000" gran="0.1" default="300">
+        <text lang="en" label="Min arm">Minimum leverage arm for block fixing push</text>
+        <text lang="it" label="Leva minima">Leva minima per correzione con piedino</text>
+    </res>
+
+
+    <!-- Scraps dimension thresholds -->
+    <res    id="scrap-big-width" tags="machine,strato,settings,scrap,big,threshold,width" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:5000" gran="0.1" default="1000">
+        <text lang="en" label="Big scrap width">Width threshold of a big scrap</text>
+        <text lang="it" label="Largh scarto grosso">Soglia larghezza sopra la quale uno scarto è considerato grosso</text>
+    </res>
+
+    <res    id="scrap-big-height" tags="machine,strato,settings,scrap,big,threshold,height" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="0:5000" gran="0.1" default="1000">
+        <text lang="en" label="Big scrap height">Height threshold of a big scrap</text>
+        <text lang="it" label="Alt scarto grosso">Soglia altezza sopra la quale uno scarto è considerato grosso</text>
+    </res>
+
+
+    <!-- Specific data for Float machines -->
+    <res    id="cut-table-width" tags="machine,float,settings,float,table,longitudinal,size,x,width" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="1000:20000" gran="0.1" default="7200">
+        <text lang="en" label="Table Width">Overall width of the cutting table</text>
+        <text lang="it" label="Larghezza tavolo">Larghezza complessiva del tavolo di taglio</text>
+    </res>
+
+    <res    id="cut-table-height" tags="machine,float,settings,float,table,transversal,size,y,height" access="r"
+            type="double" quantity="length" unit="mm" unit-coeff="0.001"
+            range="1000:10000" gran="0.1" default="3500">
+        <text lang="en" label="Table Height">Overall height of the cutting table</text>
+        <text lang="it" label="Altezza tavolo">Altezza complessiva del tavolo di taglio</text>
+    </res>
+
+</group> <!-- mach-settings -->
+
+
+
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ User settings                                                    ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<group name="user-settings">
+
+    <res    id="spdovd,speed-override" tags="user,settings,speed,override" access="rw"
+            type="int" quantity="percentage" unit="%" unit-coeff="0.01"
+            range="0:100" gran="1" default="100">
+        <text lang="en" label="Speed Ovd">Global speed override</text>
+        <text lang="it" label="Parz vel">Parzializzazione velocità di lavoro globale</text>
+    </res>
+
+    <!--
+    See also 'cut-recipe' in 'materials'
+    See also 'proc-op' in 'job-args'
+    -->
+
+    <res    id="work-selectors" tags="user,settings,machine,work,flags,selectors" access="rw"
+            type="strings" >
+        <text lang="en" label="WorkFlags">Work selectors</text>
+        <text lang="it" label="Selettori">Selettori di lavoro</text>
+    </res>
+
+    <!-- Work settings for Strato machines -->
+    <res    id="strato-work-selectors" tags="user,settings,strato,work,flags,selectors"
+            type="strings" range="enab-tools,enab-labels,edge-trim,enab-grabber,enab-bufrot,scrap-bin,reor-pieces,auto-tiltout,no-check-cutlen,check-thickness,auto-start,auto-load,auto-lowerect,auto-wheels,auto-measangle,scrap-out,stop-on-shape,heavy-sheet,more-heat,validate,technician">
+        <text lang="en" label="WorkFlags">Work selectors for strato machine</text>
+        <text lang="it" label="Selettori">Selettori di lavoro macchine laminato</text>
+    </res>
+
+    <!-- Work settings for Float machines -->
+    <res    id="spdovd-lowe,speed-override-lowe" tags="user,settings,float,speed,override,lowe" access="rw"
+            type="int" quantity="percentage" unit="%" unit-coeff="0.01"
+            range="0:100" gran="1" default="100">
+        <text lang="en" label="Low-E Speed Ovd">Speed override of low-E deletion</text>
+        <text lang="it" label="Parz vel mola">Parzializzazione velocità di lavoro asportazione basso emissivo</text>
+    </res>
+
+    <res    id="float-work-selectors" tags="user,settings,float,work,flags,selectors"
+            type="strings" range="enab-tools,enab-lowe,cut-lub,enab-labels,no-safety,man-speed,flip-x,park2,no-search,probe2,test-size,test-defects,auto-start,auto-load,auto-moveout,auto-lowerect,post-proc,confirm-start,batch-mode,technician,T2-only/T1+2">
+        <text lang="en" label="WorkFlags">Work selectors for float machine</text>
+        <text lang="it" label="Selettori">Selettori di lavoro macchine monolitico</text>
+    </res>
+
+        <res    id="sel-enab-tools" tags="user,settings,float,work,flag,selector,emulate,tools,score,cut" group="float-work-selectors"
+                type="bool" range="enab-tools">
+            <text lang="en" label="Enab tools">Enable cut tools (no emulation)</text>
+            <text lang="it" label="Abil testina">Abilita testine di taglio (non simulare)</text>
+            <text lang="fr" label="Activer outils coupe">Activer les outils de coupe (no simulation)</text>
+            <text lang="es" label="Hablit. herram. corte">Habilitar herramientas de corte(no simulación)</text>
+            <text lang="pt" label="Ativar ferram. corte">Ativar ferramentas de corte(nao simulação)</text>
+        </res>
+
+        <res    id="sel-enab-lowe" tags="user,settings,float,work,flag,selector,emulate,tools,lowe,wheel" group="float-work-selectors"
+                type="bool" range="enab-lowe">
+            <text lang="en" label="Enab tools">Enable low-E wheel (no emulation)</text>
+            <text lang="it" label="Abil testina">Abilita discesa mola asportazione low-E (non simulare)</text>
+            <text lang="fr" label="Activer meule">Activer la meule (no simulation)</text>
+            <text lang="es" label="Activar muela">Activar la muela abrasiva (no simulaciòn)</text>
+            <text lang="pt" label="Ativar rebolo">Ativar o rebolo</text>
+        </res>
+
+        <res    id="sel-cut-lub" tags="user,settings,float,work,flag,selector,emulate,lubrication,oil" group="float-work-selectors"
+                type="bool" range="cut-lub">
+            <text lang="en" label="Enab lub">Activate cut lubrication oil</text>
+            <text lang="it" label="Abil lubrif">Attiva lubrificazione testine</text>
+            <text lang="fr" label="Activer lubrif">Activer la lubrification de la tête de coupe</text>
+            <text lang="es" label="Activar lubr">Activar la lubricación del cabezal</text>
+            <text lang="pt" label="Ativar lubrif">Ativar a lubrificação da cabeça</text>
+        </res>
+
+        <res    id="sel-enab-labels" tags="user,settings,float,work,flag,selector,label,print" group="float-work-selectors"
+                type="bool" range="enab-labels">
+            <text lang="en" label="Labeling">Enable the labeling of pieces</text>
+            <text lang="it" label="Etichettatura pezzi">Abilita l'etichettatura dei pezzi</text>
+        </res>
+
+
+        <res    id="sel-no-safety" tags="user,settings,float,work,flag,selector,no-safety" group="float-work-selectors"
+                type="bool" range="no-safety">
+            <text lang="en" label="No-Safety">Disable tools safety sensors</text>
+            <text lang="it" label="DisaB-Sicurezze">Disabilita sicurezza utensili</text>
+        </res>
+
+        <res    id="sel-man-speed" tags="user,settings,float,work,flag,selector,man-speed" group="float-work-selectors"
+                type="bool" range="man-speed">
+            <text lang="en" label="Manual-Speed">Manual working speed</text>
+            <text lang="it" label="Vel-Manuale">Velocità lavorazione manuale</text>
+        </res>
+
+        <res    id="sel-flip-x" tags="user,settings,float,work,flag,selector,flip-x" group="float-work-selectors"
+                type="bool" range="flip-x">
+            <text lang="en" label="Mirrored">Mirrored cut (horizontal flip)</text>
+            <text lang="it" label="Speculare">Lavorazione speculare</text>
+        </res>
+
+        <res    id="sel-park2" tags="user,settings,float,work,flag,selector,park2" group="float-work-selectors"
+                type="bool" range="park2">
+            <text lang="en" label="Park2">Secondary park position</text>
+            <text lang="it" label="Park2">Parcheggio secondario</text>
+        </res>
+
+        <res    id="sel-no-search" tags="user,settings,float,work,flag,selector,no-search" group="float-work-selectors"
+                type="bool" range="no-search">
+            <text lang="en" label="No-Search">Don't detect sheet position (Assume at zero)</text>
+            <text lang="it" label="Disab-Ricerca">Non rilevare posizione lastra (assumi dritta a zero)</text>
+        </res>
+
+        <res    id="sel-probe2" tags="user,settings,float,work,flag,selector,probe2" group="float-work-selectors"
+                type="bool" range="probe2">
+            <text lang="en" label="Probe2">Use secondary glass probe</text>
+            <text lang="it" label="Sonda2">Usa sonda ricerca vetro secondaria</text>
+        </res>
+
+        <res    id="sel-test-size" tags="user,settings,float,work,flag,selector,test,size" group="float-work-selectors"
+                type="bool" range="test-size">
+            <text lang="en" label="Test-Size">Enable check of sheet actual size</text>
+            <text lang="it" label="Test-Dim">Abilita controllo dimensioni lastra effettive</text>
+        </res>
+
+        <res    id="sel-test-defects" tags="user,settings,float,work,flag,selector,test,defects" group="float-work-selectors"
+                type="bool" range="test-defects">
+            <text lang="en" label="Test-Defects">Enable check of sheet defects</text>
+            <text lang="it" label="Test-Difetti">Abilita controllo difetti lastra</text>
+        </res>
+
+        <res    id="sel-auto-start" tags="user,settings,float,work,flag,selector,auto,start" group="float-work-selectors"
+                type="bool" range="auto-start">
+            <text lang="en" label="AutoStart">Start automatically the processing after loading a sheet</text>
+            <text lang="it" label="AutoStart">Abilita start automatico lavoro dopo carico lastra</text>
+        </res>
+
+        <res    id="sel-auto-load" tags="user,settings,float,work,flag,selector,auto,load" group="float-work-selectors"
+                type="bool" range="auto-load">
+            <text lang="en" label="AutoLoad">Automatically load a sheet if ready</text>
+            <text lang="it" label="AutoCarica">Abilita carico automatico lastra da caricatrice</text>
+        </res>
+
+        <res    id="sel-auto-moveout" tags="user,settings,float,work,flag,selector,auto,move-out" group="float-work-selectors"
+                type="bool" range="auto-moveout">
+            <text lang="en" label="AutoMoveOut">Automatically move out the processed sheet</text>
+            <text lang="it" label="AutoEvac">Abilita l'evacuazione automatica della lastra lavorata</text>
+        </res>
+
+        <res    id="sel-auto-lowerect" tags="user,settings,float,work,flag,selector,strato,lowe,auto,rect" group="float-work-selectors"
+                type="bool" range="auto-lowerect">
+            <text lang="en" label="Auto low-E rect">Enable the low-E wheel auto rectification</text>
+            <text lang="it" label="Auto rett mola">Abilita la rettifica automatica della mola basso emissivo</text>
+        </res>
+
+        <res    id="sel-post-proc" tags="user,settings,float,work,flag,selector,post-proc" group="float-work-selectors"
+                type="bool" range="post-proc">
+            <text lang="en" label="PostProc">Enable post-processing sequences (auto breakout, ...)</text>
+            <text lang="it" label="PostProc">Abilita post-lavorazione in linea (troncatore, ...)</text>
+        </res>
+
+        <res    id="sel-confirm-start" tags="user,settings,float,work,flag,selector,confirm,start" group="float-work-selectors"
+                type="bool" range="confirm-start">
+            <text lang="en" label="Conferma-Start">Confirm the start after glass search</text>
+            <text lang="it" label="Confirm-Start ">Richiedi conferma start lavorazione dopo ricerca</text>
+        </res>
+
+        <!--
+        <res    id="sel-batch-mode" tags="user,settings,float,work,flag,selector,batch-mode" group="float-work-selectors"
+                type="bool" range="batch-mode">
+            <text lang="en" label="Batch mode">Multi sheet mode</text>
+            <text lang="it" label="Multi-Lastra">Modalità multi-lastra</text>
+        </res>
+
+        <res    id="sel-technician" tags="user,settings,float,work,flag,selector,test,technician" group="float-work-selectors"
+                type="bool" range="technician">
+            <text lang="en" label="Technician">Technician mode (less safe, enable test facilities)</text>
+            <text lang="it" label="Collaudo">Modalità tecnico/collaudo</text>
+        </res>
+        -->
+
+        <res    id="sel-score-mode" tags="float,score,mode,select,heads,T1,T2" group="float-work-selectors"
+                type="string" range="T2-only,T1+2">
+            <text lang="en" label="T1/2 Sel">Select cutting heads</text>
+            <text lang="it" label="Sel T1/2">Selezione testine di incisione da usare</text>
+        </res>
+
+</group> <!-- user-settings -->
+
+
+
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ Work events                                                      ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<group name="events">
+
+    <res    id="timestamp" tags="event,date,time,timestamp,ISO8601"
+            type="datetime" range="YYYY-MM-DDThh:mm:ss.zzz±hh:mm">
+        <text lang="en" label="TimeStamp">Date and time</text>
+        <text lang="it" label="DataOra">Istante temporale</text>
+    </res>
+
+    <res    id="event" tags="monitoring,event,work,type"
+            type="strings" range="connected,disconnected,status-changed,alarms-changed,alarms-cleared,project-sent,job-selected,job-cleared,material-selected,config-changed,scheme-started,step-started,proc-started,tpf-started,lowe-started,score-started,open-started,detach-started,scheme-done,proc-done,proc-failed,deliver-started,deliver-done,piece-taken,sheet-loaded,sheet-out,user-button,user-login,user-logout,piece-broken,maintenance">
+        <text lang="en" label="Event">Work event type</text>
+        <text lang="it" label="Evento">Tipologia evento di lavoro</text>
+    </res>
+
+    <res    id="generic-status" tags="monitoring,generic,abstract,machine,status"
+            type="string" range="UNKN,IDLE,ALRM,BUSY,WORK,WAIT">
+        <text lang="en" label="Generic status">Generic machine status abstracted for monitoring purposes</text>
+        <text lang="it" label="Stato generico">Stato macchina astratta per monitoraggio</text>
+    </res>
+
+</group> <!-- events -->
+
+
+
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ Counters (statistics and maintenance)                            ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<group name="counters">
+
+    <res    id="sheets-done-count" tags="maintenance,statistics,counter,sheets,done"
+            type="int" range="0:">
+        <text lang="en" label="Processed sheets">Processed sheets count</text>
+        <text lang="it" label="Lastre lavorate">Contatore lastre lavorate</text>
+    </res>
+
+    <res    id="cuts-done-count" tags="maintenance,statistics,counter,strato,cuts,done"
+            type="int" range="0:">
+        <text lang="en" label="Processed cuts">Processed cuts count</text>
+        <text lang="it" label="Tagli eseguiti">Contatore tagli eseguiti</text>
+    </res>
+
+    <res    id="tsup-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,score,upper,head"
+            type="double" quantity="length" unit="m">
+        <text lang="en" label="Tsup m">Overall scored length with upper cutting head</text>
+        <text lang="it" label="Tsup m">Lunghezza cumulativa incisione con testina superiore</text>
+    </res>
+
+    <res    id="tinf-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,score,lower,head"
+            type="double" quantity="length" unit="m">
+        <text lang="en" label="Tinf m">Overall scored length with lower cutting head</text>
+        <text lang="it" label="Tinf m">Lunghezza cumulativa incisione con testina inferiore</text>
+    </res>
+
+    <res    id="t1-travel" tags="maintenance,statistics,cumulative,travel,tool,float,wearing,score,primary,head"
+            type="double" quantity="length" unit="m">
+        <text lang="en" label="T1 m">Overall scored length with primary cutting head</text>
+        <text lang="it" label="T1 m">Lunghezza cumulativa incisione con testina primaria</text>
+    </res>
+
+    <res    id="rsup-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,open,upper,wooden,break,wheel"
+            type="double" quantity="length" unit="m">
+        <text lang="en" label="Rsup m">Overall opened length by upper wooden breaking wheel</text>
+        <text lang="it" label="Rsup m">Lunghezza cumulativa apertura con rotella superiore</text>
+    </res>
+
+    <res    id="rinf-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,open,lower,wooden,break,wheel"
+            type="double" quantity="length" unit="m">
+        <text lang="en" label="Rinf m">Overall opened length by lower wooden breaking wheel</text>
+        <text lang="it" label="Rinf m">Lunghezza cumulativa apertura con rotella inferiore</text>
+    </res>
+
+    <res    id="blade-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,pvb,blade"
+            type="double" quantity="length" unit="m">
+        <text lang="en" label="blade m">Overall length cut with PVB blade</text>
+        <text lang="it" label="Lam m">Lunghezza cumulativa plastico tagliato con lametta</text>
+    </res>
+
+    <res    id="lowe-travel" tags="maintenance,statistics,cumulative,travel,tool,wearing,lowe,wheel"
+            type="double" quantity="length" unit="m">
+        <text lang="en" label="lowe m">Overall length deleted with low-E wheel</text>
+        <text lang="it" label="Mola m">Lunghezza cumulativa molatura basso emissivo</text>
+    </res>
+
+    <res    id="tpf-travel" tags="maintenance,statistics,cumulative,travel,tool,float,wearing,lowe,wheel"
+            type="double" quantity="length" unit="m">
+        <text lang="en" label="TPF m">Overall length passed with TPF tool</text>
+        <text lang="it" label="TPF m">Lunghezza cumulativa utensile TPF</text>
+    </res>
+
+</group> <!-- counters -->
+
+
+
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ Metrics (monitoring performance and health)                      ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<group name="metrics">
+
+    <res    id="sheets-per-hour" tags="monitoring,metrics,statistics,performance,kpi,sheets,hour"
+            type="double" quantity="time" unit="1/h">
+        <text lang="en" label="sheets/h">Number of sheets processed per hour</text>
+        <text lang="it" label="lastre/h">Numero lastre tagliate in un'ora</text>
+    </res>
+
+    <res    id="pieces-per-hour" tags="monitoring,metrics,statistics,performance,kpi,pieces,hour"
+            type="double" quantity="time" unit="1/h">
+        <text lang="en" label="pcs/h">Number of pieces cut per hour</text>
+        <text lang="it" label="pezzi/h">Numero pezzi tagliati in un'ora</text>
+    </res>
+
+    <res    id="mean-time-between-stops" tags="monitoring,metrics,statistics,health,mean,time,between,stops"
+            type="double" quantity="time" unit="h">
+        <text lang="en" label="MTBS">Mean Time Between Stops</text>
+        <text lang="it" label="MTBS">Tempo medio ricorrenza fermi macchina</text>
+    </res>
+
+</group> <!-- metrics -->
+
+
+
+<!-- ╔══════════════════════════════════════════════════════════════════╗
+     ║ Time measures (job estimation time algorithms)                   ║
+     ╚══════════════════════════════════════════════════════════════════╝ -->
+<group name="time-measures">
+
+    <!-- Common -->
+
+    <res    id="tpf-time-per-metre" tags="measure,time,duration,per-metre,float,processing,tpf"
+            type="double" quantity="time" unit="s/m" range="0:" gran="0.1" default="1.0">
+        <text lang="en" label="TPF time">TPF pass average time per metre</text>
+        <text lang="it" label="Tempo TPF">Tempo medio rimozione plastico per metro</text>
+    </res>
+
+    <res    id="lowe-time-per-metre" tags="measure,time,duration,per-metre,strato,float,processing,lowe"
+            type="double" quantity="time" unit="s/m" range="0:" gran="0.1" default="1.0">
+        <text lang="en" label="Low-E time">Low-E pass average time per metre</text>
+        <text lang="it" label="Tempo mola low-E">Tempo medio asportazione basso emissivo per metro</text>
+    </res>
+
+    <res    id="score-time-per-metre" tags="measure,time,duration,per-metre,strato,float,processing,score,rectilinear"
+            type="double" quantity="time" unit="s/m" range="0:" gran="0.1" default="0.5">
+        <text lang="en" label="Score time">Rectilinear scoring average time per metre</text>
+        <text lang="it" label="Tempo incisione">Tempo medio incisione rettilinea per metro</text>
+    </res>
+
+    <res    id="score-curv-time-per-metre" tags="measure,time,duration,per-metre,strato,float,processing,score,curvilinear,shape"
+            type="double" quantity="time" unit="s/m" range="0:" gran="0.1" default="1.0">
+        <text lang="en" label="Score shape time">Curvilinear scoring average time per metre</text>
+        <text lang="it" label="Tempo incisione sagome">Tempo medio incisione curvilinea per metro</text>
+    </res>
+
+    <res    id="open-time-per-metre" tags="measure,time,duration,per-metre,strato,processing,open"
+            type="double" quantity="time" unit="s/m" range="0:" gran="0.1" default="5.0">
+        <text lang="en" label="Open time">Opening average time per metre</text>
+        <text lang="it" label="Tempo apertura">Tempo medio apertura per metro</text>
+    </res>
+
+
+    <!-- Strato machines -->
+
+    <res    id="step-average-time" tags="measure,time,duration,average,strato,step"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="50.0">
+        <text lang="en" label="Step avg time">Average duration of a single work step</text>
+        <text lang="it" label="Tempo medio passo">Tempo medio di esecuzione di un passo</text>
+    </res>
+
+    <res    id="feed-extraction-time" tags="measure,time,duration,average,strato,pre,incoming,subsheet,feed,extraction"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="4.0">
+        <text lang="en" label="Incoming rotation time">Average time for move and rotate an incoming subsheet</text>
+        <text lang="it" label="Tempo rot lastra">Tempo medio di posizionamento e rotazione di una sottolastra in arrivo</text>
+    </res>
+
+    <res    id="rot-incoming-time" tags="measure,time,duration,average,strato,pre,incoming,subsheet,rotation"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="10.0">
+        <text lang="en" label="Incoming rotation time">Average time for move and rotate an incoming subsheet</text>
+        <text lang="it" label="Tempo rot lastra">Tempo medio di posizionamento e rotazione di una sottolastra in arrivo</text>
+    </res>
+
+    <res    id="align-time" tags="measure,time,duration,average,strato,pre,incoming,subsheet,align"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="10.0">
+        <text lang="en" label="Align time">Average time to move and align a subsheet</text>
+        <text lang="it" label="Tempo riscontro">Tempo medio di posizionamento e riscontro</text>
+    </res>
+
+    <res    id="detach-time" tags="measure,time,duration,average,strato,processing,detach"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="15.0">
+        <text lang="en" label="Detach time">Detach average time</text>
+        <text lang="it" label="Tempo separazione">Tempo medio separazione</text>
+    </res>
+
+    <res    id="post-rot-ins-time" tags="measure,time,duration,average,strato,post,prod,rotation,remn,feed,insertion"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="20.0">
+        <text lang="en" label="ProdRot+RemnIns time">Average time of product rotation and remnant feed insertion</text>
+        <text lang="it" label="Tempo ProdRot+RemnIns">Tempo medio rotazione prodotto e inserzione rimanenza</text>
+    </res>
+
+    <res    id="post-rot-take-time" tags="measure,time,duration,average,strato,post,prod,rotation,remn,take"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="20.0">
+        <text lang="en" label="ProdRot+RemnTake time">Average time of product rotation and remnant removal</text>
+        <text lang="it" label="Tempo ProdRot+RemnTake">Tempo medio rotazione prodotto e prelievo rimanenza</text>
+    </res>
+
+    <res    id="post-rot-none-time" tags="measure,time,duration,average,strato,post,prod,rotation,remn,none"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="15.0">
+        <text lang="en" label="ProdRot time">Average time of product rotation without remnant</text>
+        <text lang="it" label="Tempo ProdRot">Tempo medio rotazione prodotto senza rimanenza</text>
+    </res>
+
+    <res    id="post-dlvr-dlvr-time" tags="measure,time,duration,average,strato,post,prod,remn,deliver"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="30.0">
+        <text lang="en" label="ProdDlvr+RemnDlvr time">Average time to deliver both product and remnant</text>
+        <text lang="it" label="Tempo ProdDlvr+RemnDlvr">Tempo medio consegna prodotto e rimanenza</text>
+    </res>
+
+    <res    id="post-dlvr-take-time" tags="measure,time,duration,average,strato,post,prod,deliver,remn,take"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="40.0">
+        <text lang="en" label="ProdDlvr+RemnTake time">Average time for product deliver and remnant removal</text>
+        <text lang="it" label="Tempo ProdDlvr+RemnTake">Tempo medio consegna prodotto e prelievo rimanenza</text>
+    </res>
+
+    <res    id="post-dlvr-none-time" tags="measure,time,duration,average,strato,post,prod,deliver,remn,none"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="20.0">
+        <text lang="en" label="ProdDlvr time">Average time for product deliver without remnant</text>
+        <text lang="it" label="Tempo ProdDlvr">Tempo medio consegna prodotto senza rimanenza</text>
+    </res>
+
+    <res    id="post-none-time" tags="measure,time,duration,average,strato,post,prod,remn,none"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="1.0">
+        <text lang="en" label="NoPost time">Time in case of no post-operations</text>
+        <text lang="it" label="Tempo NoPost">Tempo in caso di assenza di operazioni post-taglio</text>
+    </res>
+
+
+    <!-- Float machines -->
+
+    <res    id="scheme-init-time" tags="measure,time,duration,fixed,float,job,scheme,initialization"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="10.0">
+        <text lang="en" label="Scheme init time">Fixed time to prepare a scheme processing job (glass search, ...)</text>
+        <text lang="it" label="Tempo inizio schema">Tempo fisso operazioni di preparazione lavorazione schema (rilevazione lastra, ...)</text>
+    </res>
+
+    <res    id="scheme-final-time" tags="measure,time,duration,fixed,float,job,scheme,finalization"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="10.0">
+        <text lang="en" label="Scheme ending time">Fixed time to finalize a scheme processing job (park, ...)</text>
+        <text lang="it" label="Tempo conclusione schema">Tempo fisso operazioni conclusive lavorazione schema (parcheggio, ...)</text>
+    </res>
+
+    <res    id="move-time-per-metre" tags="measure,time,duration,per-metre,float,processing,rapid,move,G0"
+            type="double" quantity="time" unit="s/m" range="0:" gran="0.1" default="0.4">
+        <text lang="en" label="Move time">Movements without tools time per metre</text>
+        <text lang="it" label="Tempo movimenti">Tempo spostamenti senza utensile per metro</text>
+    </res>
+
+    <res    id="label-time-per-metre" tags="measure,time,duration,per-metre,float,processing,label"
+            type="double" quantity="time" unit="s/m" range="0:" gran="0.1" default="0.5">
+        <text lang="en" label="Label move time">Labeling movements time per metre</text>
+        <text lang="it" label="Tempo posa etichette">Tempo spostamenti etichettatura per metro</text>
+    </res>
+
+    <res    id="label-fixed-time" tags="measure,time,duration,fixed,float,processing,label"
+            type="double" quantity="time" unit="s/m" range="0:" gran="0.1" default="5.0">
+        <text lang="en" label="Label fixed time">Fixed time for each label</text>
+        <text lang="it" label="Tempo fisso etichette">Tempo fisso per ogni etichetta</text>
+    </res>
+
+    <res    id="tpf-init-time" tags="measure,time,duration,fixed,float,processing,tpf,initialization"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="1.0">
+        <text lang="en" label="TPF init time">TPF section initialization time</text>
+        <text lang="it" label="Tempo iniz TPF">Tempo inizializzazione sezione TPF</text>
+    </res>
+
+    <res    id="lowe-init-time" tags="measure,time,duration,fixed,float,processing,lowe,initialization"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="1.0">
+        <text lang="en" label="Low-E init time">Low-E section initialization time</text>
+        <text lang="it" label="Tempo iniz Low-E">Tempo inizializzazione sezione Low-E</text>
+    </res>
+
+    <res    id="score-init-time" tags="measure,time,duration,fixed,float,processing,score,initialization"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="1.0">
+        <text lang="en" label="Score init time">Score section initialization time</text>
+        <text lang="it" label="Tempo iniz incisione">Tempo inizializzazione sezione incisione</text>
+    </res>
+
+    <res    id="tpf-toolon-time" tags="measure,time,duration,average,float,processing,tpf,tool,engage,on"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="1.0">
+        <text lang="en" label="TPF tool engage time">TPF tool engage time</text>
+        <text lang="it" label="Tempo discesa TPF">Tempo discesa utensile TPF</text>
+    </res>
+
+    <res    id="lowe-toolon-time" tags="measure,time,duration,average,float,processing,lowe,tool,engage,on"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="1.0">
+        <text lang="en" label="Low-E tool engage time">Low-E wheel engage time</text>
+        <text lang="it" label="Tempo discesa mola">Tempo discesa mola basso emissivo</text>
+    </res>
+
+    <res    id="score-toolon-time" tags="measure,time,duration,average,float,processing,score,tool,engage,on"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="0.8">
+        <text lang="en" label="Score tool engage time">Scoring head engage time</text>
+        <text lang="it" label="Tempo discesa testina">Tempo discesa testina di incisione</text>
+    </res>
+
+    <res    id="tpf-tooloff-time" tags="measure,time,duration,average,float,processing,tpf,tool,disengage,off"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="0.8">
+        <text lang="en" label="TPF tool disengage time">TPF tool disengage time</text>
+        <text lang="it" label="Tempo salita TPF">Tempo salita utensile TPF</text>
+    </res>
+
+    <res    id="lowe-tooloff-time" tags="measure,time,duration,average,float,processing,lowe,tool,disengage,off"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="0.8">
+        <text lang="en" label="Low-E tool disengage time">Low-E wheel disengage time</text>
+        <text lang="it" label="Tempo salita mola">Tempo salita mola basso emissivo</text>
+    </res>
+
+    <res    id="score-tooloff-time" tags="measure,time,duration,average,float,processing,score,tool,disengage,off"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="0.5">
+        <text lang="en" label="Score tool disengage time">Scoring head disengage time</text>
+        <text lang="it" label="Tempo salita testina">Tempo salita testina di incisione</text>
+    </res>
+
+</group> <!-- time-measures -->
+
+</interface>
