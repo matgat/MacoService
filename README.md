@@ -10,6 +10,12 @@ C:\> cd Macotec
 C:\Macotec> git clone https://github.com/matgat/MacoService.git
 ```
 
+or
+
+```
+C:\Macotec> git clone -b monitoring https://github.com/matgat/MacoService.git
+```
+
 Then, to update the content:
 
 ```bat
