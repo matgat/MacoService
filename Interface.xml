@@ -3,7 +3,7 @@
 <!--
     Unified Interface Dictionary for Macotec Machines
 -->
-<interface version="2025-06-20"
+<interface version="2025-06-23"
            name="MacoLayer"
            xmlns="http://www.macotec.it">
 
@@ -668,14 +668,18 @@
         <text lang="it" label="Sagoma">Nome sagoma/e</text>
     </res>
 
-    <!--
-    <res    id="data-(scheme|step)-\d+" tags="job,auto,project" access="w"
+    <res    id="scheme-data" tags="job,auto,project,data,scheme" access="w"
             type="string">
-        <text lang="en" label="Data">Escaped string containing job data</text>
-        <text lang="it" label="Dati">Stringa contenente dati di lavoro</text>
+        <text lang="en" label="Scheme Data">Processing data of a scheme</text>
+        <text lang="it" label="Dati schema">Dati di lavorazione di uno schema</text>
     </res>
-    -->
 
+    <res    id="step-data" tags="job,auto,data,strato,current,step" access="r"
+            type="string">
+        <text lang="en" label="Step Data">Processing data of the current step</text>
+        <text lang="it" label="Dati passo">Dati di lavorazione del passo corrente</text>
+    </res>
+    
     <res    id="scheme" tags="job,auto,status,navigation,execution" access="rw"
             type="int" range="0:999999">
         <text lang="en" label="Scheme">Current selected scheme index in project</text>
@@ -701,25 +705,24 @@
         <text lang="en" label="Sheet Size">Current glass sheet size</text>
         <text lang="it" label="Dim lastra">Dimensioni della lastra in lavorazione</text>
     </res>
-        <res    id="sheet-width" tags="job,manual,sheet,glass,measure,horizontal,longitudinal,size,width" access="rw"
+        <res    id="sheet-width" tags="job,manual,sheet,glass,measure,horizontal,longitudinal,size,width" group="sheet-size" access="rw"
                 type="double" quantity="length" unit="mm" unit-coeff="0.001"
                 range="0:10000" gran="0.1" default="0">
             <text lang="en" label="Sheet Width">Current sheet longitudinal size</text>
             <text lang="it" label="Larghezza lastra">Dimensione longitudinale della lastra in lavorazione</text>
         </res>
-        <res    id="sheet-height" tags="job,manual,sheet,glass,measure,vertical,transversal,size,height" access="rw"
+        <res    id="sheet-height" tags="job,manual,sheet,glass,measure,vertical,transversal,size,height" group="sheet-size" access="rw"
                 type="double" quantity="length" unit="mm" unit-coeff="0.001"
                 range="0:10000" gran="0.1" default="0">
             <text lang="en" label="Sheet Height">Current sheet transversal size</text>
             <text lang="it" label="Altezza lastra">Dimensione trasversale della lastra in lavorazione</text>
         </res>
-        <res    id="sheet-thickness" tags="sheet,glass,measure,thickness" access="r"
+        <res    id="sheet-thickness" tags="sheet,glass,measure,thickness" group="sheet-size" access="r"
                 type="double" quantity="length" unit="mm" unit-coeff="0.001"
                 range="1:50" gran="0.1" default="0">
             <text lang="en" label="Sheet Thckn">Current sheet overall thickness</text>
             <text lang="it" label="Spess lastra">Spessore totale della lastra in lavorazione</text>
         </res>
-
 
     <res    id="sheet-align" tags="job,manual,sheet,position,align" access="rw"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
