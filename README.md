@@ -10,17 +10,25 @@ C:\> cd Macotec
 C:\Macotec> git clone https://github.com/matgat/MacoService.git
 ```
 
-or
+To update the content of existing repository:
+
+```bat
+C:\Macotec\MacoService> git pull
+```
+
+
+To clone a certain branch:
 
 ```
 C:\Macotec> git clone -b monitoring https://github.com/matgat/MacoService.git
 ```
 
-Then, to update the content:
+To switch and track a certain (new) branch:
 
 ```bat
-C:\Macotec\MacoService> git pull
+C:\Macotec\MacoService> git switch --track origin/monitoring
 ```
+
 
 > [!TIP]
 > To install [git](https://git-scm.com):
@@ -30,3 +38,6 @@ C:\Macotec\MacoService> git pull
 > > winget install TortoiseGit.TortoiseGit
 > ```
 >
+
+
+

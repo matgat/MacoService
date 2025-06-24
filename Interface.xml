@@ -3,7 +3,7 @@
 <!--
     Unified Interface Dictionary for Macotec Machines
 -->
-<interface version="2025-06-23"
+<interface version="2025-06-24"
            name="MacoLayer"
            xmlns="http://www.macotec.it">
 
@@ -679,7 +679,7 @@
         <text lang="en" label="Step Data">Processing data of the current step</text>
         <text lang="it" label="Dati passo">Dati di lavorazione del passo corrente</text>
     </res>
-    
+
     <res    id="scheme" tags="job,auto,status,navigation,execution" access="rw"
             type="int" range="0:999999">
         <text lang="en" label="Scheme">Current selected scheme index in project</text>
@@ -1903,52 +1903,58 @@
         <text lang="it" label="Tagli eseguiti">Contatore tagli eseguiti</text>
     </res>
 
-    <res    id="tsup-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,score,upper,head"
+    <res    id="tsup-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,usage,score,upper,head"
             type="double" quantity="length" unit="m">
         <text lang="en" label="Tsup m">Overall scored length with upper cutting head</text>
         <text lang="it" label="Tsup m">Lunghezza cumulativa incisione con testina superiore</text>
     </res>
 
-    <res    id="tinf-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,score,lower,head"
+    <res    id="tinf-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,usage,score,lower,head"
             type="double" quantity="length" unit="m">
         <text lang="en" label="Tinf m">Overall scored length with lower cutting head</text>
         <text lang="it" label="Tinf m">Lunghezza cumulativa incisione con testina inferiore</text>
     </res>
 
-    <res    id="t1-travel" tags="maintenance,statistics,cumulative,travel,tool,float,wearing,score,primary,head"
+    <res    id="t1-travel" tags="maintenance,statistics,cumulative,travel,tool,float,wearing,usage,score,primary,head"
             type="double" quantity="length" unit="m">
         <text lang="en" label="T1 m">Overall scored length with primary cutting head</text>
         <text lang="it" label="T1 m">Lunghezza cumulativa incisione con testina primaria</text>
     </res>
 
-    <res    id="rsup-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,open,upper,wooden,break,wheel"
+    <res    id="rsup-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,usage,open,upper,wooden,break,wheel"
             type="double" quantity="length" unit="m">
         <text lang="en" label="Rsup m">Overall opened length by upper wooden breaking wheel</text>
         <text lang="it" label="Rsup m">Lunghezza cumulativa apertura con rotella superiore</text>
     </res>
 
-    <res    id="rinf-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,open,lower,wooden,break,wheel"
+    <res    id="rinf-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,usage,open,lower,wooden,break,wheel"
             type="double" quantity="length" unit="m">
         <text lang="en" label="Rinf m">Overall opened length by lower wooden breaking wheel</text>
         <text lang="it" label="Rinf m">Lunghezza cumulativa apertura con rotella inferiore</text>
     </res>
 
-    <res    id="blade-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,pvb,blade"
+    <res    id="blade-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,usage,pvb,blade"
             type="double" quantity="length" unit="m">
         <text lang="en" label="blade m">Overall length cut with PVB blade</text>
         <text lang="it" label="Lam m">Lunghezza cumulativa plastico tagliato con lametta</text>
     </res>
 
-    <res    id="lowe-travel" tags="maintenance,statistics,cumulative,travel,tool,wearing,lowe,wheel"
+    <res    id="lowe-travel" tags="maintenance,statistics,cumulative,travel,tool,wearing,usage,lowe,wheel"
             type="double" quantity="length" unit="m">
         <text lang="en" label="lowe m">Overall length deleted with low-E wheel</text>
         <text lang="it" label="Mola m">Lunghezza cumulativa molatura basso emissivo</text>
     </res>
 
-    <res    id="tpf-travel" tags="maintenance,statistics,cumulative,travel,tool,float,wearing,lowe,wheel"
+    <res    id="tpf-travel" tags="maintenance,statistics,cumulative,travel,tool,float,wearing,usage,tpf,scraper"
             type="double" quantity="length" unit="m">
         <text lang="en" label="TPF m">Overall length passed with TPF tool</text>
         <text lang="it" label="TPF m">Lunghezza cumulativa utensile TPF</text>
+    </res>
+
+    <res    id="lamp-total-time" tags="maintenance,statistics,cumulative,time,tool,strato,wearing,usage,detach,lamp,heat"
+            type="double" quantity="time" unit="h">
+        <text lang="en" label="Lamp h">Overall turn on time of heating lamp</text>
+        <text lang="it" label="Lamp h">Tempo cumulativo uso lampada</text>
     </res>
 
 </group> <!-- counters -->
