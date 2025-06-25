@@ -39,5 +39,3 @@ C:\Macotec\MacoService> git switch --track origin/monitoring
 > ```
 >
 
-
-
