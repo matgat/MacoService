@@ -3,7 +3,7 @@
 <!--
     Unified Interface Dictionary for Macotec Machines
 -->
-<interface version="2025-06-20"
+<interface version="2025-06-24"
            name="MacoLayer"
            xmlns="http://www.macotec.it">
 
@@ -50,13 +50,13 @@
      ╚══════════════════════════════════════════════════════════════════╝ -->
 <group name="connection">
 
-    <res    id="machine,machine-name" tags="name,identifier" access="rw"
+    <res    id="machine,machine-name" tags="machine,name,identifier" access="rw"
             type="string">
         <text lang="en" label="Machine">Machine unique name</text>
         <text lang="it" label="Macchina">Nome identificativo macchina</text>
     </res>
 
-    <res    id="machines" tags="sequence,name,identifier" access="r"
+    <res    id="machines" tags="machine,available,name,identifier,list" access="r"
             type="strings">
         <text lang="en" label="Machines">Available machines</text>
         <text lang="it" label="Macchine">Lista macchine presenti</text>
@@ -405,38 +405,38 @@
      ╚══════════════════════════════════════════════════════════════════╝ -->
 <group name="tools">
 
-    <res    id="t2-offset" tags="tools,settings,offset,score,t2" access="r"
+    <res    id="t2-offset" tags="tools,settings,offset,score,t2"
             type="tuple" range="(double,double)" quantity="length" unit="mm" unit-coeff="0.001">
         <text lang="en" label="T2 offset">Displacement of the secondary scoring head</text>
         <text lang="it" label="T2 offset">Posizione relativa testina incisione secondaria</text>
     </res>
 
-    <res    id="probe-offset" tags="tools,settings,offset,search,probe" access="r"
+    <res    id="probe-offset" tags="tools,settings,offset,search,probe"
             type="tuple" range="(double,double)" quantity="length" unit="mm" unit-coeff="0.001">
         <text lang="en" label="Probe offset">Displacement of the primary probe</text>
         <text lang="it" label="Probe offset">Posizione relativa sonda ricerca vetro primaria</text>
     </res>
 
-    <res    id="probe2-offset" tags="tools,settings,offset,search,probe" access="r"
+    <res    id="probe2-offset" tags="tools,settings,offset,search,probe"
             type="tuple" range="(double,double)" quantity="length" unit="mm" unit-coeff="0.001">
         <text lang="en" label="Probe2 offset">Displacement of the secondary probe</text>
         <text lang="it" label="Probe2 offset">Posizione relativa sonda ricerca vetro secondaria</text>
     </res>
 
-    <res    id="lowe-offset" tags="tools,settings,offset,lowe,wheel" access="r"
+    <res    id="lowe-offset" tags="tools,settings,offset,lowe,wheel"
             type="tuple" range="(double,double)" quantity="length" unit="mm" unit-coeff="0.001">
         <text lang="en" label="GrLe offset">Displacement of the low-E wheel</text>
         <text lang="it" label="GrLe offset">Posizione relativa mola basso emissivo</text>
     </res>
 
-    <res    id="tpf-offset" tags="tools,settings,offset,tpf,scraper" access="r"
+    <res    id="tpf-offset" tags="tools,settings,offset,tpf,scraper"
             type="tuple" range="(double,double)" quantity="length" unit="mm" unit-coeff="0.001">
         <text lang="en" label="Tpf offset">Displacement of the TPF removal tool</text>
         <text lang="it" label="Tpf offset">Posizione relativa utensile rimozione TPF</text>
     </res>
 
 
-    <res    id="lowe-width" tags="tools,settings,transversal,size,width,lowe,wheel" access="r"
+    <res    id="lowe-width" tags="tools,settings,transversal,size,width,lowe,wheel"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:100" gran="0.1" default="20">
         <text lang="en" label="GrLe Width">Width of the low-E wheel tool</text>
@@ -451,14 +451,14 @@
     </res>
 
 
-    <res    id="lowe-margin" tags="tools,settings,job,edge,border,margin,lowe,wheel" access="r"
+    <res    id="lowe-margin" tags="tools,settings,job,edge,border,margin,lowe,wheel"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:100" gran="0.1" default="1">
         <text lang="en" label="GrLe Margin">Margin from glass edges used for the low-E wheel tool</text>
         <text lang="it" label="Margine mola">Margine dai bordi usato per la mola basso emissivo</text>
     </res>
 
-    <res    id="tpf-margin" tags="tools,settings,job,edge,border,margin,tpf,scraper" access="r"
+    <res    id="tpf-margin" tags="tools,settings,job,edge,border,margin,tpf,scraper"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:100" gran="0.1" default="1">
         <text lang="en" label="Tpf Margin">Margin from glass edges used for the TPF removal tool</text>
@@ -467,14 +467,14 @@
 
 
     <!--
-    <res    id="lowe-length" tags="tools,settings,longitudinal,size,length,lowe,wheel" access="r"
+    <res    id="lowe-length" tags="tools,settings,longitudinal,size,length,lowe,wheel"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:100" gran="0.1" default="1">
         <text lang="en" label="GrLe Length">Length of the low-E wheel tool</text>
         <text lang="it" label="Lungh mola">Dimensione lungo il taglio della mola basso emissivo</text>
     </res>
 
-    <res    id="tpf-length" tags="tools,settings,longitudinal,size,length,tpf,scraper" access="r"
+    <res    id="tpf-length" tags="tools,settings,longitudinal,size,length,tpf,scraper"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:100" gran="0.1" default="1">
         <text lang="en" label="Tpf Length">Length of the TPF removal tool</text>
@@ -482,7 +482,7 @@
     </res>
     -->
 
-    <res    id="tpf-max-length" tags="tools,settings,job,max,length,tpf,scraper" access="r"
+    <res    id="tpf-max-length" tags="tools,settings,job,max,length,tpf,scraper"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="10:999999" gran="1" default="3210">
         <text lang="en" label="Tpf max length">Length beyond which the film must be cut to be aspirated</text>
@@ -490,14 +490,14 @@
     </res>
 
 
-    <res    id="score-edges-margin" tags="tools,settings,job,edge,border,margin,score,head" access="r"
+    <res    id="score-edges-margin" tags="tools,settings,job,edge,border,margin,score,head"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:100" gran="0.1" default="2">
         <text lang="en" label="Score Edge Margin">Minimum distance of scores from glass edges</text>
         <text lang="it" label="Margine T bordi">Margine incisioni dai bordi</text>
     </res>
 
-    <res    id="score-cross-margin" tags="tools,settings,job,cross,intersection,margin,score,head" access="r"
+    <res    id="score-cross-margin" tags="tools,settings,job,cross,intersection,margin,score,head"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:100" gran="0.1" default="2">
         <text lang="en" label="Score Cross Margin">Minimum distance of scores from intersections</text>
@@ -668,30 +668,34 @@
         <text lang="it" label="Sagoma">Nome sagoma/e</text>
     </res>
 
-    <!--
-    <res    id="data-(scheme|step)-\d+" tags="job,auto,project" access="w"
+    <res    id="scheme-data" tags="job,auto,project,data,scheme" access="w"
             type="string">
-        <text lang="en" label="Data">Escaped string containing job data</text>
-        <text lang="it" label="Dati">Stringa contenente dati di lavoro</text>
+        <text lang="en" label="Scheme Data">Processing data of a scheme</text>
+        <text lang="it" label="Dati schema">Dati di lavorazione di uno schema</text>
     </res>
-    -->
 
-    <res    id="scheme" tags="job,auto,status,navigation,execution" access="rw"
+    <res    id="step-data" tags="job,auto,data,strato,current,step" access="r"
+            type="string">
+        <text lang="en" label="Step Data">Processing data of the current step</text>
+        <text lang="it" label="Dati passo">Dati di lavorazione del passo corrente</text>
+    </res>
+
+    <res    id="scheme" tags="job,auto,status,navigation,execution,index" access="rw"
             type="int" range="0:999999">
         <text lang="en" label="Scheme">Current selected scheme index in project</text>
-        <text lang="it" label="Schema">Schema di taglio corrente nel progetto</text>
+        <text lang="it" label="Schema">Indice schema di taglio corrente</text>
     </res>
 
-    <res    id="sheet" tags="job,auto,status,navigation,execution" access="w"
+    <res    id="sheet" tags="job,auto,status,navigation,execution,index" access="w"
             type="int" range="0:999999">
         <text lang="en" label="Sheet">Repetition of the current scheme</text>
         <text lang="it" label="Lastra">Ripetizione corrente dello schema selezionato</text>
     </res>
 
-    <res    id="step" tags="job,auto,status,navigation,execution" access="rw"
+    <res    id="step" tags="job,auto,status,navigation,execution,index" access="rw"
             type="int" range="0:999999">
-        <text lang="en" label="Step">Current/selected processing step</text>
-        <text lang="it" label="Passo">Passo di lavorazione corrente dello schema</text>
+        <text lang="en" label="Step">Current/selected processing step index</text>
+        <text lang="it" label="Passo">Indice passo di lavorazione corrente</text>
     </res>
 
 
@@ -701,25 +705,24 @@
         <text lang="en" label="Sheet Size">Current glass sheet size</text>
         <text lang="it" label="Dim lastra">Dimensioni della lastra in lavorazione</text>
     </res>
-        <res    id="sheet-width" tags="job,manual,sheet,glass,measure,horizontal,longitudinal,size,width" access="rw"
+        <res    id="sheet-width" tags="job,manual,sheet,glass,measure,horizontal,longitudinal,size,width" group="sheet-size" access="rw"
                 type="double" quantity="length" unit="mm" unit-coeff="0.001"
                 range="0:10000" gran="0.1" default="0">
             <text lang="en" label="Sheet Width">Current sheet longitudinal size</text>
             <text lang="it" label="Larghezza lastra">Dimensione longitudinale della lastra in lavorazione</text>
         </res>
-        <res    id="sheet-height" tags="job,manual,sheet,glass,measure,vertical,transversal,size,height" access="rw"
+        <res    id="sheet-height" tags="job,manual,sheet,glass,measure,vertical,transversal,size,height" group="sheet-size" access="rw"
                 type="double" quantity="length" unit="mm" unit-coeff="0.001"
                 range="0:10000" gran="0.1" default="0">
             <text lang="en" label="Sheet Height">Current sheet transversal size</text>
             <text lang="it" label="Altezza lastra">Dimensione trasversale della lastra in lavorazione</text>
         </res>
-        <res    id="sheet-thickness" tags="sheet,glass,measure,thickness" access="r"
+        <res    id="sheet-thickness" tags="sheet,glass,measure,thickness" group="sheet-size" access="r"
                 type="double" quantity="length" unit="mm" unit-coeff="0.001"
                 range="1:50" gran="0.1" default="0">
             <text lang="en" label="Sheet Thckn">Current sheet overall thickness</text>
             <text lang="it" label="Spess lastra">Spessore totale della lastra in lavorazione</text>
         </res>
-
 
     <res    id="sheet-align" tags="job,manual,sheet,position,align" access="rw"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
@@ -1900,52 +1903,58 @@
         <text lang="it" label="Tagli eseguiti">Contatore tagli eseguiti</text>
     </res>
 
-    <res    id="tsup-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,score,upper,head"
+    <res    id="tsup-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,usage,score,upper,head"
             type="double" quantity="length" unit="m">
         <text lang="en" label="Tsup m">Overall scored length with upper cutting head</text>
         <text lang="it" label="Tsup m">Lunghezza cumulativa incisione con testina superiore</text>
     </res>
 
-    <res    id="tinf-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,score,lower,head"
+    <res    id="tinf-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,usage,score,lower,head"
             type="double" quantity="length" unit="m">
         <text lang="en" label="Tinf m">Overall scored length with lower cutting head</text>
         <text lang="it" label="Tinf m">Lunghezza cumulativa incisione con testina inferiore</text>
     </res>
 
-    <res    id="t1-travel" tags="maintenance,statistics,cumulative,travel,tool,float,wearing,score,primary,head"
+    <res    id="t1-travel" tags="maintenance,statistics,cumulative,travel,tool,float,wearing,usage,score,primary,head"
             type="double" quantity="length" unit="m">
         <text lang="en" label="T1 m">Overall scored length with primary cutting head</text>
         <text lang="it" label="T1 m">Lunghezza cumulativa incisione con testina primaria</text>
     </res>
 
-    <res    id="rsup-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,open,upper,wooden,break,wheel"
+    <res    id="rsup-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,usage,open,upper,wooden,break,wheel"
             type="double" quantity="length" unit="m">
         <text lang="en" label="Rsup m">Overall opened length by upper wooden breaking wheel</text>
         <text lang="it" label="Rsup m">Lunghezza cumulativa apertura con rotella superiore</text>
     </res>
 
-    <res    id="rinf-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,open,lower,wooden,break,wheel"
+    <res    id="rinf-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,usage,open,lower,wooden,break,wheel"
             type="double" quantity="length" unit="m">
         <text lang="en" label="Rinf m">Overall opened length by lower wooden breaking wheel</text>
         <text lang="it" label="Rinf m">Lunghezza cumulativa apertura con rotella inferiore</text>
     </res>
 
-    <res    id="blade-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,pvb,blade"
+    <res    id="blade-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,usage,pvb,blade"
             type="double" quantity="length" unit="m">
         <text lang="en" label="blade m">Overall length cut with PVB blade</text>
         <text lang="it" label="Lam m">Lunghezza cumulativa plastico tagliato con lametta</text>
     </res>
 
-    <res    id="lowe-travel" tags="maintenance,statistics,cumulative,travel,tool,wearing,lowe,wheel"
+    <res    id="lowe-travel" tags="maintenance,statistics,cumulative,travel,tool,wearing,usage,lowe,wheel"
             type="double" quantity="length" unit="m">
         <text lang="en" label="lowe m">Overall length deleted with low-E wheel</text>
         <text lang="it" label="Mola m">Lunghezza cumulativa molatura basso emissivo</text>
     </res>
 
-    <res    id="tpf-travel" tags="maintenance,statistics,cumulative,travel,tool,float,wearing,lowe,wheel"
+    <res    id="tpf-travel" tags="maintenance,statistics,cumulative,travel,tool,float,wearing,usage,tpf,scraper"
             type="double" quantity="length" unit="m">
         <text lang="en" label="TPF m">Overall length passed with TPF tool</text>
         <text lang="it" label="TPF m">Lunghezza cumulativa utensile TPF</text>
+    </res>
+
+    <res    id="lamp-total-time" tags="maintenance,statistics,cumulative,time,tool,strato,wearing,usage,detach,lamp,heat"
+            type="double" quantity="time" unit="h">
+        <text lang="en" label="Lamp h">Overall turn on time of heating lamp</text>
+        <text lang="it" label="Lamp h">Tempo cumulativo uso lampada</text>
     </res>
 
 </group> <!-- counters -->
