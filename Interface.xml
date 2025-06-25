@@ -3,7 +3,7 @@
 <!--
     Unified Interface Dictionary for Macotec Machines
 -->
-<interface version="2025-06-24"
+<interface version="2025-06-25"
            name="MacoLayer"
            xmlns="http://www.macotec.it">
 
@@ -56,16 +56,22 @@
         <text lang="it" label="Macchina">Nome identificativo macchina</text>
     </res>
 
-    <res    id="machines" tags="machine,available,name,identifier,list" access="r"
+    <res    id="machines" tags="machine,available,name,identifier,list"
             type="strings">
         <text lang="en" label="Machines">Available machines</text>
         <text lang="it" label="Macchine">Lista macchine presenti</text>
     </res>
 
-    <res    id="auth-key" tags="authentication,authorization,key,password" access="rw"
+    <res    id="auth-key" tags="authentication,authorization,key,password" access="w"
             type="int">
         <text lang="en" label="auth-key">Authentication public key</text>
         <text lang="it" label="auth-key">Chiave pubblica di autenticazione</text>
+    </res>
+
+    <res    id="features" tags="server,available,features"
+            type="strings" range="status-notifications,event-notifications">
+        <text lang="en" label="Services">Available features of the server</text>
+        <text lang="it" label="Servizi">Servizi disponibili</text>
     </res>
 
 </group> <!-- connection -->
