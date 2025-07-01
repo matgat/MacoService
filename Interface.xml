@@ -3,7 +3,7 @@
 <!--
     Unified Interface Dictionary for Macotec Machines
 -->
-<interface version="2025-06-30"
+<interface version="2025-07-01"
            name="MacoLayer"
            xmlns="http://www.macotec.it">
 
@@ -69,7 +69,7 @@
         <text lang="it" label="auth-key">Chiave pubblica di autenticazione</text>
     </res>
 
-    <res    id="features" tags="server,available,features"
+    <res    id="server-features" tags="server,available,services,features"
             type="strings" range="status-notifications,event-notifications">
         <text lang="en" label="Services">Available features of the server</text>
         <text lang="it" label="Servizi">Servizi disponibili</text>
