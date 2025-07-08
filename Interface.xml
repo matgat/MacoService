@@ -3,7 +3,7 @@
 <!--
     Unified Interface Dictionary for Macotec Machines
 -->
-<interface version="2025-06-24"
+<interface version="2025-07-01"
            name="MacoLayer"
            xmlns="http://www.macotec.it">
 
@@ -19,6 +19,7 @@
   │ ints     │ comma separated list of integers  │ 123,4,34,0                │
   │ strings  │ comma separated list of strings   │ "aaa,bbb,ccc"             │
   │ tuple    │ a pair of elements                │ (123.4,abc)               │
+  │ ext-json │ extended json data block          │ key1:val1,key2:{subkey}   │
   └──────────┴───────────────────────────────────┴───────────────────────────┘
 
   ┌─────────────┬───────┬───────────────────┬───────┬────────────────────────┐
@@ -56,16 +57,22 @@
         <text lang="it" label="Macchina">Nome identificativo macchina</text>
     </res>
 
-    <res    id="machines" tags="machine,available,name,identifier,list" access="r"
+    <res    id="machines" tags="machine,available,name,identifier,list"
             type="strings">
         <text lang="en" label="Machines">Available machines</text>
         <text lang="it" label="Macchine">Lista macchine presenti</text>
     </res>
 
-    <res    id="auth-key" tags="authentication,authorization,key,password" access="rw"
+    <res    id="auth-key" tags="authentication,authorization,key,password" access="w"
             type="int">
         <text lang="en" label="auth-key">Authentication public key</text>
         <text lang="it" label="auth-key">Chiave pubblica di autenticazione</text>
+    </res>
+
+    <res    id="server-features" tags="server,available,services,features"
+            type="strings" range="status-notifications,event-notifications">
+        <text lang="en" label="Services">Available features of the server</text>
+        <text lang="it" label="Servizi">Servizi disponibili</text>
     </res>
 
 </group> <!-- connection -->
@@ -120,14 +127,14 @@
     </res>
 
     <res    id="op-status" tags="status,execution,operation" access="r"
-            type="string" range="none,pre,post,shifting,rotating,aligning,dumping,delivering,shifting-remn,inserting,lifting,loading,unloading,processing,probing,scraping,deleting,scoring,opening,detaching,waiting-user,waiting-data,initializing,halted,parking">
+            type="strings" range="none,pre,post,shifting,rotating,aligning,dumping,delivering,shifting-remn,inserting,lifting,loading,unloading,processing,probing,scraping,deleting,scoring,opening,detaching,waiting-user,waiting-data,initializing,halted,parking">
         <text lang="en" label="Current op">Operations currently executed</text>
         <text lang="it" label="Operazione corrente">Operazioni correntemente in esecuzione</text>
     </res>
 
     <!--
     <res    id="step-status" tags="status,strato,execution,step" access="r"
-            type="string" range="extracted,rotated,placed,aligned,processed,post-rotated">
+            type="strings" range="extracted,rotated,placed,aligned,processed,post-rotated">
         <text lang="en" label="Step execution status">Done operations of the current step</text>
         <text lang="it" label="Stato esecuzione passo">Operazioni eseguite del passo di lavorazione corrente</text>
     </res>
@@ -669,13 +676,13 @@
     </res>
 
     <res    id="scheme-data" tags="job,auto,project,data,scheme" access="w"
-            type="string">
+            type="ext-json">
         <text lang="en" label="Scheme Data">Processing data of a scheme</text>
         <text lang="it" label="Dati schema">Dati di lavorazione di uno schema</text>
     </res>
 
     <res    id="step-data" tags="job,auto,data,strato,current,step" access="r"
-            type="string">
+            type="ext-json">
         <text lang="en" label="Step Data">Processing data of the current step</text>
         <text lang="it" label="Dati passo">Dati di lavorazione del passo corrente</text>
     </res>
@@ -739,7 +746,7 @@
     </res>
 
     <res    id="proc-op" tags="job,operation,processing,step,cut,sequence" access="rw"
-            type="string" range="tpf,lowe,score,open,break,detach,mark,pre-heat,post-heat,full-cut,no-detach,no-lowe">
+            type="ext-json" range="tpf,lowe,score,open,break,detach,mark,pre-heat,post-heat,full-cut,no-detach,no-lowe,y">
         <!--
             tpf: include the removal of the protective film
             lowe: include the low-E deletion
@@ -752,6 +759,7 @@
             full-cut: complete cut (auto lowe)
             no-detach: exclude detach (if alone, it means full-cut except detach)
             no-lowe: exclude lowe (if alone, it means full-cut except lowe)
+            y: pre-scoring targets
         -->
         <text lang="en" label="Operation">Glass processing sequence operations descriptor</text>
         <text lang="it" label="Processazione">Descrittore sequenza operazioni di processazione vetro</text>
@@ -777,7 +785,7 @@
     </res>
 
     <res    id="h-glass" tags="material,strato,float,glass,structure,size,thickness" group="material" access="rw"
-            type="string" quantity="length" unit="mm" unit-coeff="0.001">
+            type="string" range="val1[/val2[/val3]]" quantity="length" unit="mm" unit-coeff="0.001">
         <!-- A number or more:  4,  3/0.38/3,  6+6,  ...  -->
         <text lang="en" label="Thickness">Glass thickness</text>
         <text lang="it" label="Spessore">Spessore vetro</text>
@@ -820,7 +828,7 @@
 
     <!-- Cut execution data -->
     <res    id="cut-recipe" tags="material,strato,float,processing,cut,sequence,recipe" group="material" access="rw"
-            type="string" range="standard,stressed,hybrid,no-heat,no-lamp,no-blade,max-pull,heat-open">
+            type="strings" range="standard,stressed,hybrid,no-heat,no-lamp,no-blade,max-pull,heat-open">
         <text lang="en" label="Cut recipe">Cut sequence modifiers</text>
         <text lang="it" label="Ricetta">Modificatori della sequenza di taglio</text>
         <text lang="fr" label="Recette">Recette de découpe</text>
