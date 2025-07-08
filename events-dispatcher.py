@@ -47,7 +47,7 @@ def mac_to_object(bad_json_string):
         return parsed_object
     return parse_my_bad_json(bad_json_string)
 
-def convert_json_payload(original_json):
+def convert_to_40factory(raw_data):
     """
     Convert:
     {'timestamp': '2025-06-05T08:46:11+02:00',
@@ -62,31 +62,31 @@ def convert_json_payload(original_json):
         {'Id': 'arg2', 'val': 2},
       ]}
     """
-    converted_json = {'timestamp':'', "deviceData":[]}
-    if "timestamp" in original_json:
+    conv_data = {'timestamp':'', "deviceData":[]}
+    if "timestamp" in raw_data:
         # Convert timestamp to UTC
-        converted_json["timestamp"] = datetime.fromisoformat(original_json["timestamp"]).astimezone(timezone.utc).isoformat(timespec='milliseconds').replace("+00:00","Z")
+        conv_data["timestamp"] = datetime.fromisoformat(raw_data["timestamp"]).astimezone(timezone.utc).isoformat(timespec='milliseconds').replace("+00:00","Z")
 
-    if "event" in original_json:
-        converted_json["deviceData"].append({"Id": "event", "val": original_json["event"]})
+    if "event" in raw_data:
+        conv_data["deviceData"].append({"Id": "event", "val": raw_data["event"]})
 
-    #if "args" in original_json:
-    #    converted_json["deviceData"].extend({"Id": key, "val": val} for key, val in original_json["args"].items())
+    #if "args" in raw_data:
+    #    conv_data["deviceData"].extend({"Id": key, "val": val} for key, val in raw_data["args"].items())
 
-    if "args" in original_json:
-        for key, val in original_json["args"].items():
+    if "args" in raw_data:
+        for key, val in raw_data["args"].items():
             if key=="emg-list" and isinstance(val, str):
-                converted_json["deviceData"].append({"Id": key, "val": csv_to_intarray(val)})
+                conv_data["deviceData"].append({"Id": key, "val": csv_to_intarray(val)})
             elif key=="step-data" and isinstance(val, str):
-                converted_json["deviceData"].append({"Id": key, "val": mac_to_object(val)}) # json.dumps()
+                conv_data["deviceData"].append({"Id": key, "val": mac_to_object(val)}) # json.dumps()
             else:
-                converted_json["deviceData"].append({"Id": key, "val": val})
-    return converted_json
+                conv_data["deviceData"].append({"Id": key, "val": val})
+    return conv_data
 
-def handle_json_payload(client_ip, client_port, json_data):
+def handle_notification(client_ip, client_port, data):
     if redis_client:
         try:
-            msg = json.dumps(json_data, separators=(",", ":"))
+            msg = json.dumps(data, separators=(",", ":"))
             redis_client.publish(REDIS_CHANNEL, msg)
         except Exception as e:
             print(f"!! Failed to publish to Redis: {e}")
@@ -103,12 +103,12 @@ class JsonTcpHandler(socketserver.StreamRequestHandler):
                 print(f"\n[{client_ip}:{client_port} disconnected]")
                 break
             try:
-                incoming_str = line.decode("utf8").strip()
-                print(f"\n[from {client_ip}:{client_port} at {datetime.now().time()}]\n{incoming_str}")
-                incoming_json = json.loads(incoming_str)
-                converted_json = convert_json_payload(incoming_json)
-                print(converted_json)
-                handle_json_payload(client_ip, client_port, converted_json)
+                incoming_payload = line.decode("utf8").strip()
+                print(f"\n[from {client_ip}:{client_port} at {datetime.now().time()}]\n{incoming_payload}")
+                raw_data = json.loads(incoming_payload)
+                converted_data = convert_to_40factory(raw_data)
+                print(converted_data)
+                handle_notification(client_ip, client_port, converted_data)
             except json.JSONDecodeError as e:
                 print(f"! Invalid json at {line!r}\nError: {e}")
 
