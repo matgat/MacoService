@@ -121,7 +121,7 @@ def cyclic_publisher():
             except Exception as e:
                 print(f"!! Failed to publish to Redis: {e}")
         else:
-            print(f"\n{snapshot}", flush=True)
+            print(f"\n{snapshot}")
 
 
 class JsonTcpHandler(socketserver.StreamRequestHandler):
@@ -137,7 +137,7 @@ class JsonTcpHandler(socketserver.StreamRequestHandler):
                 break
             try:
                 incoming_payload = line.decode("utf8").strip()
-                print(f"\n[from {client_ip}:{client_port} at {datetime.now().time()}]\n{incoming_payload}", flush=True)
+                print(f"\n[from {client_ip}:{client_port} at {datetime.now().time()}]\n{incoming_payload}")
                 raw_data = json.loads(incoming_payload)
                 update_global_state(raw_data)
             except json.JSONDecodeError as e:

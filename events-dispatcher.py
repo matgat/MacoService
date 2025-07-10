@@ -100,14 +100,14 @@ class JsonTcpHandler(socketserver.StreamRequestHandler):
                 print(f"\n[from {client_ip}:{client_port} at {datetime.now().time()}]\n{incoming_payload}")
                 raw_data = json.loads(incoming_payload)
                 converted_data = convert_to_40factory(raw_data)
-                print(converted_data, flush=True)
+                print(converted_data)
                 if redis_client:
                     try:
                         redis_client.publish(REDIS_CHANNEL, json.dumps(converted_data, separators=(",", ":")))
                     except Exception as e:
                         print(f"!! Failed to publish to Redis: {e}")
             except json.JSONDecodeError as e:
-                print(f"! Invalid json at {line!r}\nError: {e}", flush=True)
+                print(f"! Invalid json at {line!r}\nError: {e}")
 
 if __name__ == '__main__':
     with socketserver.ThreadingTCPServer((SINK_HOST, SINK_PORT), JsonTcpHandler) as server:
