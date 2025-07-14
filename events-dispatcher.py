@@ -4,15 +4,15 @@ from datetime import datetime, timezone
 try: import redis
 except ImportError: redis=None
 
-# --- CONFIG ----------------------------------------------
+# 🧬 Settings ----------------------
 SINK_HOST = "localhost"
 SINK_PORT = 9999
-
+#----------------------------------
 REDIS_HOST    = "localhost"
 REDIS_PORT    = 6379
 REDIS_DB      = 0
 REDIS_CHANNEL = "machine_events"
-# ---------------------------------------------------------
+#----------------------------------
 
 redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB) if redis else None
 if not redis_client:
