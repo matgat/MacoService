@@ -9,6 +9,7 @@ from macotec_protocol import Connection
 MACH_HOST = "localhost"
 MACH_CONN_PORT = 23200
 MACH_NAME = "ActiveW"
+CLIENT_NAME = os.path.basename(__file__)
 POLL_INTERVAL = 1.0 # seconds
 #----------------------------------
 REDIS_HOST    = "localhost"
@@ -46,7 +47,6 @@ def publish_status(raw_status, redis_client):
 
 def poll_status(mach_conn, redis_client):
     status = {}
-    msg_id = 1
     while True:
         try:
             status.update( mach_conn.read_status() )
@@ -73,5 +73,5 @@ if __name__ == '__main__':
     redis_client = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB) if redis else None
     if not redis_client:
         print("! Redis client not available, install it with: > pip install redis")
-    mach_conn = Connection(MACH_HOST, MACH_CONN_PORT, MACH_NAME, os.path.basename(__file__))
+    mach_conn = Connection(MACH_HOST, MACH_CONN_PORT, MACH_NAME, CLIENT_NAME)
     poll_status(mach_conn, redis_client)

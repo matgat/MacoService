@@ -118,6 +118,12 @@ class Connection:
         mach_port, self.key = Connection.authenticate(hostname, conn_port, mach_name, client_name)
         self.sck, self.mach_data = Connection.connect(hostname, mach_port, self.key, client_name)
 
+    def __del__(self):
+        self.disconnect()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.disconnect()
+
     @staticmethod
     def decrypt(payload:bytes, key:int) -> bytes:
         return bytes([b ^ key for b in payload])
@@ -135,6 +141,8 @@ class Connection:
     @staticmethod
     def receive_payload(sck:socket.socket, key:int) -> bytes:
         payload = sck.recv(4096)
+        if not payload:
+            raise ConnectionAbortedError("Socket closed by MacoLayer")
         if key is not None: payload = Connection.decrypt(payload, key)
         #print(f"Recv: {payload}")
         return payload
@@ -182,6 +190,12 @@ class Connection:
         mach_data = reply.body
         return sck, mach_data
 
+    def disconnect(self) -> None:
+        try:
+            self.sck.close()
+        except Exception:
+            pass
+
     def receive_all(self) -> list["Message"]:
         payload = Connection.receive_payload(self.sck, self.key)
         return Message.parse_payload(payload)
@@ -201,8 +215,17 @@ class Connection:
         if reply.is_error():
             raise Exception(reply.header.get("msg"))
 
+    def notify(self, fields:dict) -> None:
+        Connection.send_msg(Message(header={"msg":"notify"}, body=fields), self.sck, self.key)
+
     def read_status(self) -> dict:
         return self.read(["$status"])
 
     def subscribe_to_status_changes(self) -> None:
-        self.write({"$subscribed":"$status"})
+        self.msg_id += 1
+        Connection.send_msg(Message(header={"id":self.msg_id}, body={"$subscribed":"$status"}), self.sck, self.key)
+
+    def ping(self) -> str:
+        Connection.send_msg(Message(header={"id":self.msg_id, msg:"ping"}), self.sck, self.key)
+        reply = Connection.receive_one(self.sck, self.key)
+        return reply.header["msg"]
