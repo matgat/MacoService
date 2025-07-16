@@ -3,7 +3,7 @@
 <!--
     Unified Interface Dictionary for Macotec Machines
 -->
-<interface version="2025-07-01"
+<interface version="2025-07-16"
            name="MacoLayer"
            xmlns="http://www.macotec.it">
 
@@ -1504,16 +1504,22 @@
      ╚══════════════════════════════════════════════════════════════════╝ -->
 <group name="mach-settings">
 
-    <res    id="mach-type" tags="machine,settings,features,capabilities,type" access="r"
+    <res    id="mach-type" tags="machine,settings,features,capabilities,type"
             type="string" range="float,strato,shifter,loader">
         <text lang="en" label="Machine type">Type of machine</text>
         <text lang="it" label="Tipo macchina">Tipologia di macchina</text>
     </res>
 
-    <res    id="mach-capabilities" tags="machine,settings,features,capabilities,equipment,tools" access="r"
+    <res    id="mach-capabilities" tags="machine,settings,features,capabilities,equipment,tools"
             type="strings" range="dummy,probe,probe2,T2,lowe,tpf,label,shift,rotate,buffer,sep-align-blocks,yfix,slantcuts,zprescore,shapecurv">
         <text lang="en" label="Capabilities">Available work skills of the machine</text>
         <text lang="it" label="Equipaggiamento">Capacità della macchina</text>
+    </res>
+
+    <res    id="version" tags="machine,settings,features,capabilities,version,info"
+            type="int">
+        <text lang="en" label="SW Version">Version of the machine software</text>
+        <text lang="it" label="Versione SW">Versione software macchina</text>
     </res>
 
     <res    id="using-internal-materials-db" tags="machine,settings,features,capabilities,material,database"
@@ -1522,33 +1528,32 @@
         <text lang="it" label="dati-mat-int">La macchina usa i propri parametri materiale</text>
     </res>
 
-    <res    id="version" tags="machine,settings,features,capabilities,version,info" access="r"
-            type="int">
-        <text lang="en" label="SW Version">Version of the machine software</text>
-        <text lang="it" label="Versione SW">Versione software macchina</text>
+    <res    id="refresh-period" tags="machine,settings,features,polling,period,time"
+            type="double" quantity="time" unit="s" range="0:10" gran="0.1" default="0.3">
+        <text lang="en" label="PollTime">Internal polling period of the physical machine</text>
+        <text lang="it" label="PollTime">Periodo di rinfresco dello stato della macchina fisica</text>
     </res>
 
-
     <!-- Units of measurement -->
-    <res    id="unit-length" tags="settings,units,conversion,coefficient,length" access="r"
+    <res    id="unit-length" tags="settings,units,conversion,coefficient,length"
             type="double" unit="m/unit">
         <text lang="en" label="length units">Conversion coefficient to meters of entered length values</text>
         <text lang="it" label="unità spazio">Coefficiente di conversione in metri dei valori di lunghezza in arrivo</text>
     </res>
 
-    <res    id="unit-time" tags="settings,units,conversion,coefficient,time" access="r"
+    <res    id="unit-time" tags="settings,units,conversion,coefficient,time"
             type="double" unit="s/unit">
         <text lang="en" label="time units">Conversion coefficient to seconds of entered time values</text>
         <text lang="it" label="unità tempo">Coefficiente di conversione in secondi dei valori di tempo in arrivo</text>
     </res>
 
-    <res    id="unit-speed" tags="settings,units,conversion,coefficient,speed" access="r"
+    <res    id="unit-speed" tags="settings,units,conversion,coefficient,speed"
             type="double" unit="(m/s)/unit">
         <text lang="en" label="speed units">Conversion coefficient to meters per second of entered speed values</text>
         <text lang="it" label="unità velocità">Coefficiente di conversione in metri al secondo dei valori di velocità in arrivo</text>
     </res>
 
-    <res    id="unit-force" tags="settings,units,conversion,coefficient,force" access="r"
+    <res    id="unit-force" tags="settings,units,conversion,coefficient,force"
             type="double" unit="N/unit">
         <text lang="en" label="force units">Conversion coefficient to newtons of entered force values</text>
         <text lang="it" label="unità forza">Coefficiente di conversione in newton dei valori di forza in arrivo</text>
@@ -1556,28 +1561,28 @@
 
 
     <!-- Dimensions -->
-    <res    id="line-height" tags="machine,settings,line,size,y,height,transversal" access="r"
+    <res    id="line-height" tags="machine,settings,line,size,y,height,transversal"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="1000:20000" gran="0.1" default="5000">
         <text lang="en" label="Line height">Overall machine transversal size</text>
         <text lang="it" label="Altezza linea">Dimensione trasversale complessiva della linea</text>
     </res>
 
-    <res    id="line-width-front" tags="machine,settings,line,size,width" access="r"
+    <res    id="line-width-front" tags="machine,settings,line,size,width"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:50000" gran="0.1" default="7500">
         <text lang="en" label="Line upstream width">Overall size of upstream modules before the cut origin</text>
         <text lang="it" label="Dimensione linea monte">Larghezza totale dei moduli a monte del taglio</text>
     </res>
 
-    <res    id="line-width-rear" tags="machine,settings,line,size,width" access="r"
+    <res    id="line-width-rear" tags="machine,settings,line,size,width"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:50000" gran="0.1" default="4800">
         <text lang="en" label="Line upstream width">Overall size of downstream modules after the cut origin</text>
         <text lang="it" label="Dimensione linea valle">Larghezza totale dei moduli a valle del taglio</text>
     </res>
 
-    <res    id="buffer-width" tags="machine,settings,modules,size,width,buffer" access="r"
+    <res    id="buffer-width" tags="machine,settings,modules,size,width,buffer"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:6000" gran="0.1" default="2400">
         <text lang="en" label="Buffer width">Buffer longitudinal size</text>
@@ -1585,14 +1590,14 @@
     </res>
 
     <!-- Specific data for Strato machines
-    <res    id="nominal-bridge-size" tags="machine,strato,settings,strato,nominal,bridge,cut,size,y,height,transversal" access="r"
+    <res    id="nominal-bridge-size" tags="machine,strato,settings,strato,nominal,bridge,cut,size,y,height,transversal"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="1000:20000" gran="0.1" default="4900">
         <text lang="en" label="Cut bridge size">Nominal size of cut bridge (4.0,4.9,6.0)</text>
         <text lang="it" label="Ponte taglio">Dimensioni nominali del ponte di taglio (4.0,4.9,6.0)</text>
     </res>
 
-    <res    id="nominal-align-size" tags="machine,strato,settings,strato,nominal,align,size,x,width,longitudinal" access="r"
+    <res    id="nominal-align-size" tags="machine,strato,settings,strato,nominal,align,size,x,width,longitudinal"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="1000:20000" gran="0.1" default="4600">
         <text lang="en" label="Align size">Nominal size of align table (3.2,4.6)</text>
@@ -1601,14 +1606,14 @@
     -->
 
     <!-- Preferred automatic rotations -->
-    <res    id="rot-dir-prod" tags="machine,strato,features,capabilities,characteristics,rotation,direction,product" access="r"
+    <res    id="rot-dir-prod" tags="machine,strato,features,capabilities,characteristics,rotation,direction,product"
             type="int" quantity="angle" unit="deg" unit-coeff="0.01745329252"
             range="-90:+90" gran="90">
         <text lang="en" label="Prod rot dir">Direction of the automatic rotation after a cut</text>
         <text lang="it" label="Senso rot prod">Senso della rotazione automatica dopo un taglio</text>
     </res>
 
-    <res    id="rot-dir-incoming" tags="machine,strato,features,capabilities,characteristics,rotation,direction,incoming,sheet" access="r"
+    <res    id="rot-dir-incoming" tags="machine,strato,features,capabilities,characteristics,rotation,direction,incoming,sheet"
             type="int" quantity="angle" unit="deg" unit-coeff="0.01745329252"
             range="-90:+90" gran="90">
         <text lang="en" label="Sheet rot dir">Direction of the automatic rotation of the incoming sheet</text>
@@ -1617,28 +1622,28 @@
 
 
     <!-- Slant cuts -->
-    <res    id="slant-angle-score-min" tags="machine,strato,settings,polygon,slant,angle,incidence,edge,min,score" access="r"
+    <res    id="slant-angle-score-min" tags="machine,strato,settings,polygon,slant,angle,incidence,edge,min,score"
             type="double" quantity="length" unit="deg" unit-coeff="0.01745329252"
             range="0:90" gran="0.001" default="1">
         <text lang="en" label="Score min ang">Minimum angle of incidence with glass edge for scoring</text>
         <text lang="it" label="Ang min incis">Angolo di incidenza minimo con bordo vetro per incisione</text>
     </res>
 
-    <res    id="slant-angle-open-min" tags="machine,strato,settings,polygon,slant,angle,incidence,edge,min,open" access="r"
+    <res    id="slant-angle-open-min" tags="machine,strato,settings,polygon,slant,angle,incidence,edge,min,open"
             type="double" quantity="length" unit="deg" unit-coeff="0.01745329252"
             range="0:90" gran="0.001" default="25">
         <text lang="en" label="Open min ang">Minimum angle of incidence with glass edge for automatic breaking</text>
         <text lang="it" label="Ang min apert">Angolo di incidenza minimo con bordo vetro per apertura automatica</text>
     </res>
 
-    <res    id="slant-fix-da" tags="machine,strato,settings,polygon,slant,angle,block,fix" access="r"
+    <res    id="slant-fix-da" tags="machine,strato,settings,polygon,slant,angle,block,fix"
             type="double" quantity="length" unit="deg" unit-coeff="0.01745329252"
             range="0:10" gran="0.001" default="3">
         <text lang="en" label="Fix angle">Surplus angle for block fixing push</text>
         <text lang="it" label="Ang corr">Sovrarotazione per correzione con piedino</text>
     </res>
 
-    <res    id="slant-fix-minarm" tags="machine,strato,settings,polygon,slant,minimum,arm,block,fix" access="r"
+    <res    id="slant-fix-minarm" tags="machine,strato,settings,polygon,slant,minimum,arm,block,fix"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:1000" gran="0.1" default="300">
         <text lang="en" label="Min arm">Minimum leverage arm for block fixing push</text>
@@ -1647,14 +1652,14 @@
 
 
     <!-- Scraps dimension thresholds -->
-    <res    id="scrap-big-width" tags="machine,strato,settings,scrap,big,threshold,width" access="r"
+    <res    id="scrap-big-width" tags="machine,strato,settings,scrap,big,threshold,width"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:5000" gran="0.1" default="1000">
         <text lang="en" label="Big scrap width">Width threshold of a big scrap</text>
         <text lang="it" label="Largh scarto grosso">Soglia larghezza sopra la quale uno scarto è considerato grosso</text>
     </res>
 
-    <res    id="scrap-big-height" tags="machine,strato,settings,scrap,big,threshold,height" access="r"
+    <res    id="scrap-big-height" tags="machine,strato,settings,scrap,big,threshold,height"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:5000" gran="0.1" default="1000">
         <text lang="en" label="Big scrap height">Height threshold of a big scrap</text>
@@ -1663,14 +1668,14 @@
 
 
     <!-- Specific data for Float machines -->
-    <res    id="cut-table-width" tags="machine,float,settings,float,table,longitudinal,size,x,width" access="r"
+    <res    id="cut-table-width" tags="machine,float,settings,float,table,longitudinal,size,x,width"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="1000:20000" gran="0.1" default="7200">
         <text lang="en" label="Table Width">Overall width of the cutting table</text>
         <text lang="it" label="Larghezza tavolo">Larghezza complessiva del tavolo di taglio</text>
     </res>
 
-    <res    id="cut-table-height" tags="machine,float,settings,float,table,transversal,size,y,height" access="r"
+    <res    id="cut-table-height" tags="machine,float,settings,float,table,transversal,size,y,height"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="1000:10000" gran="0.1" default="3500">
         <text lang="en" label="Table Height">Overall height of the cutting table</text>
