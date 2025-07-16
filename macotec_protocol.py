@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import socket, re
+import socket, re, random
 
 class Message:
     FRAME_START = b'\x01'
@@ -163,7 +163,7 @@ class Connection:
     @staticmethod
     def authenticate(host:str, port:int, mach_name:str, client_name:str) -> tuple[int, int]:
         def create_auth_key(pub_key: int) -> int:
-            return 0xAB
+            return random.randint(1, 254)
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sck:
             sck.settimeout(0.5)
             sck.connect((host, port))
