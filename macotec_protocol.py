@@ -156,8 +156,10 @@ class Connection:
     def receive_one(sck:socket.socket, key:int) -> Message:
         payload = Connection.receive_payload(sck, key)
         messages = Message.parse_payload(payload)
-        if( not messages ): raise Exception(f"No valid message received: {payload}")
-        elif( len(messages)>1 ): raise Exception(f"Multiple messages: {payload}")
+        if( not messages ):
+            raise RuntimeError(f"No valid message received: {payload}")
+        elif( len(messages)>1 ):
+            raise RuntimeError(f"Multiple messages: {payload}")
         return messages[0]
 
     @staticmethod
@@ -170,12 +172,12 @@ class Connection:
             greet_msg = Connection.receive_one(sck,None)
             available_machines = greet_msg.body['machines'] if greet_msg.body['machines'] else []
             if not mach_name in available_machines:
-                raise Exception(f"Machine {mach_name} is not available between {available_machines}")
+                raise RuntimeError(f"Machine {mach_name} is not available between {available_machines}")
             pub_key = create_auth_key(greet_msg.body['auth-key'])
             Connection.send_msg(Message(header={"id":1, "rep-to":greet_msg.header["id"], "msg":"connect"}, body={"sender":f'"{client_name}"', "machine":f'"{mach_name}"', "auth-lvl":0, "auth-key":pub_key}), sck, None)
             reply = Connection.receive_one(sck,None)
             if reply.is_error():
-                raise Exception(f"Couldn't authenticate for {mach_name} ({reply.header.get("msg")})")
+                raise RuntimeError(f"Couldn't authenticate for {mach_name} ({reply.header.get("msg")})")
             return int(reply.body["port"]), pub_key
 
     @staticmethod
@@ -186,7 +188,7 @@ class Connection:
         Connection.send_msg(Message(header={"id":1}, body={"sender":f'"{client_name}"'}), sck, key)
         reply = Connection.receive_one(sck, key)
         if reply.is_error():
-            raise Exception(f"Couldn't connect to {mach_name} ({reply.header.get("msg")})")
+            raise RuntimeError(f"Couldn't connect to {mach_name} ({reply.header.get("msg")})")
         mach_data = reply.body
         return sck, mach_data
 
@@ -205,7 +207,7 @@ class Connection:
         Connection.send_msg(Message(header={"id":self.msg_id}, body={field: None for field in fields}), self.sck, self.key)
         reply = Connection.receive_one(self.sck, self.key)
         if reply.is_error():
-            raise Exception(reply.header.get("msg"))
+            raise RuntimeError(reply.header.get("msg"))
         return reply.body
 
     def write(self, fields:dict) -> None:
@@ -213,7 +215,7 @@ class Connection:
         Connection.send_msg(Message(header={"id":self.msg_id}, body=fields), self.sck, self.key)
         reply = Connection.receive_one(self.sck, self.key)
         if reply.is_error():
-            raise Exception(reply.header.get("msg"))
+            raise RuntimeError(reply.header.get("msg"))
 
     def notify(self, fields:dict) -> None:
         Connection.send_msg(Message(header={"msg":"notify"}, body=fields), self.sck, self.key)
@@ -224,6 +226,12 @@ class Connection:
     def subscribe_to_status_changes(self) -> None:
         self.msg_id += 1
         Connection.send_msg(Message(header={"id":self.msg_id}, body={"$subscribed":"$status"}), self.sck, self.key)
+        reply = Connection.receive_one(self.sck, self.key)
+        if reply.is_error():
+            raise RuntimeError(f"Cannot subscribe to status changes: {reply.header.get("msg")}")
+        if not reply.body:
+            raise RuntimeError("Status change subscription not supported")
+        return reply.body
 
     def ping(self) -> str:
         Connection.send_msg(Message(header={"id":self.msg_id, msg:"ping"}), self.sck, self.key)

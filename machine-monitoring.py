@@ -116,7 +116,7 @@ if __name__ == '__main__':
             print("Initializing connection")
             data_fields = {
                 "event": [],
-                "generic-status": "UNKN",
+                "generic-status": "IDLE",
                 "cut-recipe": "",
                 "glass-id": "",
                 "glass-type": "",
@@ -131,7 +131,7 @@ if __name__ == '__main__':
                 }
 
             mach_conn = Connection(MACH_HOST, MACH_CONN_PORT, MACH_NAME, CLIENT_NAME)
-            data_fields.update( mach_conn.read_status() )
+            data_fields.update( mach_conn.subscribe_to_status_changes() )
             data_fields.update( mach_conn.read(["@statistics",
                                                 "prj-name",
                                                 "step-data",
@@ -146,8 +146,6 @@ if __name__ == '__main__':
             listener_thread.start()
             publisher_thread.start()
 
-            mach_conn.subscribe_to_status_changes()
-
             publisher_thread.join()
             listener_thread.join()
 
@@ -161,8 +159,8 @@ if __name__ == '__main__':
             #import traceback; traceback.print_exc()
             print("Exiting threads...")
             stop_event.set()
-            publisher_thread.join()
-            listener_thread.join()
+            if 'publisher_thread' in vars(): publisher_thread.join()
+            if 'listener_thread' in vars(): listener_thread.join()
             stop_event.clear()
             print(f"Restarting in {RESTART_TIME} seconds...")
             time.sleep(RESTART_TIME)
