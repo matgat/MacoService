@@ -3,7 +3,7 @@
 <!--
     Unified Interface Dictionary for Macotec Machines
 -->
-<interface version="2025-07-16"
+<interface version="2025-07-28"
            name="MacoLayer"
            xmlns="http://www.macotec.it">
 
@@ -322,7 +322,7 @@
 <group name="axes">
 
     <!-- Strato machine specific axes -->
-    <res    id="align-pos" tags="status,strato,position,axis,align" access="r"
+    <res    id="align-pos" tags="status,strato,current,position,axis,align" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="-500:10000" gran="0.1" default="0">
         <text lang="en" label="Xr">Align blocks current position</text>
@@ -331,42 +331,42 @@
 
 
     <!-- Float machine specific axes -->
-    <res    id="x-pos" tags="status,float,absolute,position,axis,x" access="r"
+    <res    id="x-pos" tags="status,float,absolute,current,position,axis,x" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="-5000:10000" gran="0.1" default="0">
         <text lang="en" label="X pos">X axis current position</text>
         <text lang="it" label="Pos X">Posizione corrente asse X</text>
     </res>
 
-    <res    id="y-pos" tags="status,float,absolute,position,axis,y" access="r"
+    <res    id="y-pos" tags="status,float,absolute,current,position,axis,y" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="-5000:10000" gran="0.1" default="0">
         <text lang="en" label="Y pos">Y axis current position</text>
         <text lang="it" label="Pos Y">Posizione corrente asse Y</text>
     </res>
 
-    <res    id="z-pos" tags="status,float,absolute,position,axis,z,orientation" access="r"
+    <res    id="z-pos" tags="status,float,absolute,current,position,axis,z,orientation" access="r"
             type="double" quantity="angle" unit="deg" unit-coeff="0.01745329252"
             range="-360:360" gran="0.001" default="0">
         <text lang="en" label="Z pos">Z axis current position</text>
         <text lang="it" label="Pos Z">Posizione corrente asse Z</text>
     </res>
 
-    <res    id="x-tool-pos" tags="status,float,tool,relative,position,axis,x" access="r"
+    <res    id="x-tool-pos" tags="status,float,tool,relative,current,position,axis,x" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="-5000:10000" gran="0.1" default="0">
         <text lang="en" label="Tool X pos">X position of the current tool relative to glass</text>
         <text lang="it" label="Pos ut X">Posizione X relativa al vetro dell'utensile corrente</text>
     </res>
 
-    <res    id="y-tool-pos" tags="status,float,tool,relative,position,axis,y" access="r"
+    <res    id="y-tool-pos" tags="status,float,tool,relative,current,position,axis,y" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="-5000:10000" gran="0.1" default="0">
         <text lang="en" label="Tool Y pos">Y position of the current tool relative to glass</text>
         <text lang="it" label="Pos ut Y">Posizione Y relativa al vetro dell'utensile corrente</text>
     </res>
 
-    <res    id="z-tool-pos" tags="status,float,tool,relative,position,axis,z,orientation" access="r"
+    <res    id="z-tool-pos" tags="status,float,tool,relative,current,position,axis,z,orientation" access="r"
             type="double" quantity="angle" unit="deg" unit-coeff="0.01745329252"
             range="-360:360" gran="0.001" default="0">
         <text lang="en" label="Tool Z pos">Z orientation of the current tool relative to glass</text>
@@ -1711,7 +1711,7 @@
 
     <!-- Work settings for Strato machines -->
     <res    id="strato-work-selectors" tags="user,settings,strato,work,flags,selectors"
-            type="strings" range="enab-tools,enab-labels,edge-trim,enab-grabber,enab-bufrot,scrap-bin,reor-pieces,auto-tiltout,no-check-cutlen,check-thickness,auto-start,auto-load,auto-lowerect,auto-wheels,auto-measangle,scrap-out,stop-on-shape,heavy-sheet,more-heat,validate,technician">
+            type="strings" range="enab-tools,enab-labels,edge-trim,enab-grabber,enab-bufrot,scrap-bin,reor-pieces,auto-tiltout,no-check-cutlen,check-thickness,auto-start,auto-load,auto-lowerect,auto-square,auto-measangle,scrap-out,stop-on-shape,heavy-sheet,more-heat,validate,technician">
         <text lang="en" label="WorkFlags">Work selectors for strato machine</text>
         <text lang="it" label="Selettori">Selettori di lavoro macchine laminato</text>
     </res>
