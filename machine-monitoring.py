@@ -31,9 +31,17 @@ END     = '\033[0m'
 
 #----------------------------------------------------------------------------
 def convert_to_40factory(obj:dict) -> dict:
-    converted_obj = {'timestamp':'', "deviceData":[]}
+    converted_obj = {'timestamp': '', 'deviceData': []}
     for key, val in obj.items():
-        converted_obj["deviceData"].append({"Id": key, "val": val})
+        if isinstance(val, dict):
+            # Serialize dict to JSON string
+            converted_obj['deviceData'].append({'Id': key, 'val': json.dumps(val)})
+        elif isinstance(val, list):
+            # One entry per list item
+            for item in val:
+                converted_obj['deviceData'].append({'Id': key, 'val': item})
+        else:
+            converted_obj["deviceData"].append({"Id": key, "val": val})
     return converted_obj
 
 #----------------------------------------------------------------------------

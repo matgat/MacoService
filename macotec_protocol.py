@@ -177,7 +177,7 @@ class Connection:
             Connection.send_msg(Message(header={"id":1, "rep-to":greet_msg.header["id"], "msg":"connect"}, body={"sender":f'"{client_name}"', "machine":f'"{mach_name}"', "auth-lvl":0, "auth-key":pub_key}), sck, None)
             reply = Connection.receive_one(sck,None)
             if reply.is_error():
-                raise RuntimeError(f"Couldn't authenticate for {mach_name} ({reply.header.get("msg")})")
+                raise RuntimeError(f"Couldn't authenticate for {mach_name} ({reply.header.get('msg')})")
             return int(reply.body["port"]), pub_key
 
     @staticmethod
@@ -188,7 +188,7 @@ class Connection:
         Connection.send_msg(Message(header={"id":1}, body={"sender":f'"{client_name}"'}), sck, key)
         reply = Connection.receive_one(sck, key)
         if reply.is_error():
-            raise RuntimeError(f"Couldn't connect to {mach_name} ({reply.header.get("msg")})")
+            raise RuntimeError(f"Couldn't connect to {mach_name} ({reply.header.get('msg')})")
         mach_data = reply.body
         return sck, mach_data
 
@@ -228,7 +228,7 @@ class Connection:
         Connection.send_msg(Message(header={"id":self.msg_id}, body={"$subscribed":"$status"}), self.sck, self.key)
         reply = Connection.receive_one(self.sck, self.key)
         if reply.is_error():
-            raise RuntimeError(f"Cannot subscribe to status changes: {reply.header.get("msg")}")
+            raise RuntimeError(f"Cannot subscribe to status changes: {reply.header.get('msg')}")
         if not reply.body:
             raise RuntimeError("Status change subscription not supported")
         return reply.body
