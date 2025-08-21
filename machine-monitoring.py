@@ -141,6 +141,7 @@ if __name__ == '__main__':
             mach_conn = Connection(MACH_HOST, MACH_CONN_PORT, MACH_NAME, CLIENT_NAME)
             data_fields.update( mach_conn.subscribe_to_status_changes() )
             data_fields.update( mach_conn.read(["@statistics",
+                                                "machine",
                                                 "prj-name",
                                                 "step-data",
                                                 "work-selectors",
