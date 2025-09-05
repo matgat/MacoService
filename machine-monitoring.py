@@ -124,7 +124,7 @@ if __name__ == '__main__':
             print("Initializing connection")
             data_fields = {
                 "event": [],
-                "generic-status": "IDLE",
+                "generic-status": "IDLE", # Not accurate since it's updated just on change
                 "cut-recipe": "",
                 "glass-id": "",
                 "glass-type": "",
@@ -152,6 +152,7 @@ if __name__ == '__main__':
 
             listener_thread = threading.Thread(target=notifications_listener, args=(mach_conn, data_fields, data_lock, stop_event))
             publisher_thread = threading.Thread(target=cyclic_publisher, args=(redis_client, data_fields, data_lock, stop_event))
+
             listener_thread.start()
             publisher_thread.start()
 
