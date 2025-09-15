@@ -29,19 +29,50 @@ CYAN    = '\033[96m'
 END     = '\033[0m'
 #----------------------------------
 
+msg_dict = {f"msg_{i}": False for i in range(1, 401)}
+al_dict = {f"al_{i}": False for i in range(1, 401)}
+
+
+
+
 #----------------------------------------------------------------------------
 def convert_to_40factory(obj:dict) -> dict:
     converted_obj = {'timestamp': '', 'deviceData': []}
     for key, val in obj.items():
-        if isinstance(val, dict):
-            # Serialize dict to JSON string
-            converted_obj['deviceData'].append({'Id': key, 'val': json.dumps(val)})
-        elif isinstance(val, list):
-            # One entry per list item
-            for item in val:
-                converted_obj['deviceData'].append({'Id': key, 'val': item})
+        
+        if key == "msg-list": 
+            for i in val:
+                msg_dict[f"msg_{i}"] = True
+        elif key == "emg-list": 
+            for i in val:
+                al_dict[f"al_{i}"] = True
+        elif key == "step-data":
+            for k, v in val.items():
+                for ke, va in v.items():
+                    name = key + "_" + k + "_" + ke 
+                    converted_obj['deviceData'].append({'Id': name, 'val': va})
         else:
-            converted_obj["deviceData"].append({"Id": key, "val": val})
+            if isinstance(val, dict):
+                # Serialize dict to JSON string
+                converted_obj['deviceData'].append({'Id': key, 'val': json.dumps(val)})
+            elif isinstance(val, list):
+                # One entry per list item
+                counter = 1
+                for item in val:
+                    key_n = (key + "_" + str(counter)).replace("-", "_")
+                    converted_obj['deviceData'].append({'Id': key_n, 'val': item})
+                    counter += 1
+            else:
+                converted_obj["deviceData"].append({"Id": key, "val": val})
+                
+    for k,v in msg_dict.items():
+        converted_obj["deviceData"].append({"Id": k, "val": v})
+    for k,v in al_dict.items():
+        converted_obj["deviceData"].append({"Id": k, "val": v})
+    
+    msg_dict.update({k: False for k in msg_dict})
+    al_dict.update({k: False for k in al_dict})
+        
     return converted_obj
 
 #----------------------------------------------------------------------------
