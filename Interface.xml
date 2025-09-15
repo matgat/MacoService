@@ -3,7 +3,7 @@
 <!--
     Unified Interface Dictionary for Macotec Machines
 -->
-<interface version="2025-07-28"
+<interface version="2025-09-15"
            name="MacoLayer"
            xmlns="http://www.macotec.it">
 
@@ -1912,8 +1912,14 @@
 
     <res    id="cuts-done-count" tags="maintenance,statistics,counter,strato,cuts,done"
             type="int" range="0:">
-        <text lang="en" label="Processed cuts">Processed cuts count</text>
-        <text lang="it" label="Tagli eseguiti">Contatore tagli eseguiti</text>
+        <text lang="en" label="Processed cuts">Count of glass processing/cuts executed successfully</text>
+        <text lang="it" label="Tagli eseguiti">Contatore tagli/processazioni eseguite con successo</text>
+    </res>
+
+    <res    id="pieces-done-count" tags="maintenance,statistics,counter,strato,pieces,done"
+            type="int" range="0:">
+        <text lang="en" label="Obtained pieces">Count of obtained finished pieces</text>
+        <text lang="it" label="Pezzi ottenuti">Contatore pezzi finiti ottenuti dai tagli</text>
     </res>
 
     <res    id="tsup-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,usage,score,upper,head"
