@@ -58,3 +58,39 @@ C:\Macotec> git clone -b monitoring https://github.com/matgat/MacoService.git
 3. Close the program
    - Focus the **MacoLayer** main window
    - Press `ALT+F4`
+
+
+### Monitoring
+To monitor the machine, see the example script `machine-monitoring.py`
+versioned in the `monitoring` branch.
+This script shows how to connect to the machine and respond to its
+status changes.
+The function `publish_data()` is called when one or more fields change value;
+put your custom actions there to consume the data (import any libraries you
+need and do what you want: write to a socket or file, send an email, notify
+a supervisor, etc.).
+For the meaning of the various fields, refer to the file `Interface.xml`.
+To automate launching the script, use *scheduled tasks* to run it at boot.
+
+Edit and customize the script
+
+* Edit `custom_convert()` to filter, modify, or rename incoming fields as needed.
+* Add your custom actions to `publish_data()` to consume the incoming values.
+
+
+Here's an example of a float machine session,
+filtering the axes position changes:
+
+```json
+{"mach-status":"ready","op-status":"none","scheme-done":0,"can-receive-job":1,"working":0,"emg-list":"","msg-list":"","scheme":0,"job-loaded":0,"status-lights":["air-ok","power-on","parked","may-enter"],"work-selectors":["enab-tools","enab-lowe","cut-lub","enab-labels"],"mode":"manual","spdovd-lowe":100,"spdovd":100,"ebrk-scheme":0,"ebrk-stripe":0,"ebrk-scheme-done":0,"probe-status":0,"scheme-progress":0,"step":0}
+
+{"scheme":1,"job-loaded":1,"status-lights":["air-ok","power-on","parked","ready-to-work","may-enter"],"mode":"auto"}
+
+{"mach-status":"working","op-status":"scoring","can-receive-job":0,"working":1,"status-lights":["air-ok","power-on"],"scheme-progress":0,"step":0}
+
+{"mach-status":"stopping","op-status":"none","can-receive-job":1,"working":0,"mode":"manual"}
+
+{"mach-status":"ready","status-lights":["air-ok","power-on","parked","ready-to-work","may-enter"]}
+
+{"mach-status":"error","emg-list":[123,30800012],"status-lights":["cnc-error","may-enter"]}
+```

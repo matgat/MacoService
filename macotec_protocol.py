@@ -6,7 +6,7 @@ class Message:
     FRAME_BODY  = b'\x02'
     FRAME_END   = b'\x03'
 
-    def __init__(self, header, body=None):
+    def __init__(self, header: dict, body: dict =None):
         self.header = header
         self.body = body or {}
 
@@ -223,7 +223,7 @@ class Connection:
     def read_status(self) -> dict:
         return self.read(["$status"])
 
-    def subscribe_to_status_changes(self) -> None:
+    def subscribe_to_status_changes(self) -> dict:
         self.msg_id += 1
         Connection.send_msg(Message(header={"id":self.msg_id}, body={"$subscribed":"$status"}), self.sck, self.key)
         reply = Connection.receive_one(self.sck, self.key)
