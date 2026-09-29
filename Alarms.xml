@@ -3482,7 +3482,7 @@
                         // 308000(00) le ultime due cifre è il codice
     -->
 
-  <alarm id="30800000+1" label="EMG_SWVERSION" type="EMG">
+  <alarm id="30800001" label="EMG_SWVERSION" type="EMG">
     <text lang="en" title="Incoherent software version!">Contact support</text>
     <text lang="it" title="Versione software incoerente!">Contatta il supporto</text>
     <text lang="fr" title="Version du logiciel incohérent!">Contactez le support</text>
@@ -3497,7 +3497,7 @@
     <text lang="sq" title="Version inkoherent i softuerit!">Kontaktoni me mbështetjen</text>
   </alarm>
 
-  <alarm id="30800000+2" label="EMG_CRITICAL" type="EMG">
+  <alarm id="30800002" label="EMG_CRITICAL" type="EMG">
     <text lang="en" title="Critical emergency!">Contact support</text>
     <text lang="it" title="Emergenza critica!">Contatta il supporto</text>
     <text lang="fr" title="Urgence critique!">Contactez le support</text>
@@ -3512,7 +3512,7 @@
     <text lang="sq" title="Emergjencë kritike!">Kontaktoni me mbështetjen</text>
   </alarm>
 
-  <alarm id="30800000+3" label="EMG_DANGER" type="EMG">
+  <alarm id="30800003" label="EMG_DANGER" type="EMG">
     <text lang="en" title="Danger!">Unsafe status, check why</text>
     <text lang="it" title="Pericolo!">Situazione non sicura, controllare</text>
     <text lang="fr" title="Danger!">État dangereux, vérifier pourquoi</text>
@@ -3527,7 +3527,7 @@
     <text lang="sq" title="Rrezik!">Status i pasigurt, kontrolloni pse</text>
   </alarm>
 
-  <alarm id="30800000+5" label="EMG_USER" type="EMG">
+  <alarm id="30800005" label="EMG_USER" type="EMG">
     <text lang="en" title="Emergency button">Release the emergency button and reset alarms</text>
     <text lang="it" title="Emergenza fungo">Rilascia il fungo e resetta allarmi</text>
     <text lang="fr" title="Bouton d'arrêt d'urgence">Laisse le pousseur champignon et retablir les alarms</text>
@@ -3542,7 +3542,7 @@
     <text lang="sq" title="Butoni i urgjencës">Lëshoni butonin e urgjencës dhe rivendosni alarmet</text>
   </alarm>
 
-  <alarm id="30800000+6" label="EMG_COLLISION" type="EMG">
+  <alarm id="30800006" label="EMG_COLLISION" type="EMG">
     <text lang="en" title="Glass collision prevention">Raised typically on carriage movements with grabber high</text>
     <text lang="it" title="Prevenzione collisione con vetro">Alzato tipicamente nei movimenti carrello con pinza alta</text>
     <text lang="fr" title="Prévention des collisions de verre">Élevé typiquement sur des mouvements de chariot avec la griffe haute</text>
@@ -3574,7 +3574,7 @@
   </alarm>
   -->
 
-  <alarm id="30800000+8" label="EMG_SCU" type="EMG">
+  <alarm id="30800008" label="EMG_SCU" type="EMG">
     <text lang="en" title="Emergency request from safety unit">Normal working conditions are not met</text>
     <text lang="it" title="Emergenza da centralina di sicurezza">La centralina di sicurezza ha notificato una occorrenza critica</text>
     <text lang="fr" title="Unité de sécurité en état d'urgence">Conditions normales de travail ne sont pas respectées</text>
@@ -3589,7 +3589,7 @@
     <text lang="sq" title="Kërkesa urgjente nga njësia e sigurisë">Kushtet normale të punës nuk plotësohen</text>
   </alarm>
 
-  <alarm id="30800000+9" label="EMG_NOAIR" type="EMG">
+  <alarm id="30800009" label="EMG_NOAIR" type="EMG">
     <text lang="en" title="No air pressure!">Check air supply pressure</text>
     <text lang="it" title="Allarme mancanza aria">Controlla pressione ingresso aria</text>
     <text lang="fr" title="Alarme car il manque de l'air">Controller la pression d'entrée de l'air</text>
@@ -3604,7 +3604,7 @@
     <text lang="sq" title="Pa presion ajri!">Kontrolloni presionin e furnizimit me ajër</text>
   </alarm>
 
-  <alarm id="30800000+10" label="EMG_INVALIDPAR" type="EMG">
+  <alarm id="30800010" label="EMG_INVALIDPAR" type="EMG">
     <text lang="en" title="Invalid parameter!">Contact support</text>
     <text lang="it" title="Parametro importante non valido!">Contatta il supporto</text>
     <text lang="fr" title="Paramètre important non valide!">Contactez le support</text>
@@ -3619,7 +3619,7 @@
     <text lang="sq" title="Parametër i pavlefshëm!">Kontaktoni me mbështetjen</text>
   </alarm>
 
-  <alarm id="30800000+12" label="EMG_FAILED" type="EMG">
+  <alarm id="30800012" label="EMG_FAILED" type="EMG">
     <text lang="en" title="Operation failed">Cannot proceed because a requested action failed</text>
     <text lang="it" title="Operazione fallita">Un'azione richiesta per proseguire non è stata completata con successo</text>
     <text lang="fr" title="L'opération a échoué">Impossible de continuer car une action demandée a échoué</text>
@@ -3634,7 +3634,7 @@
     <text lang="sq" title="Operacioni dështoi">Nuk mund të vazhdohet sepse një veprim i kërkuar dështoi</text>
   </alarm>
 
-  <alarm id="30800000+15" label="EMG_GCODE" type="EMG">
+  <alarm id="30800015" label="EMG_GCODE" type="EMG">
     <text lang="en" title="Cannot process the shape">Critical error during G-code execution: check available tools, the G-code file and the relative transmitted data</text>
     <text lang="it" title="Errore elaborazione sagoma">Errore critico durante l'esecuzione del codice G: verificare gli strumenti disponibili, il file codice G ei relativi dati trasmessi</text>
     <text lang="fr" title="Impossible de traiter la forme">Erreur critique lors de l'exécution du G-code: vérifiez les outils disponibles, le fichier G-code et les données transmises relatives</text>
@@ -3651,7 +3651,7 @@
 
   <!-- Axes stroke limits -->
 
-  <alarm id="30800000+20" label="EMG_HWLIM_XR" type="EMG">
+  <alarm id="30800020" label="EMG_HWLIM_XR" type="EMG">
     <text lang="en" title="Align blocks limit switch engaged">The axis exceeded its mechanical bounds, move by hand into the normal operation area to disengage the switch and then reset the emergency</text>
     <text lang="it" title="Finecorsa riscontri">Asse fuori limite, spostare a mano per disimpegnare il finecorsa e ripristinare emergenza</text>
     <text lang="fr" title="L'interrupteur de fin de course des blocs de référence est engagé">L'axe a dépassé ses limites mécaniques, se déplacer à la main dans la zone de fonctionnement normale pour dégager l'interrupteur et réinitialiser l'urgence</text>
@@ -3666,7 +3666,7 @@
     <text lang="sq" title="Ndërprerësi kufitar i rreshtimit të blloqeve është i kyçur">Aksi ka tejkaluar kufijtë e tij mekanikë, lëviz me dorë në zonën normale të funksionimit për të shkëputur çelësin dhe më pas rivendos urgjencën</text>
   </alarm>
 
-  <alarm id="30800000+21" label="EMG_HWLIM_XS" type="EMG">
+  <alarm id="30800021" label="EMG_HWLIM_XS" type="EMG">
     <text lang="en" title="Detachment limit switch engaged">The axis exceeded its mechanical bounds, move by hand into the normal operation area to disengage the switch and then reset the emergency</text>
     <text lang="it" title="Finecorsa stacco">Asse fuori limite, spostare a mano per disimpegnare il finecorsa e ripristinare emergenza</text>
     <text lang="fr" title="L'interrupteur de fin de course de Détachement est engagé">L'axe a dépassé ses limites mécaniques, se déplacer à la main dans la zone de fonctionnement normale pour dégager l'interrupteur et réinitialiser l'urgence</text>
@@ -3681,7 +3681,7 @@
     <text lang="sq" title="Çelësi kufitar i shkëputjes është i kyçur">Aksi ka tejkaluar kufijtë e tij mekanikë, lëviz me dorë në zonën normale të funksionimit për të shkëputur çelësin dhe më pas rivendos urgjencën</text>
   </alarm>
 
-  <alarm id="30800000+22" label="EMG_HWLIM_YINF" type="EMG">
+  <alarm id="30800022" label="EMG_HWLIM_YINF" type="EMG">
     <text lang="en" title="Lower carriage limit switch engaged">The axis exceeded its mechanical bounds, move by hand into the normal operation area to disengage the switch and then reset the emergency</text>
     <text lang="it" title="Finecorsa carrello inferiore">Asse fuori limite, spostare a mano per disimpegnare il finecorsa e ripristinare emergenza</text>
     <text lang="fr" title="Le fin de course du chariot inférieur est engagé">L'axe a dépassé ses limites mécaniques, se déplacer à la main dans la zone de fonctionnement normale pour dégager l'interrupteur et réinitialiser l'urgence</text>
@@ -3696,7 +3696,7 @@
     <text lang="sq" title="Çelësi i kufirit të poshtëm të karrocës është i kyçur">Aksi ka tejkaluar kufijtë e tij mekanikë, lëviz me dorë në zonën normale të funksionimit për të shkëputur çelësin dhe më pas rivendos urgjencën</text>
   </alarm>
 
-  <alarm id="30800000+23" label="EMG_HWLIM_YSUP" type="EMG">
+  <alarm id="30800023" label="EMG_HWLIM_YSUP" type="EMG">
     <text lang="en" title="Upper carriage limit switch engaged">The axis exceeded its mechanical bounds, move by hand into the normal operation area to disengage the switch and then reset the emergency</text>
     <text lang="it" title="Finecorsa carrello superiore">Asse fuori limite, spostare a mano per disimpegnare il finecorsa e ripristinare emergenza</text>
     <text lang="fr" title="Le fin de course du chariot supérieur est engagé">L'axe a dépassé ses limites mécaniques, se déplacer à la main dans la zone de fonctionnement normale pour dégager l'interrupteur et réinitialiser l'urgence</text>
@@ -3711,7 +3711,7 @@
     <text lang="sq" title="Çelësi i kufirit të sipërm të karrocës i kyçur">Aksi ka tejkaluar kufijtë e tij mekanikë, lëviz me dorë në zonën normale të funksionimit për të shkëputur çelësin dhe më pas rivendos urgjencën</text>
   </alarm>
 
-  <alarm id="30800000+24" label="EMG_HWLIM_YPRN" type="EMG">
+  <alarm id="30800024" label="EMG_HWLIM_YPRN" type="EMG">
     <text lang="en" title="Printer carriage limit switch engaged">The axis exceeded its mechanical bounds, move by hand into the normal operation area to disengage the switch and then reset the emergency</text>
     <text lang="it" title="Finecorsa carrello stampante">Asse fuori limite, spostare a mano per disimpegnare il finecorsa e ripristinare emergenza</text>
     <text lang="fr" title="Fin de course de chariot d'imprimante">L'axe a dépassé ses limites mécaniques, se déplace à la main dans la zone d'opération normale pour désengager l'interrupteur, puis réinitialise l'urgence</text>
@@ -3777,7 +3777,7 @@
 
   <!-- Subsystems -->
 
-  <alarm id="30800000+30" label="EMG_CARRINF" type="EMG">
+  <alarm id="30800030" label="EMG_CARRINF" type="EMG">
     <text lang="en" title="Something wrong with lower carriage">Maybe the carriage trailer isn't properly locked</text>
     <text lang="it" title="Emergenza carrello inferiore">Forse il carrello aggiuntivo si è sganciato</text>
     <text lang="fr" title="Quelque chose ne va pas avec le chariot inférieur">Peut-être que le chariot supplémentaire n'est pas encore verrouillé</text>
@@ -3792,7 +3792,7 @@
     <text lang="sq" title="Diçka nuk shkon me karrocën e poshtme">Ndoshta rimorkioja e karrocës nuk është e kyçur siç duhet</text>
   </alarm>
 
-  <alarm id="30800000+31" label="EMG_CARRSUP" type="EMG">
+  <alarm id="30800031" label="EMG_CARRSUP" type="EMG">
     <text lang="en" title="Something wrong with upper carriage">Maybe the extra carriage isn't still locked</text>
     <text lang="it" title="Emergenza carrello superiore">Forse il carrello aggiuntivo si è sganciato</text>
     <text lang="fr" title="Quelque chose ne va pas avec le chariot supérieur">Peut-être que le chariot supplémentaire n'est pas encore verrouillé</text>
