@@ -51,23 +51,26 @@ C:\Macotec> git clone -b main https://github.com/matgat/MacoService.git
    - Click the green button to start the job on the emulated machine
 
 3. Close the program
-   - Focus the **MacoLayer** main window
+   - Open the main window (double-click the **MacoLayer** tray icon)
+   - Focus the main window
    - Press `ALT+F4`
 
 
 ### Monitoring
-To monitor the machine, see the example script `machine-monitoring.py`
-versioned in the `monitoring` branch.
+To monitor the machine, see the example script `machine-monitoring.py`.
 This script shows how to connect to the machine and respond to its
 status changes.
-The function `publish_data()` is called when one or more fields change value;
-put your custom actions there to consume the data (import any libraries you
-need and do what you want: write to a socket or file, send an email, notify
-a supervisor, etc.).
-For the meaning of the various fields, refer to the file `Interface.xml`.
-To automate launching the script, use *scheduled tasks* to run it at boot.
 
-Edit and customize the script
+The `publish_data()` function is called whenever one or more fields
+change value.
+Place your custom actions here to process the data (such as writing
+to a socket or file, sending an email, or dispatching to a supervisor).
+Refer to `Interface.xml` for definitions of the various fields.
+
+To automate launching the script at boot, configure it as a system
+service or *scheduled task*.
+
+Edit and customize the script:
 
 * Edit `custom_convert()` to filter, modify, or rename incoming fields as needed.
 * Add your custom actions to `publish_data()` to consume the incoming values.
