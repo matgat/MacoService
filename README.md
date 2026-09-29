@@ -1,6 +1,6 @@
 ## [MacoService](https://github.com/matgat/MacoService.git)
 
-Release of MacoService folder apps for testing/emulation purposes.
+Release of MacoService folder for testing purposes.
 
 First time:
 
@@ -19,10 +19,10 @@ C:\Macotec> git clone -b main https://github.com/matgat/MacoService.git
 > ```
 
 > [!TIP]
-> To switch and track a certain (new) branch:
+> To switch and track a certain branch:
 >
 > ```bat
-> C:\Macotec\MacoService> git switch --track origin/monitoring
+> C:\Macotec\MacoService> git switch --track origin/branchname
 > ```
 
 > [!TIP]
@@ -33,9 +33,20 @@ C:\Macotec> git clone -b main https://github.com/matgat/MacoService.git
 > ```
 
 
+
+### Getting Started
+This material is intended for developing or testing HMI programs
+for Macotec glass-cutting machines.
+
+* Refer to the document `SP059 - Macotec machines interface.pdf`
+* Refer to `Interface.xml` for definitions of the various fields
+* Run `MacoLayer.exe` to emulate a machine
+
+
+
 ### Emulating a work (strato machine)
 
-1. Launch MacoLayer.exe (needs a win32 compatible environment)
+1. Launch `MacoLayer.exe` (needs a win32 compatible environment)
    - If a firewall is present, add an exception
    - If problems occur, set compatibility options to
      “Run this program in compatibility mode for Windows 7”
@@ -56,9 +67,24 @@ C:\Macotec> git clone -b main https://github.com/matgat/MacoService.git
    - Press `ALT+F4`
 
 
-### Monitoring
+
+### Alarms file
+Message and alarm strings are organized in an `XML` file mapping
+an identifier field to a list of translation strings.
+
+The identifier field may be an integer or a mask that matches a specific
+pattern.
+
+The content is inherently dependent on the actual implementation
+of the physical machine —especially regarding specific CNC emergency IDs—
+so the relevant alarm files are selected (or copied to a specific
+directory when deploying the HMI program) according to the installed machine.
+
+
+
+### Monitoring machines with external script
 To monitor the machine, see the example script `machine-monitoring.py`.
-This script shows how to connect to the machine and respond to its
+This script shows how to connect to a machine and monitor its
 status changes.
 
 The `publish_data()` function is called whenever one or more fields
