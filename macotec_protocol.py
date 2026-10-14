@@ -1,7 +1,47 @@
 #!/usr/bin/env python3
 import socket, re
 import random # For authentication key
+import json
 from pathlib import Path; import tempfile # For send_mac_file
+
+#----------------------------------
+GRAY    = '\033[90m'
+RED     = '\033[91m'
+GREEN   = '\033[92m'
+YELLOW  = '\033[93m'
+BLUE    = '\033[94m'
+MAGENTA = '\033[95m'
+CYAN    = '\033[96m'
+END     = '\033[0m'
+#----------------------------------
+
+
+def parse_lax_json(dirty_json: str) -> dict[str, object]|str:
+    token_re = re.compile(r"""
+        (?P<comment>//[^\n]*|/\*.*?\*/)               # comments -> dropped
+      | (?P<str>"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')  # quoted strings
+      | (?P<comma>,)(?=\s*[}\]])                      # trailing comma -> dropped
+      | (?P<word>[^\s,:{}\[\]"']+)                    # numbers, literals, bare words
+    """, re.X | re.S)
+    literals_re = {"true", "false", "null"}
+    number_re = re.compile(r"-?\d+(\.\d+)?([eE][+-]?\d+)?")
+    def fix_json(m: re.Match) -> str:
+        if m["comment"] or m["comma"]:
+            return ""
+        if s := m["str"]:
+            return s if s[0] == '"' else json.dumps(s[1:-1].replace("\\'", "'"))
+        w = m["word"]
+        return w if w in literals_re or number_re.fullmatch(w) else json.dumps(w)
+    try:
+        fixed_json = token_re.sub(fix_json, dirty_json.strip())
+        if not fixed_json.startswith("{"): fixed_json = "{" + fixed_json + "}"
+        return json.loads(fixed_json)
+    except Exception as e:
+        print(f"{RED}Still invalid json: {MAGENTA}{e}{END}")
+        print(f"{YELLOW}{fixed_json}{END}")
+        return dirty_json
+
+
 
 class Message:
     FRAME_START = b'\x01'
@@ -85,31 +125,19 @@ class Message:
 
     @staticmethod
     def str_to_value(value_str: str) -> object:
-        def parse_ext_json(s: str) -> dict[str, object]:
-            parsed_object = {}
-            for key, body in re.findall(r"(\w+)\s*:\s*\{([^}]+)\}", s):
-                sub_dict = {}
-                items = re.split(r'[,\s]+', body.strip())
-                for item in items:
-                    if ":" in item:
-                        subkey,subval = item.split(":", 1)
-                        try:
-                            sub_dict[subkey] = int(subval)
-                        except ValueError:
-                            try:
-                                sub_dict[subkey] = float(subval)
-                            except ValueError:
-                                sub_dict[subkey] = subval
-                    else:
-                        sub_dict[item] = True
-                parsed_object[key] = sub_dict
-            return parsed_object
         value_str = value_str.strip()
         if value_str.startswith('"') and value_str.endswith('"'):
             # A string, won't try to convert to number
+            #print("incoming: " + value_str)
             value_str = value_str.strip('"')
             if '{' in value_str and '}' in value_str:
-                return parse_ext_json(value_str)
+                value_str = value_str.replace('`', '"') # Assuming that's macp::chQuoteReplacement
+                try:
+                    return json.loads(value_str)
+                except Exception as e:
+                    print(f"{RED}Invalid json: {MAGENTA}{e}{END}")
+                    print(f"{YELLOW}{value_str}{END}")
+                    return parse_lax_json(value_str)
             elif ',' in value_str:
                 return [x_trimmed for x in value_str.split(',') if(x_trimmed := x.strip())]
             return value_str
@@ -134,7 +162,6 @@ class Message:
         except ValueError:
             pass
         return value_str
-
 
 
 
@@ -186,6 +213,7 @@ class Connection:
     @classmethod
     def receive_one_raw(cls, sck:socket.socket, key:int|None) -> Message:
         buf = cls.receive_buffer(sck, key)
+        #print(f"received: {buf}")
         messages = Message.parse_frame(buf)
         if( not messages ):
             raise RuntimeError(f"No valid message received: {buf}")
@@ -223,10 +251,10 @@ class Connection:
         except OSError as e:
             raise RuntimeError(f"Can't connect to machine at {host}:{port}") from e
         cls.send_msg_raw(Message(header={"id":1}, body={"sender":f'"{client_name}"'}), sck, key)
-        reply = cls.receive_one_raw(sck, key)
-        if reply.is_error():
-            raise RuntimeError(f"Machine refused: {reply.header.get('msg')}")
-        mach_data = reply.body
+        greet_rep = cls.receive_one_raw(sck, key)
+        if greet_rep.is_error():
+            raise RuntimeError(f"Machine refused: {greet_rep.header.get('msg')}")
+        mach_data = greet_rep.body
         return sck, mach_data
 
     def disconnect(self) -> None:
