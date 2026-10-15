@@ -3,44 +3,184 @@ import socket, re
 import random # For authentication key
 import json
 from pathlib import Path; import tempfile # For send_mac_file
-
-#----------------------------------
-GRAY    = '\033[90m'
-RED     = '\033[91m'
-GREEN   = '\033[92m'
-YELLOW  = '\033[93m'
-BLUE    = '\033[94m'
-MAGENTA = '\033[95m'
-CYAN    = '\033[96m'
-END     = '\033[0m'
-#----------------------------------
+import logging
 
 
-def parse_lax_json(dirty_json: str) -> dict[str, object]|str:
-    token_re = re.compile(r"""
-        (?P<comment>//[^\n]*|/\*.*?\*/)               # comments -> dropped
-      | (?P<str>"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')  # quoted strings
-      | (?P<comma>,)(?=\s*[}\]])                      # trailing comma -> dropped
-      | (?P<word>[^\s,:{}\[\]"']+)                    # numbers, literals, bare words
-    """, re.X | re.S)
-    literals_re = {"true", "false", "null"}
-    number_re = re.compile(r"-?\d+(\.\d+)?([eE][+-]?\d+)?")
-    def fix_json(m: re.Match) -> str:
-        if m["comment"] or m["comma"]:
-            return ""
-        if s := m["str"]:
-            return s if s[0] == '"' else json.dumps(s[1:-1].replace("\\'", "'"))
-        w = m["word"]
-        return w if w in literals_re or number_re.fullmatch(w) else json.dumps(w)
-    try:
-        fixed_json = token_re.sub(fix_json, dirty_json.strip())
-        if not fixed_json.startswith("{"): fixed_json = "{" + fixed_json + "}"
-        return json.loads(fixed_json)
-    except Exception as e:
-        print(f"{RED}Still invalid json: {MAGENTA}{e}{END}")
-        print(f"{YELLOW}{fixed_json}{END}")
-        return dirty_json
+logger = logging.getLogger(__name__)
+mat_handler = logging.StreamHandler()
+mat_handler.setFormatter(logging.Formatter('\033[93m[%(asctime)s] \033[90m%(levelname)s \033[94m%(name)s\033[90m.\033[96m%(funcName)s:\033[90m%(lineno)d\033[0m %(message)s'))
+logger.propagate = False
+logger.addHandler(mat_handler)
+# In main script:
+#import logging # DEBUG, INFO, WARNING, ERROR, CRITICAL
+#logging.basicConfig(level=os.environ.get("LOG_LEVEL", "DEBUG"))
+# Then you can use the environment variable:
+#$ LOG_LEVEL=DEBUG python script.py
+#PS> $env:LOG_LEVEL="DEBUG"; py script.py
+# Or using script arguments:
+#import argparse, logging
+#parser = argparse.ArgumentParser()
+#parser.add_argument("-v", "--verbose", action="store_true")
+#args = parser.parse_args()
+#logging.basicConfig(level=logging.DEBUG if args.verbose else logging.WARNING)
 
+
+def parse_ejson_simple(ejson_str: str) -> dict[str, object]:
+    parsed_object = {}
+    for key, body in re.findall(r"(\w+)\s*:\s*\{([^}]+)\}", ejson_str):
+        sub_dict = {}
+        items = re.split(r'[,\s]+', body.strip())
+        for item in items:
+            if ":" in item:
+                subkey,subval = item.split(":", 1)
+                try:
+                    sub_dict[subkey] = int(subval)
+                except ValueError:
+                    try:
+                        sub_dict[subkey] = float(subval)
+                    except ValueError:
+                        sub_dict[subkey] = subval
+            else:
+                sub_dict[item] = True
+        parsed_object[key] = sub_dict
+    return parsed_object
+
+def parse_ejson(text: str, *, object_pairs_hook=dict) -> dict[str, object]:
+    # Pass object_pairs_hook=list to keep repeated keys
+    n = len(text)
+    pos = 0
+    number = re.compile(r"-?(?:0|[1-9][0-9]*)(?P<frac>\.[0-9]+)?(?P<exp>[eE][+-]?[0-9]+)?")
+    literals = {"true": True, "false": False, "null": None}
+    key_end = frozenset(',:{}[]()|"')
+    value_end = frozenset(',:{}[]"')
+
+    def fail(msg, at=None):
+        return json.JSONDecodeError(msg, text, pos if at is None else at)
+
+    def skip(commas=False):
+        nonlocal pos
+        while pos < n and (text[pos].isspace() or (commas and text[pos] == ",")):
+            pos += 1
+
+    def members(nested):
+        """Parse ``key[:value]`` members up to ``}`` (nested) or end of text (top level)."""
+        nonlocal pos
+        pairs = []
+        closer = "}" if nested else ""
+        while True:
+            skip(commas=True)
+            ch = text[pos : pos + 1]  # "" at end of text
+            if ch == closer:
+                break
+            if not ch:
+                raise fail("Unterminated object, expected '}'")
+            k = key()
+            skip()
+            if text[pos : pos + 1] == ":":
+                pos += 1
+                skip()
+                pairs.append((k, value()))
+            else:
+                pairs.append((k, True))  # value-less key is a flag
+        if nested:
+            pos += 1  # consume the closing brace
+        return object_pairs_hook(pairs)
+
+    def key():
+        nonlocal pos
+        if text[pos] == '"':
+            return string()
+        start = i = pos
+        while i < n and not text[i].isspace() and text[i] not in key_end:
+            i += 1
+        if i == start:
+            raise fail(f"Expected a key, found {text[i]!r}")
+        pos = i
+        return text[start:i]
+
+    def value():
+        nonlocal pos
+        match text[pos : pos + 1]:
+            case "{":
+                pos += 1
+                return members(nested=True)
+            case '"':
+                return string()
+            case _:
+                return bare()
+
+    def string():
+        nonlocal pos
+        start = pos
+        i = start + 1
+        while i < n:
+            if text[i] == "\\":
+                i += 2
+            elif text[i] == '"':
+                break
+            else:
+                i += 1
+        else:
+            raise fail("Unterminated string", start)
+        try:
+            result = json.loads(text[start : i + 1])  # reuse the stdlib for escapes
+        except json.JSONDecodeError as exc:
+            raise fail(f"Invalid string ({exc.msg})", start + exc.pos) from None
+        pos = i + 1
+        return result
+
+    def bare():
+        """A bare value: one scalar, or several joined by '|' (a list)."""
+        nonlocal pos
+        i = item_start = pos
+        items = []
+        while i < n:
+            c = text[i]
+            if c == "(":
+                i = group_end(i)
+            elif c == "|":
+                items.append(scalar(item_start, i))
+                i += 1
+                item_start = i
+            elif c.isspace() or c in value_end:
+                break
+            else:
+                i += 1
+        items.append(scalar(item_start, i))
+        pos = i
+        return items if len(items) > 1 else items[0]
+
+    def group_end(start):
+        # Index just past the ')' matching the '(' at ``start`` (nesting-aware)
+        depth = 0
+        for i in range(start, n):
+            if text[i] == "(":
+                depth += 1
+            elif text[i] == ")":
+                depth -= 1
+                if depth == 0:
+                    return i + 1
+        raise fail("Unterminated '('", start)
+
+    def scalar(start, end):
+        raw = text[start:end]
+        if not raw:
+            raise fail("Expected a value", start)
+        if raw in literals:
+            return literals[raw]
+        if m := number.fullmatch(raw):
+            return float(raw) if m["frac"] or m["exp"] else int(raw)
+        return raw
+
+    skip(commas=True)
+    if text[pos : pos + 1] == "{": # tolerate explicit outer braces
+        pos += 1
+        result = members(nested=True)
+        skip(commas=True)
+        if pos < n:
+            raise fail("Unexpected data after the closing '}'")
+        return result
+    return members(nested=False)
 
 
 class Message:
@@ -72,6 +212,10 @@ class Message:
                 else:
                     if isinstance(val, str) and re.search(r"[\s,;=]", val) or key=="message":
                         val_str = f'"{val}"'
+                    elif isinstance(val, list):
+                        val_str = ",".join(map(str, val))
+                        if any(isinstance(x, str) for x in val) or not val_str:
+                            val_str = f'"{val_str}"'
                     elif isinstance(val, int) and key=="auth-key":
                         val_str = f"0x{val:X}"
                     else:
@@ -99,7 +243,7 @@ class Message:
     @classmethod
     def parse_frame(cls, frame: bytes) -> list["Message"]:
         def parse_single_message(frame: bytes) -> "Message":
-            def extract_fields_from(content_bytes: bytes) -> dict[str, object]:
+            def extract_fields_from(content_bytes: bytes) -> dict:
                 out = {}
                 content_str = content_bytes.decode('utf-8')
                 for field in content_str.split(';'):
@@ -124,44 +268,48 @@ class Message:
         return messages
 
     @staticmethod
-    def str_to_value(value_str: str) -> object:
+    def str_to_value(value_str: str) -> int|float|str|list|dict:
         value_str = value_str.strip()
         if value_str.startswith('"') and value_str.endswith('"'):
             # A string, won't try to convert to number
-            #print("incoming: " + value_str)
+            logger.debug("a string: %s", value_str)
             value_str = value_str.strip('"')
             if '{' in value_str and '}' in value_str:
                 value_str = value_str.replace('`', '"') # Assuming that's macp::chQuoteReplacement
                 try:
                     return json.loads(value_str)
                 except Exception as e:
-                    print(f"{RED}Invalid json: {MAGENTA}{e}{END}")
-                    print(f"{YELLOW}{value_str}{END}")
-                    return parse_lax_json(value_str)
+                    logger.debug("invalid json: %s", e)
+                    logger.debug(value_str)
+                    try:
+                        return parse_ejson(value_str)
+                    except Exception as e:
+                        logger.debug("invalid ejson: %s", e)
+                        logger.debug(value_str)
+                        return value_str
             elif ',' in value_str:
                 return [x_trimmed for x in value_str.split(',') if(x_trimmed := x.strip())]
             return value_str
-        # Could be a list of integers or a number
+        # Could be a list of integers or strings
         if ',' in value_str:
             items = [x_trimmed for x in value_str.split(',') if(x_trimmed := x.strip())]
             try:
-                return [int(x) for x in items]
+                return [int(x) for x in items] # a list of integers
             except ValueError:
-                return items
+                return items # a list of strings
         elif value_str.startswith('0x'):
             try:
-                return int(value_str, 16)
+                return int(value_str, 16) # an hex literal
             except ValueError:
-                return value_str
-        try:
-            return int(value_str)
-        except ValueError:
-            pass
-        try:
-            return float(value_str)
-        except ValueError:
-            pass
-        return value_str
+                return value_str # a string
+        #match value_str: # Nah, protocol uses 0 and 1 for bool
+        #    case "true": return True # a bool
+        #    case "false": return False # a bool
+        for typ in (int, float):
+            try: return typ(value_str) # a number
+            except ValueError: pass
+        return value_str # a string
+
 
 
 
@@ -192,7 +340,7 @@ class Connection:
 
     @classmethod
     def send_frame(cls, frame:bytes, sck:socket.socket, key:int|None) -> None:
-        #print(f"Send: {frame}")
+        logger.debug("sent: %s", frame)
         if key is not None: frame = cls.encrypt(frame, key)
         sck.sendall(frame)
 
@@ -202,7 +350,7 @@ class Connection:
         if not buf:
             raise ConnectionAbortedError("Socket closed by MacoLayer")
         if key is not None: buf = cls.decrypt(buf, key)
-        #print(f"Recv: {buf}")
+        logger.debug("received: %s", buf)
         return buf
 
     @classmethod
@@ -213,7 +361,7 @@ class Connection:
     @classmethod
     def receive_one_raw(cls, sck:socket.socket, key:int|None) -> Message:
         buf = cls.receive_buffer(sck, key)
-        #print(f"received: {buf}")
+        logger.debug("received: %s", buf)
         messages = Message.parse_frame(buf)
         if( not messages ):
             raise RuntimeError(f"No valid message received: {buf}")
@@ -288,13 +436,15 @@ class Connection:
         if reply.is_error():
             raise RuntimeError(f"Error reply: {reply.header.get('msg')}")
 
-    def read(self, fields_list:list[str]) -> dict:
-        fields = {field: None for field in fields_list} # Values of dictionary items is None
-        self.send_request(fields)
+    def read(self, what: str | list[str]) -> int|float|str|list|dict:
+        if not isinstance(what, (str, list)):
+            raise TypeError("Resource must be a str or a list of str")
+        names = [what] if isinstance(what, str) else what
+        self.send_request(dict.fromkeys(names)) # Note: values default to None
         reply = self.receive_one()
         if reply.is_error():
             raise RuntimeError(reply.header.get("msg"))
-        return reply.body
+        return reply.body[what] if isinstance(what, str) else reply.body
 
     def write(self, fields:dict) -> None:
         self.send_request(fields)

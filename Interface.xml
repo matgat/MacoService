@@ -3,7 +3,7 @@
 <!--
     Unified Interface Dictionary for Macotec Machines
 -->
-<interface version="2026-10-08"
+<interface version="2026-10-15"
            name="MacoLayer"
            xmlns="http://www.macotec.it">
 
@@ -19,7 +19,8 @@
   │ ints     │ comma separated list of integers  │ 123,4,34,0                │
   │ strings  │ comma separated list of strings   │ "aaa,bbb,ccc"             │
   │ tuple    │ a pair of elements                │ (123.4,abc)               │
-  │ json     │ json data block (extended syntax) │ key1:val1,key2:{subkey}   │
+  │ json     │ standard json data block          │ {"key1":"val1"}           │
+  │ ejson    │ extended json data block          │ {key1:val1,key2:{subkey}} │
   └──────────┴───────────────────────────────────┴───────────────────────────┘
 
   ┌─────────────┬───────┬───────────────────┬───────┬────────────────────────┐
@@ -676,13 +677,13 @@
     </res>
 
     <res    id="scheme-data" tags="job,auto,project,data,scheme" access="w"
-            type="json">
+            type="ejson">
         <text lang="en" label="Scheme Data">Processing data of a scheme</text>
         <text lang="it" label="Dati schema">Dati di lavorazione di uno schema</text>
     </res>
 
     <res    id="step-data" tags="job,auto,data,strato,current,step" access="r"
-            type="json">
+            type="ejson">
         <text lang="en" label="Step Data">Processing data of the current step</text>
         <text lang="it" label="Dati passo">Dati di lavorazione del passo corrente</text>
     </res>
@@ -746,7 +747,7 @@
     </res>
 
     <res    id="proc-op" tags="job,operation,processing,step,cut,sequence" access="rw"
-            type="json" range="tpf,lowe,score,open,break,detach,mark,pre-heat,post-heat,full-cut,no-detach,no-lowe,y">
+            type="ejson" range="tpf,lowe,score,open,break,detach,mark,pre-heat,post-heat,full-cut,no-detach,no-lowe,y">
         <!--
             tpf: include the removal of the protective film
             lowe: include the low-E deletion
