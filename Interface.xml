@@ -3,7 +3,7 @@
 <!--
     Unified Interface Dictionary for Macotec Machines
 -->
-<interface version="2026-10-30"
+<interface version="2026-11-09"
            name="MacoLayer"
            xmlns="http://www.macotec.it">
 
@@ -125,7 +125,7 @@
      ╚══════════════════════════════════════════════════════════════════╝ -->
 <group name="status">
 
-    <res    id="emg-list" tags="status,list,emergencies,alarms,errors" access="r"
+    <res    id="emg-list" tags="status,list,emergencies,alarms,error" access="r"
             type="ints">
         <text lang="en" label="Emergencies">Current active alarms/emergencies in the machine</text>
         <text lang="it" label="Emergenze">Lista allarmi/emergenze attive sulla macchina</text>
@@ -157,7 +157,7 @@
         <text lang="sq" label="Mesazhet">Mesazhet aktive në makinë</text>
     </res>
 
-    <res    id="user-buttons" tags="status,user,buttons,commands"
+    <res    id="user-buttons" tags="status,user,buttons,command"
             type="strings" range="stop,start,emergency">
         <text lang="en" label="Buttons">Current pressed user buttons</text>
         <text lang="it" label="Pulsanti">Stato corrente dei pulsanti operatore</text>
@@ -173,7 +173,7 @@
         <text lang="sq" label="Butonat">Butonat e operatorit të shtypur aktualisht</text>
     </res>
 
-    <res    id="working" tags="status,light,executing,working,job,progress" access="r"
+    <res    id="working" tags="status,light,execution,job,progress" access="r"
             type="bool">
         <text lang="en" label="Job in progress">The machine is executing a job</text>
         <text lang="it" label="In lavorazione">Lavoro in esecuzione</text>
@@ -287,7 +287,7 @@
     </res>
     -->
 
-    <res    id="piece-delivering" tags="status,piece,id,deliver,out" access="r"
+    <res    id="piece-delivering" tags="status,piece,identifier,deliver,out" access="r"
             type="int">
         <text lang="en" label="Piece delivering">Identifier of the piece that machine is delivering</text>
         <text lang="it" label="Pezzo in consegna">Identificativo del pezzo in consegna</text>
@@ -303,7 +303,7 @@
         <text lang="sq" label="Pjesa në dorëzim">Identifikuesi i pjesës që makina po dorëzon</text>
     </res>
 
-    <res    id="piece-taken" tags="status,piece,id,taken,out" access="r"
+    <res    id="piece-taken" tags="status,piece,identifier,taken,out" access="r"
             type="int">
         <text lang="en" label="Piece taken">Identifier of the last piece taken by operator</text>
         <text lang="it" label="Pezzo prelevato">Identificativo dell'ultimo pezzo prelevato dall'operatore</text>
@@ -321,7 +321,7 @@
 
 
     <!-- Job status -->
-    <res    id="proc-done" tags="status,strato,job,step,processing,cut,executed,done" access="r"
+    <res    id="proc-done" tags="status,strato,job,step,processing,cut,done" access="r"
             type="bool">
         <text lang="en" label="Cut done">The glass processing in the current step was completed</text>
         <text lang="it" label="Taglio completato">La processazione del vetro del passo di lavorazione corrente è stata eseguita con successo</text>
@@ -337,7 +337,7 @@
         <text lang="sq" label="Prerja u krye">Përpunimi i xhamit në hapin aktual përfundoi</text>
     </res>
 
-    <res    id="scheme-done" tags="status,job,executed,scheme,done" access="r"
+    <res    id="scheme-done" tags="status,job,done,scheme" access="r"
             type="bool">
         <text lang="en" label="Scheme done">A scheme was executed</text>
         <text lang="it" label="Schema completato">Uno schema è stato completamente eseguito</text>
@@ -419,7 +419,7 @@
     </res>
 
     <!--
-    <res    id="tools-work-area" tags="status,job,work,area,boundary,tools,rect" access="r"
+    <res    id="tools-work-area" tags="status,job,work,area,boundary,tools,rectilinear" access="r"
             type="tuple" range="(xmin:xmax,ymin:ymax)" quantity="length" unit="mm" unit-coeff="0.001">
         <text lang="en" label="Work area">Work area for current tool</text>
         <text lang="it" label="Area lav">Area di lavoro consentita lavorazione corrente</text>
@@ -438,7 +438,7 @@
 
 
     <!-- Job data -->
-    <res    id="steps-count" tags="status,job,auto,steps,count,total,number" access="r"
+    <res    id="steps-count" tags="status,job,auto,step,counter,total,number" access="r"
             type="int" range="0:">
         <text lang="en" label="Steps count">Total number of steps of the current unit</text>
         <text lang="it" label="Num passi">Numero passi di lavorazione dello schema corrente</text>
@@ -454,7 +454,7 @@
         <text lang="sq" label="Nr hapash">Numri total i hapave të punës së skemës aktuale</text>
     </res>
 
-    <res    id="schemes-count" tags="status,job,auto,schemes,count,total,number"
+    <res    id="schemes-count" tags="status,job,auto,scheme,counter,total,number"
             type="int" range="0:">
         <text lang="en" label="Schemes count">How many cutting layouts are in current project</text>
         <text lang="it" label="Num schemi">Numero schemi di taglio nel progetto caricato</text>
@@ -487,7 +487,7 @@
     </res>
 
 
-    <res    id="status-lights" tags="status,machine,light,led" access="r"
+    <res    id="status-lights" tags="status,machine,light" access="r"
             type="strings">
         <text lang="en" label="Lights">Machine status lights</text>
         <text lang="it" label="Spie">Spie segnalazione macchina</text>
@@ -506,7 +506,7 @@
 
     <!-- Float status lights -->
 
-    <res    id="float-status-lights" tags="status,light,led,float"
+    <res    id="float-status-lights" tags="status,light,float"
             type="strings" range="cnc-error,air-ok,power-on,parked,ready-to-work,may-enter">
         <text lang="en" label="Float Status Lights">Float machines status lights</text>
         <text lang="it" label="Spie float">Spie segnalazione macchine monolitico</text>
@@ -523,7 +523,7 @@
     </res>
 
         <!--
-        <res    id="led-cnc-error" tags="status,float,light,led,cnc,error" group="float-status-lights"
+        <res    id="led-cnc-error" tags="status,float,light,cnc,error" group="float-status-lights"
                 type="bool" range="cnc-error">
             <text lang="en" label="CNC Error">Controller in error state</text>
             <text lang="it" label="Errore Cnc">Controllore in errore</text>
@@ -539,7 +539,7 @@
             <text lang="sq" label="Gabim CNC">Kontrolluesi në gjendje gabimi</text>
         </res>
 
-        <res    id="led-air-ok" tags="status,float,light,led,air" group="float-status-lights"
+        <res    id="led-air-ok" tags="status,float,light,air" group="float-status-lights"
                 type="bool" range="air-ok">
             <text lang="en" label="Air Ok">Pneumatic actuators ready</text>
             <text lang="it" label="Aria Ok">Attuatori pneumatici pronti</text>
@@ -555,7 +555,7 @@
             <text lang="sq" label="Ajri OK">Aktuatorët pneumatikë gati</text>
         </res>
 
-        <res    id="led-power-on" tags="status,float,light,led,power,line" group="float-status-lights"
+        <res    id="led-power-on" tags="status,float,light,power,line" group="float-status-lights"
                 type="bool" range="power-on">
             <text lang="en" label="Power">Power given, axes enabled and ready</text>
             <text lang="it" label="Linea">Potenza inserita, assi abilitati e pronti</text>
@@ -571,7 +571,7 @@
             <text lang="sq" label="Fuqia">Fuqia e aktivizuar, boshtet të aktivizuara dhe gati</text>
         </res>
 
-        <res    id="led-parked" tags="status,float,light,led,park" group="float-status-lights"
+        <res    id="led-parked" tags="status,float,light,park" group="float-status-lights"
                 type="bool" range="parked">
             <text lang="en" label="Park">Axes in safe position</text>
             <text lang="it" label="Parcheggio">Assi in posizione sicura</text>
@@ -587,7 +587,7 @@
             <text lang="sq" label="Parkim">Boshtet në pozicion të sigurt</text>
         </res>
 
-        <res    id="led-ready-to-work" tags="status,float,light,led,start,ready" group="float-status-lights"
+        <res    id="led-ready-to-work" tags="status,float,light,start,ready" group="float-status-lights"
                 type="bool" range="ready-to-work">
             <text lang="en" label="Ready to start">Machine ready with job loaded</text>
             <text lang="it" label="Pronta per start">Macchina pronta con lavoro caricato</text>
@@ -603,7 +603,7 @@
             <text lang="sq" label="Gati për nisje">Makina gati me punën e ngarkuar</text>
         </res>
 
-        <res    id="led-may-enter" tags="status,float,light,led,may,enter" group="float-status-lights"
+        <res    id="led-may-enter" tags="status,float,light,may,enter" group="float-status-lights"
                 type="bool" range="may-enter">
             <text lang="en" label="May Enter">Operator can invade machine space without danger</text>
             <text lang="it" label="Possibile entrare">Possibile avvicinarsi alla macchina</text>
@@ -619,7 +619,7 @@
             <text lang="sq" label="Hyrja e lejuar">Operatori mund të hyjë në zonën e makinës pa rrezik</text>
         </res>
 
-        <res    id="led-scoring" tags="status,float,light,led,score" group="float-status-lights"
+        <res    id="led-scoring" tags="status,float,light,score" group="float-status-lights"
                 type="bool" range="scoring">
             <text lang="en" label="Scoring">Scoring in progress</text>
             <text lang="it" label="Incisione">Sezione di incisione in corso</text>
@@ -635,7 +635,7 @@
             <text lang="sq" label="Incizim">Incizimi në vazhdim</text>
         </res>
 
-        <res    id="led-loweing" tags="status,float,light,led,lowe" group="float-status-lights"
+        <res    id="led-loweing" tags="status,float,light,lowe" group="float-status-lights"
                 type="bool" range="loweing">
             <text lang="en" label="LowEing">low-E deletion in progress</text>
             <text lang="it" label="Rimozione low-E">Sezione di asportazione basso emissivo in corso</text>
@@ -655,52 +655,52 @@
 
     <!-- Scheme/Stripe breakout -->
 
-    <res    id="ebrk-scheme" tags="status,float,post,execution,breakout" access="r"
+    <res    id="ebrk-scheme" tags="status,float,post,execution,open,breakout" access="r"
             type="int" range="0:999999">
         <text lang="en" label="Scheme at brk">Scheme index currently in breakout phase</text>
         <text lang="it" label="Schema in tronc">Indice schema in troncaggio</text>
         <text lang="fr" label="Schéma au rompage">Index du schéma en phase de rompage</text>
-        <text lang="es" label="Esquema en rotura">Índice del esquema en fase de rotura</text>
-        <text lang="pt" label="Esquema em rutura">Índice do esquema em fase de rutura</text>
+        <text lang="es" label="Esquema en tronzado">Índice del esquema en fase de tronzado</text>
+        <text lang="pt" label="Esquema em quebra">Índice do esquema em fase de quebra</text>
         <text lang="ru" label="Раскрой на разломе">Индекс карты раскроя на этапе разлома</text>
         <text lang="pl" label="Schemat w łamaniu">Indeks schematu w fazie łamania</text>
         <text lang="de" label="Plan beim Brechen">Index des Schneidplans in der Brechphase</text>
         <text lang="nl" label="Schema bij breken">Index van het schema in de breekfase</text>
         <text lang="ro" label="Schemă la rupere">Indexul schemei aflate în faza de rupere</text>
         <text lang="ja" label="折割中パターン">折割り工程中の切断パターン番号</text>
-        <text lang="sq" label="Skema në thyerje">Indeksi i skemës në fazën e thyerjes</text>
+        <text lang="sq" label="Skema në hapje">Indeksi i skemës në fazën e hapjes</text>
     </res>
 
-    <res    id="ebrk-stripe" tags="status,float,post,execution,breakout" access="r"
+    <res    id="ebrk-stripe" tags="status,float,post,execution,open,breakout" access="r"
             type="int" range="0:999999">
         <text lang="en" label="Stripe at brk">Stripe index currently in breakout phase</text>
         <text lang="it" label="Trav in tronc">Indice traverso in troncaggio</text>
         <text lang="fr" label="Bande au rompage">Index de la bande en phase de rompage</text>
-        <text lang="es" label="Tira en rotura">Índice de la tira en fase de rotura</text>
-        <text lang="pt" label="Tira em rutura">Índice da tira em fase de rutura</text>
+        <text lang="es" label="Tira en tronzado">Índice de la tira en fase de tronzado</text>
+        <text lang="pt" label="Tira em quebra">Índice da tira em fase de quebra</text>
         <text lang="ru" label="Полоса на разломе">Индекс полосы на этапе разлома</text>
         <text lang="pl" label="Pas w łamaniu">Indeks pasa w fazie łamania</text>
         <text lang="de" label="Streifen beim Brechen">Index des Streifens in der Brechphase</text>
         <text lang="nl" label="Strook bij breken">Index van de strook in de breekfase</text>
         <text lang="ro" label="Fâșie la rupere">Indexul fâșiei aflate în faza de rupere</text>
         <text lang="ja" label="折割中ストリップ">折割り工程中のストリップ番号</text>
-        <text lang="sq" label="Rripi në thyerje">Indeksi i rripit në fazën e thyerjes</text>
+        <text lang="sq" label="Rripi në hapje">Indeksi i rripit në fazën e hapjes</text>
     </res>
 
-    <res    id="ebrk-scheme-done" tags="status,float,post,execution,breakout,done" access="r"
+    <res    id="ebrk-scheme-done" tags="status,float,post,execution,open,breakout,done" access="r"
             type="bool">
         <text lang="en" label="Scheme brk done">Scheme in breakout was fully opened</text>
         <text lang="it" label="Schema troncato">Schema in troncaggio completamente aperto</text>
-        <text lang="fr" label="Schéma rompu">Le schéma au rompage a été entièrement ouvert</text>
-        <text lang="es" label="Rotura completa">El esquema en rotura se ha abierto completamente</text>
-        <text lang="pt" label="Rutura completa">O esquema em rutura foi totalmente aberto</text>
+        <text lang="fr" label="Rompage terminé">Le schéma au rompage a été entièrement ouvert</text>
+        <text lang="es" label="Tronzado completo">El esquema en tronzado se ha abierto completamente</text>
+        <text lang="pt" label="Quebra concluída">O esquema em quebra foi totalmente aberto</text>
         <text lang="ru" label="Разлом выполнен">Карта раскроя на этапе разлома полностью разломана</text>
         <text lang="pl" label="Łamanie zakończone">Schemat w fazie łamania został całkowicie rozłamany</text>
         <text lang="de" label="Brechen fertig">Schneidplan in der Brechphase vollständig gebrochen</text>
         <text lang="nl" label="Breken klaar">Schema in de breekfase volledig gebroken</text>
         <text lang="ro" label="Rupere finalizată">Schema aflată la rupere a fost deschisă complet</text>
         <text lang="ja" label="折割完了">折割り中の切断パターンを全て割断完了</text>
-        <text lang="sq" label="Thyerja u krye">Skema në thyerje u hap plotësisht</text>
+        <text lang="sq" label="Hapja u krye">Skema në hapje u hap plotësisht</text>
     </res>
 
 </group> <!-- status -->
@@ -836,7 +836,7 @@
 
 
     <!-- Common stroke limits -->
-    <res    id="x-min" tags="machine,settings,features,characteristics,limits,limit,interval,span,area,boundary,x,negative,min,stroke" access="r"
+    <res    id="x-min" tags="machine,settings,features,limit,x,negative,minimum,stroke" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="-20000:0" gran="0.1" default="0">
         <text lang="en" label="X min">X axis negative stroke limit</text>
@@ -853,7 +853,7 @@
         <text lang="sq" label="X min">Kufiri negativ i kursit të boshtit X</text>
     </res>
 
-    <res    id="x-max" tags="machine,settings,features,characteristics,limits,limit,interval,span,area,boundary,x,positive,max,stroke" access="r"
+    <res    id="x-max" tags="machine,settings,features,limit,x,positive,maximum,stroke" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:20000" gran="0.1" default="0">
         <text lang="en" label="X max">X axis positive stroke limit</text>
@@ -870,7 +870,7 @@
         <text lang="sq" label="X maks">Kufiri pozitiv i kursit të boshtit X</text>
     </res>
 
-    <res    id="y-min" tags="machine,settings,features,characteristics,limits,limit,interval,span,area,boundary,y,negative,min,stroke" access="r"
+    <res    id="y-min" tags="machine,settings,features,limit,y,negative,minimum,stroke" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="-20000:0" gran="0.1" default="0">
         <text lang="en" label="Y min">Y axis negative stroke limit</text>
@@ -887,7 +887,7 @@
         <text lang="sq" label="Y min">Kufiri negativ i kursit të boshtit Y</text>
     </res>
 
-    <res    id="y-max" tags="machine,settings,features,characteristics,limits,limit,interval,span,area,boundary,y,positive,max,stroke" access="r"
+    <res    id="y-max" tags="machine,settings,features,limit,y,positive,maximum,stroke" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:20000" gran="0.1" default="0">
         <text lang="en" label="Y max">Y axis positive stroke limit</text>
@@ -1100,7 +1100,7 @@
     </res>
     -->
 
-    <res    id="tpf-max-length" tags="tools,settings,job,max,length,tpf,scraper"
+    <res    id="tpf-max-length" tags="tools,settings,job,maximum,length,tpf,scraper"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="10:999999" gran="1" default="3210">
         <text lang="en" label="Tpf max length">Length beyond which the film must be cut to be aspirated</text>
@@ -1221,7 +1221,7 @@
         <text lang="sq" label="Lartësia TPF">Lartësia e veglës së heqjes TPF mbi rrafshin referues të tavolinës</text>
     </res>
 
-    <res    id="probe-status" tags="tools,status,vertical,position,height,level,elevation,tpf,scraper" access="r"
+    <res    id="probe-status" tags="tools,status,probe,search" access="r"
             type="bool">
         <text lang="en" label="Probe-status">Glass detection probe status</text>
         <text lang="it" label="Stato sonda">Lettura corrente della sonda rilevazione vetro</text>
@@ -1263,7 +1263,7 @@
         <text lang="sq" label="Komanda">Komandë interaktive (skanim shabllonesh)</text>
     </res>
 
-    <res    id="from" tags="shape-scan,argument,movement,point,coordinates" group="shape-scan-argument" access="w"
+    <res    id="from" tags="shape-scan,argument,movement,point,coordinate" group="shape-scan-argument" access="w"
             type="tuple" range="(double,double)" quantity="length" unit="mm" unit-coeff="0.001">
         <text lang="en" label="P-start">Movement starting point</text>
         <text lang="it" label="P-start">Punto di partenza del movimento</text>
@@ -1279,7 +1279,7 @@
         <text lang="sq" label="P-start">Pika e fillimit të lëvizjes</text>
     </res>
 
-    <res    id="to" tags="shape-scan,argument,movement,point,coordinates" group="shape-scan-argument" access="w"
+    <res    id="to" tags="shape-scan,argument,movement,point,coordinate" group="shape-scan-argument" access="w"
             type="tuple" range="(double,double)" quantity="length" unit="mm" unit-coeff="0.001">
         <text lang="en" label="P-end">Movement destination point</text>
         <text lang="it" label="P-end">Punto di arrivo del movimento</text>
@@ -1295,7 +1295,7 @@
         <text lang="sq" label="P-end">Pika e destinacionit të lëvizjes</text>
     </res>
 
-    <res    id="center" tags="shape-scan,argument,movement,point,coordinates" group="shape-scan-argument" access="w"
+    <res    id="center" tags="shape-scan,argument,movement,point,coordinate" group="shape-scan-argument" access="w"
             type="tuple" range="(double,double)" quantity="length" unit="mm" unit-coeff="0.001">
         <text lang="en" label="P-center">Coordinates of the center of the arc movement</text>
         <text lang="it" label="P-center">Coordinate del centro dell'arco</text>
@@ -1345,7 +1345,7 @@
     </res>
 
 
-    <res    id="latches-count" tags="shape-scan,result,latch,points,number,count" group="shape-scan-result" access="r"
+    <res    id="latches-count" tags="shape-scan,result,latch,point,number,counter" group="shape-scan-result" access="r"
             type="int" range="0:">
         <text lang="en" label="N latches">Number of latched points</text>
         <text lang="it" label="Num catture">Numero di punti catturati</text>
@@ -1361,7 +1361,7 @@
         <text lang="sq" label="Nr kapjesh">Numri i pikave të kapura</text>
     </res>
 
-    <res    id="latch-*" tags="shape-scan,result,latch,point,coordinates,edge,type" group="shape-scan-result" access="r"
+    <res    id="latch-*" tags="shape-scan,result,latch,point,coordinate,edge,type" group="shape-scan-result" access="r"
             type="string" range="r|f(x,y)" quantity="length" unit="mm" unit-coeff="0.001">
         <text lang="en" label="Latch">Latch coordinates and edge type</text>
         <text lang="it" label="Cattura">Coordinate e tipo di fronte della cattura</text>
@@ -1589,7 +1589,7 @@
 
 
     <!-- Manual -->
-    <res    id="sheet-size" tags="job,manual,sheet,glass,measure,size" access="w"
+    <res    id="sheet-size" tags="job,manual,sheet,glass,dimension,size" access="w"
             type="string" range="{width}x{height}[x{thickness}]" quantity="length" unit="mm" unit-coeff="0.001">
         <text lang="en" label="Sheet Size">Current glass sheet size</text>
         <text lang="it" label="Dim lastra">Dimensioni della lastra in lavorazione</text>
@@ -1604,7 +1604,7 @@
         <text lang="ja" label="板サイズ">現在のガラス板の寸法</text>
         <text lang="sq" label="Përmasat e pllakës">Përmasat e pllakës aktuale të xhamit</text>
     </res>
-        <res    id="sheet-width" tags="job,manual,sheet,glass,measure,horizontal,longitudinal,size,width" group="sheet-size" access="rw"
+        <res    id="sheet-width" tags="job,manual,sheet,glass,dimension,horizontal,longitudinal,size,width" group="sheet-size" access="rw"
                 type="double" quantity="length" unit="mm" unit-coeff="0.001"
                 range="0:10000" gran="0.1" default="0">
             <text lang="en" label="Sheet Width">Current sheet longitudinal size</text>
@@ -1620,7 +1620,7 @@
             <text lang="ja" label="板幅">現在の板の長手方向寸法</text>
             <text lang="sq" label="Gjerësia e pllakës">Përmasa gjatësore e pllakës aktuale</text>
         </res>
-        <res    id="sheet-height" tags="job,manual,sheet,glass,measure,vertical,transversal,size,height" group="sheet-size" access="rw"
+        <res    id="sheet-height" tags="job,manual,sheet,glass,dimension,vertical,transversal,size,height" group="sheet-size" access="rw"
                 type="double" quantity="length" unit="mm" unit-coeff="0.001"
                 range="0:10000" gran="0.1" default="0">
             <text lang="en" label="Sheet Height">Current sheet transversal size</text>
@@ -1636,7 +1636,7 @@
             <text lang="ja" label="板高さ">現在の板の短手方向寸法</text>
             <text lang="sq" label="Lartësia e pllakës">Përmasa tërthore e pllakës aktuale</text>
         </res>
-        <res    id="sheet-thickness" tags="sheet,glass,measure,thickness" group="sheet-size" access="r"
+        <res    id="sheet-thickness" tags="sheet,glass,dimension,thickness" group="sheet-size" access="r"
                 type="double" quantity="length" unit="mm" unit-coeff="0.001"
                 range="1:50" gran="0.1" default="0">
             <text lang="en" label="Sheet Thckn">Current sheet overall thickness</text>
@@ -1688,12 +1688,12 @@
     </res>
 
     <res    id="proc-op" tags="job,operation,processing,step,cut,sequence" access="rw"
-            type="ejson" range="tpf,lowe,score,open,break,detach,mark,pre-heat,post-heat,full-cut,no-detach,no-lowe,y">
+            type="ejson" range="tpf,lowe,score,open,detach,mark,pre-heat,post-heat,full-cut,no-detach,no-lowe,y">
         <!--
             tpf: include the removal of the protective film
             lowe: include the low-E deletion
             score: include the scoring phase
-            open/break: include the breakout/opening phase
+            open: include the breakout/opening phase
             detach: include the separation phase
             mark: include marking
             pre-heat: heat before cut
@@ -1795,7 +1795,7 @@
             <text lang="sq" label="Trash posh">Trashësia e shtresës së poshtme të xhamit</text>
         </res>
 
-        <res    id="h-plast" tags="material,strato,float,glass,structure,pvb,film,size,thickness" group="material" access="rw"
+        <res    id="h-plast" tags="material,strato,glass,structure,pvb,film,size,thickness" group="material" access="rw"
                 type="double" quantity="length" unit="mm" unit-coeff="0.001"
                 range="0.01:50" gran="0.01">
             <text lang="en" label="PVB thck">Interlayed plastic layer thickness</text>
@@ -1894,15 +1894,15 @@
             <text lang="en" label="Heat open">Heat the glass before opening it</text>
             <text lang="it" label="Risc apert">Scalda il vetro prima dell'apertura</text>
             <text lang="fr" label="Chauffage rompage">Chauffer le verre avant de l'ouvrir</text>
-            <text lang="es" label="Calentamiento apertura">Calentar el vidrio antes de abrirlo</text>
-            <text lang="pt" label="Aquecimento abertura">Aquecer o vidro antes de o abrir</text>
+            <text lang="es" label="Calentamiento tronzado">Calentar el vidrio antes del tronzado</text>
+            <text lang="pt" label="Aquecimento quebra">Aquecer o vidro antes da quebra</text>
             <text lang="ru" label="Нагрев разлом">Нагрев стекла перед разломом</text>
             <text lang="pl" label="Grzanie łamanie">Nagrzewanie szkła przed łamaniem</text>
             <text lang="de" label="Heizen Brechen">Glas vor dem Brechen erwärmen</text>
             <text lang="nl" label="Verwarmen breken">Het glas verwarmen vóór het breken</text>
             <text lang="ro" label="Încălzire rupere">Încălzirea sticlei înainte de rupere</text>
             <text lang="ja" label="折割前加熱">折割り前にガラスを加熱</text>
-            <text lang="sq" label="Ngrohje thyerje">Ngrohja e xhamit para thyerjes</text>
+            <text lang="sq" label="Ngrohje para hapjes">Ngrohja e xhamit para hapjes</text>
         </res>
 
     <res    id="wheel-angle" tags="material,strato,float,tool,score,head,wheel,angle" group="material" access="rw"
@@ -2047,7 +2047,7 @@
 
 
     <!-- Float scoring -->
-    <res    id="f-score-init-1" tags="material,float,strato,mach-float,work,check-range,score,head,T1,init,force" group="score" access="rw"
+    <res    id="f-score-init-1" tags="material,float,strato,mach-float,work,check-range,score,head,t1,initialization,force" group="score" access="rw"
             type="double" quantity="force" unit="N"
             range="0:250" gran="1" default="0">
         <text lang="en" label="T1 push init">Head 1 initial push force</text>
@@ -2063,7 +2063,7 @@
         <text lang="ja" label="T1初期押付">ヘッド1の初期押付力</text>
         <text lang="sq" label="Shtypja fillest T1">Forca fillestare e shtypjes së kokës 1</text>
     </res>
-    <res    id="f-score-rect-1" tags="material,float,strato,mach-float,work,check-range,score,head,T1,rect,force" group="score" access="rw"
+    <res    id="f-score-rect-1" tags="material,float,strato,mach-float,work,check-range,score,head,t1,rectilinear,force" group="score" access="rw"
             type="double" quantity="force" unit="N"
             range="0:250" gran="1" default="0">
         <text lang="en" label="T1 push rect">Head 1 rectilinear scoring push force</text>
@@ -2079,7 +2079,7 @@
         <text lang="ja" label="T1直線押付">ヘッド1の直線スクライブ押付力</text>
         <text lang="sq" label="Shtypja drejt T1">Forca e shtypjes së kokës 1 për incizim drejtvizor</text>
     </res>
-    <res    id="f-score-curv-1" tags="material,float,strato,mach-float,work,check-range,score,head,T1,shape,curv,force" group="score" access="rw"
+    <res    id="f-score-curv-1" tags="material,float,strato,mach-float,work,check-range,score,head,t1,shape,curvilinear,force" group="score" access="rw"
             type="double" quantity="force" unit="N"
             range="0:250" gran="1" default="0">
         <text lang="en" label="T1 push curv">Head 1 curvilinear scoring push force</text>
@@ -2095,7 +2095,7 @@
         <text lang="ja" label="T1曲線押付">ヘッド1の曲線スクライブ押付力</text>
         <text lang="sq" label="Shtypja lakor T1">Forca e shtypjes së kokës 1 për incizim lakor</text>
     </res>
-    <res    id="v-score-rect-1" tags="material,float,strato,mach-float,work,score,head,rect,speed" group="score" access="rw"
+    <res    id="v-score-rect-1" tags="material,float,strato,mach-float,work,score,head,t1,rectilinear,speed" group="score" access="rw"
             type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
             range="0:300" gran="0.001" default="0">
         <text lang="en" label="T1 rect spd">Head 1 rectilinear scoring speed</text>
@@ -2111,7 +2111,7 @@
         <text lang="ja" label="T1直線速度">ヘッド1の直線スクライブ速度</text>
         <text lang="sq" label="Shpejt drejt T1">Shpejtësia e incizimit drejtvizor të kokës 1</text>
     </res>
-    <res    id="v-score-curv-1" tags="material,float,strato,mach-float,work,score,head,T1,shape,curv,speed" group="score" access="rw"
+    <res    id="v-score-curv-1" tags="material,float,strato,mach-float,work,score,head,t1,shape,curvilinear,speed" group="score" access="rw"
             type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
             range="0:300" gran="0.001" default="0">
         <text lang="en" label="T1 curv spd">Head 1 curvilinear scoring speed</text>
@@ -2129,7 +2129,7 @@
     </res>
 
 
-    <res    id="f-score-init-2" tags="material,float,strato,mach-float,work,score,head,T2,init,force" group="score" access="rw"
+    <res    id="f-score-init-2" tags="material,float,strato,mach-float,work,score,head,t2,initialization,force" group="score" access="rw"
             type="double" quantity="force" unit="N"
             range="0:250" gran="1" default="0">
         <text lang="en" label="T2 push init">Head 2 initial push force</text>
@@ -2145,7 +2145,7 @@
         <text lang="ja" label="T2初期押付">ヘッド2の初期押付力</text>
         <text lang="sq" label="Shtypja fillest T2">Forca fillestare e shtypjes së kokës 2</text>
     </res>
-    <res    id="f-score-rect-2" tags="material,float,strato,mach-float,work,score,head,T2,rect,force" group="score" access="rw"
+    <res    id="f-score-rect-2" tags="material,float,strato,mach-float,work,score,head,t2,rectilinear,force" group="score" access="rw"
             type="double" quantity="force" unit="N"
             range="0:250" gran="1" default="0">
         <text lang="en" label="T2 push rect">Head 2 rectilinear scoring push force (0:auto)</text>
@@ -2161,7 +2161,7 @@
         <text lang="ja" label="T2直線押付">ヘッド2の直線スクライブ押付力 (0:自動)</text>
         <text lang="sq" label="Shtypja drejt T2">Forca e shtypjes së kokës 2 për incizim drejtvizor (0:auto)</text>
     </res>
-    <res    id="f-score-curv-2" tags="material,float,strato,mach-float,work,score,head,T2,shape,curv,force" group="score" access="rw"
+    <res    id="f-score-curv-2" tags="material,float,strato,mach-float,work,score,head,t2,shape,curvilinear,force" group="score" access="rw"
             type="double" quantity="force" unit="N"
             range="0:250" gran="1" default="0">
         <text lang="en" label="T2 push curv">Head 2 curvilinear scoring push force (0:auto)</text>
@@ -2177,7 +2177,7 @@
         <text lang="ja" label="T2曲線押付">ヘッド2の曲線スクライブ押付力 (0:自動)</text>
         <text lang="sq" label="Shtypja lakor T2">Forca e shtypjes së kokës 2 për incizim lakor (0:auto)</text>
     </res>
-    <res    id="v-score-rect-2" tags="material,float,strato,mach-float,work,score,head,T2,rect,speed" group="score" access="rw"
+    <res    id="v-score-rect-2" tags="material,float,strato,mach-float,work,score,head,t2,rectilinear,speed" group="score" access="rw"
             type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
             range="0:300" gran="0.001" default="0">
         <text lang="en" label="T2 rect spd">Head 2 rectilinear scoring speed (0:auto)</text>
@@ -2193,7 +2193,7 @@
         <text lang="ja" label="T2直線速度">ヘッド2の直線スクライブ速度 (0:自動)</text>
         <text lang="sq" label="Shpejt drejt T2">Shpejtësia e incizimit drejtvizor të kokës 2 (0:auto)</text>
     </res>
-    <res    id="v-score-curv-2" tags="material,float,strato,mach-float,work,score,head,T2,shape,curv,speed" group="score" access="rw"
+    <res    id="v-score-curv-2" tags="material,float,strato,mach-float,work,score,head,t2,shape,curvilinear,speed" group="score" access="rw"
             type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
             range="0:300" gran="0.001" default="0">
         <text lang="en" label="T2 curv spd">Head 2 curvilinear scoring speed (0:auto)</text>
@@ -2212,139 +2212,139 @@
 
 
     <!-- Opening -->
-    <res    id="h-brkbar" tags="material,strato,float,work,expert,open,break,bar,elevation" group="open" access="rw"
+    <res    id="h-brkbar" tags="material,strato,float,work,expert,open,breakout,bar,height,level,elevation" group="open" access="rw"
             type="int" range="0:2" default="0">
         <text lang="en" label="BrkBar High">Breakout bar elevation (0:auto 1:normal 2:high)</text>
         <text lang="it" label="Pos barra">Altezza barra di troncaggio (0:auto 1:normale 2:alta)</text>
         <text lang="fr" label="H barre">Hauteur de la barre de rompage (0:auto 1:normal 2:haut)</text>
-        <text lang="es" label="Altura barra">Altura de la barra de rotura (0:auto 1:normal 2:alta)</text>
-        <text lang="pt" label="Altura barra">Altura da barra de rutura (0:auto 1:normal 2:alta)</text>
+        <text lang="es" label="Altura barra">Altura de la barra de tronzado (0:auto 1:normal 2:alta)</text>
+        <text lang="pt" label="Altura barra">Altura da barra de quebra (0:auto 1:normal 2:alta)</text>
         <text lang="ru" label="Выс балки">Высота балки разлома (0:авто 1:норм 2:высокая)</text>
         <text lang="pl" label="Wys belki">Wysokość belki łamiącej (0:auto 1:normalna 2:wysoka)</text>
         <text lang="de" label="Höhe Brechleiste">Höhe der Brechleiste (0:auto 1:normal 2:hoch)</text>
         <text lang="nl" label="Hoogte breekbalk">Hoogte van de breekbalk (0:auto 1:normaal 2:hoog)</text>
         <text lang="ro" label="Înălț bară">Înălțimea barei de rupere (0:auto 1:normală 2:înaltă)</text>
         <text lang="ja" label="折割バー高さ">折割りバーの高さ (0:自動 1:標準 2:高)</text>
-        <text lang="sq" label="Lart shufrës">Lartësia e shufrës së thyerjes (0:auto 1:normale 2:e lartë)</text>
+        <text lang="sq" label="Lart shufrës">Lartësia e shufrës së hapjes (0:auto 1:normale 2:e lartë)</text>
     </res>
 
-    <res    id="t-brkbar" tags="material,strato,float,work,expert,check-range-min,open,break,bar,time" group="open" access="rw"
+    <res    id="t-brkbar" tags="material,strato,float,work,expert,check-range-min,open,breakout,bar,time" group="open" access="rw"
             type="double" quantity="time" unit="s"
             range="0:10" gran="0.1" default="0">
         <text lang="en" label="BrkBar time">Breakout bar opening time (0:auto)</text>
         <text lang="it" label="Tempo barra">Tempo apertura con barra di troncaggio (0:auto)</text>
-        <text lang="fr" label="T barre">Temps de barre de rompage (0:auto)</text>
-        <text lang="es" label="T barra">Tiempo de apertura con barra de rotura (0:auto)</text>
-        <text lang="pt" label="T barra">Tempo de abertura com barra de rutura (0:auto)</text>
+        <text lang="fr" label="T barre">Temps d'ouverture avec la barre de rompage (0:auto)</text>
+        <text lang="es" label="T barra">Tiempo de apertura con la barra de tronzado (0:auto)</text>
+        <text lang="pt" label="T barra">Tempo de abertura com a barra de quebra (0:auto)</text>
         <text lang="ru" label="Время балки">Время разлома балкой (0:авто)</text>
         <text lang="pl" label="Czas belki">Czas łamania belką (0:auto)</text>
         <text lang="de" label="Zeit Brechleiste">Brechzeit mit der Brechleiste (0:auto)</text>
         <text lang="nl" label="Tijd breekbalk">Breektijd met de breekbalk (0:auto)</text>
         <text lang="ro" label="Timp bară">Timpul de deschidere cu bara de rupere (0:auto)</text>
         <text lang="ja" label="折割バー時間">折割りバーによる割断時間 (0:自動)</text>
-        <text lang="sq" label="Koha e shufrës">Koha e hapjes me shufrën e thyerjes (0:auto)</text>
+        <text lang="sq" label="Koha e shufrës">Koha e hapjes me shufër (0:auto)</text>
     </res>
 
-    <res    id="f-clamps-brk" tags="material,strato,float,work,open,break,clamps,push,force" group="open" access="rw"
+    <res    id="f-clamps-brk" tags="material,strato,float,work,open,breakout,clamps,push,force" group="open" access="rw"
             type="double" quantity="force" unit="N"
             range="0:10000" gran="1" default="0">
         <text lang="en" label="Clamps bar force">Clamps push force during breakout bar (0:auto)</text>
         <text lang="it" label="Opposiz barra">Spinta premilastra durante apertura con barra (0:auto)</text>
-        <text lang="fr" label="F barre">Force serre-plateau cycle barre de rompage (0:auto)</text>
-        <text lang="es" label="F sujet">Fuerza de empuje de los sujetadores de placa durante la apertura con barra (0:auto)</text>
-        <text lang="pt" label="F fixac">Força de pressão das fixações da placa durante a abertura com barra (0:auto)</text>
+        <text lang="fr" label="F barre">Force des serre-plateaux pendant le rompage à la barre (0:auto)</text>
+        <text lang="es" label="F sujet">Fuerza de empuje de los sujetadores durante el tronzado con barra (0:auto)</text>
+        <text lang="pt" label="F fixac">Força de pressão das fixações durante a quebra com barra (0:auto)</text>
         <text lang="ru" label="Прижим балка">Сила прижимов при разломе балкой (0:авто)</text>
         <text lang="pl" label="Docisk belka">Siła docisków podczas łamania belką (0:auto)</text>
         <text lang="de" label="Niederhalter Brech">Kraft der Niederhalter beim Brechen mit der Brechleiste (0:auto)</text>
         <text lang="nl" label="Klemkracht breek">Aandrukkracht van de klemmen tijdens breken met de breekbalk (0:auto)</text>
         <text lang="ro" label="Presoare bară">Forța presoarelor în timpul ruperii cu bara (0:auto)</text>
         <text lang="ja" label="クランプ力(バー)">折割りバー動作中のクランプ押付力 (0:自動)</text>
-        <text lang="sq" label="Shtrëng shufër">Forca e shtrënguesve gjatë thyerjes me shufër (0:auto)</text>
+        <text lang="sq" label="Shtrëng shufër">Forca e shtrënguesve gjatë hapjes me shufër (0:auto)</text>
     </res>
 
-    <res    id="f-brkwhl-sup" tags="material,strato,mach-strato,work,check-range,open,break,wheel,force" group="open" access="rw"
+    <res    id="f-brkwhl-sup" tags="material,strato,mach-strato,work,check-range,open,breakout,wheel,force" group="open" access="rw"
             type="double" quantity="force" unit="N"
             range="0:3500" gran="1" default="0">
-        <text lang="en" label="Push BrkWhl">Pushing force of single breaking wheel (0:auto)</text>
+        <text lang="en" label="Push BrkWhl">Pushing force of single breakout wheel (0:auto)</text>
         <text lang="it" label="Press RotApe">Spinta sul vetro rotella di apertura singola (0:auto)</text>
-        <text lang="fr" label="F galet">Force de galet ouverture sup (0:auto)</text>
-        <text lang="es" label="F rueda única">Fuerza de empuje de rueda única de apertura (0:auto)</text>
-        <text lang="pt" label="F roda unica">Força de pressão de roda única de abertura (0:auto)</text>
+        <text lang="fr" label="F galet">Force d'appui du galet de rompage unique (0:auto)</text>
+        <text lang="es" label="F rueda tronz">Fuerza de empuje de la rueda de tronzado única (0:auto)</text>
+        <text lang="pt" label="F roda quebra">Força de pressão da roda de quebra única (0:auto)</text>
         <text lang="ru" label="Нажим ролика">Сила прижима одиночного ролика разлома (0:авто)</text>
         <text lang="pl" label="Docisk rolki">Siła docisku pojedynczej rolki łamiącej (0:auto)</text>
         <text lang="de" label="Druck Brechrad">Anpresskraft des einzelnen Brechrads (0:auto)</text>
         <text lang="nl" label="Druk breekwiel">Aandrukkracht van het enkele breekwiel (0:auto)</text>
         <text lang="ro" label="Presiune rotiță">Forța de apăsare a rotiței unice de rupere (0:auto)</text>
         <text lang="ja" label="折割ローラ押付">単一折割りローラの押付力 (0:自動)</text>
-        <text lang="sq" label="Shtypja e rrotës">Forca e shtypjes së rrotës së vetme të thyerjes (0:auto)</text>
+        <text lang="sq" label="Shtypja e rrotës">Forca e shtypjes së rrotës së vetme të hapjes (0:auto)</text>
     </res>
 
-    <res    id="v-brkwhl-sup" tags="material,strato,mach-strato,work,check-range-max,open,break,wheel,speed" group="open" access="rw"
+    <res    id="v-brkwhl-sup" tags="material,strato,mach-strato,work,check-range-max,open,breakout,wheel,speed" group="open" access="rw"
             type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
             range="0:300" gran="0.001" default="0">
-        <text lang="en" label="BrkWhl speed">Single breaking wheel speed (0:auto)</text>
+        <text lang="en" label="BrkWhl speed">Single breakout wheel speed (0:auto)</text>
         <text lang="it" label="Vel RotApe">Velocità rotella di apertura singola (0:auto)</text>
-        <text lang="fr" label="V galet">Vitesse galet de rompage en ouverture simple (0:auto)</text>
-        <text lang="es" label="V rueda única">Velocidad de rueda única de apertura (0:auto)</text>
-        <text lang="pt" label="V roda unica">Velocidade de roda única de abertura (0:auto)</text>
+        <text lang="fr" label="V galet">Vitesse du galet de rompage unique (0:auto)</text>
+        <text lang="es" label="V rueda tronz">Velocidad de la rueda de tronzado única (0:auto)</text>
+        <text lang="pt" label="V roda quebra">Velocidade da roda de quebra única (0:auto)</text>
         <text lang="ru" label="Скор ролика">Скорость одиночного ролика разлома (0:авто)</text>
         <text lang="pl" label="Pręd rolki">Prędkość pojedynczej rolki łamiącej (0:auto)</text>
         <text lang="de" label="Geschw Brechrad">Geschwindigkeit des einzelnen Brechrads (0:auto)</text>
         <text lang="nl" label="Snelh breekwiel">Snelheid van het enkele breekwiel (0:auto)</text>
         <text lang="ro" label="Viteză rotiță">Viteza rotiței unice de rupere (0:auto)</text>
         <text lang="ja" label="折割ローラ速度">単一折割りローラの速度 (0:自動)</text>
-        <text lang="sq" label="Shpejt rrotës">Shpejtësia e rrotës së vetme të thyerjes (0:auto)</text>
+        <text lang="sq" label="Shpejt rrotës">Shpejtësia e rrotës së vetme të hapjes (0:auto)</text>
     </res>
 
-    <res    id="f-brkwhl-sup-trim" tags="material,strato,mach-strato,work,check-range,open,break,wheel,force" group="open" access="rw"
+    <res    id="f-brkwhl-sup-trim" tags="material,strato,mach-strato,work,check-range,open,breakout,wheel,force" group="open" access="rw"
             type="double" quantity="force" unit="N"
             range="0:3500" gran="1" default="0">
-        <text lang="en" label="Push BrkWhlSup trim">Pushing force of upper breaking wheel for trim (0:auto)</text>
+        <text lang="en" label="Push BrkWhlSup trim">Pushing force of upper breakout wheel for trim (0:auto)</text>
         <text lang="it" label="Press RotApeSup rif">Spinta sul vetro rotella di apertura superiore per rifilo (0:auto)</text>
-        <text lang="fr" label="F galet sup deb">Force de galet ouverture debandage sup (0:auto)</text>
-        <text lang="es" label="F rueda sup rec">Fuerza de empuje de rueda superior de apertura para recorte (0:auto)</text>
-        <text lang="pt" label="F roda sup rec">Força de pressão de roda superior de abertura para recorte (0:auto)</text>
+        <text lang="fr" label="F galet sup déb">Force d'appui du galet de rompage supérieur pour le débandage (0:auto)</text>
+        <text lang="es" label="F rueda sup rec">Fuerza de empuje de la rueda de tronzado superior para recorte (0:auto)</text>
+        <text lang="pt" label="F roda sup rec">Força de pressão da roda de quebra superior para recorte (0:auto)</text>
         <text lang="ru" label="Нажим Рверх кромка">Сила прижима верхнего ролика разлома для кромочной полосы (0:авто)</text>
         <text lang="pl" label="Docisk rolki górn brzeg">Siła docisku górnej rolki łamiącej dla pasa brzegowego (0:auto)</text>
         <text lang="de" label="Druck Brechrad oben Rand">Anpresskraft des oberen Brechrads für den Randstreifen (0:auto)</text>
         <text lang="nl" label="Druk breekwiel boven rand">Aandrukkracht van het bovenste breekwiel voor de randstrook (0:auto)</text>
         <text lang="ro" label="Presiune rotiță sup marg">Forța de apăsare a rotiței superioare de rupere pentru margine (0:auto)</text>
         <text lang="ja" label="上ローラ押付(端材)">端材カット用上折割りローラの押付力 (0:自動)</text>
-        <text lang="sq" label="Shtypja rrota sip skaj">Forca e shtypjes së rrotës së sipërme të thyerjes për skajin (0:auto)</text>
+        <text lang="sq" label="Shtypja rrota sip skaj">Forca e shtypjes së rrotës së sipërme të hapjes për skajin (0:auto)</text>
     </res>
 
-    <res    id="f-brkwhl-inf-trim" tags="material,strato,mach-strato,work,check-range,open,break,wheel,force" group="open" access="rw"
+    <res    id="f-brkwhl-inf-trim" tags="material,strato,mach-strato,work,check-range,open,breakout,wheel,force" group="open" access="rw"
             type="double" quantity="force" unit="N"
             range="0:3500" gran="1" default="0">
-        <text lang="en" label="Push BrkWhlInf trim">Pushing force of lower breaking wheel for trim (0:auto)</text>
+        <text lang="en" label="Push BrkWhlInf trim">Pushing force of lower breakout wheel for trim (0:auto)</text>
         <text lang="it" label="Press RotApeInf rif">Spinta sul vetro rotella di apertura inferiore per rifilo (0:auto)</text>
-        <text lang="fr" label="F galet inf deb">Force de galet ouverture debandage inf (0:auto)</text>
-        <text lang="es" label="F rueda inf rec">Fuerza de empuje de rueda inferior de apertura para recorte (0:auto)</text>
-        <text lang="pt" label="F roda inf rec">Força de pressão de roda inferior de abertura para recorte (0:auto)</text>
+        <text lang="fr" label="F galet inf déb">Force d'appui du galet de rompage inférieur pour le débandage (0:auto)</text>
+        <text lang="es" label="F rueda inf rec">Fuerza de empuje de la rueda de tronzado inferior para recorte (0:auto)</text>
+        <text lang="pt" label="F roda inf rec">Força de pressão da roda de quebra inferior para recorte (0:auto)</text>
         <text lang="ru" label="Нажим Рниз кромка">Сила прижима нижнего ролика разлома для кромочной полосы (0:авто)</text>
         <text lang="pl" label="Docisk rolki doln brzeg">Siła docisku dolnej rolki łamiącej dla pasa brzegowego (0:auto)</text>
         <text lang="de" label="Druck Brechrad unten Rand">Anpresskraft des unteren Brechrads für den Randstreifen (0:auto)</text>
         <text lang="nl" label="Druk breekwiel onder rand">Aandrukkracht van het onderste breekwiel voor de randstrook (0:auto)</text>
         <text lang="ro" label="Presiune rotiță inf marg">Forța de apăsare a rotiței inferioare de rupere pentru margine (0:auto)</text>
         <text lang="ja" label="下ローラ押付(端材)">端材カット用下折割りローラの押付力 (0:自動)</text>
-        <text lang="sq" label="Shtypja rrota posh skaj">Forca e shtypjes së rrotës së poshtme të thyerjes për skajin (0:auto)</text>
+        <text lang="sq" label="Shtypja rrota posh skaj">Forca e shtypjes së rrotës së poshtme të hapjes për skajin (0:auto)</text>
     </res>
 
-    <res    id="v-brkwhl-trim" tags="material,strato,mach-strato,work,check-range-max,open,break,wheel,speed" group="open" access="rw"
+    <res    id="v-brkwhl-trim" tags="material,strato,mach-strato,work,check-range-max,open,breakout,wheel,speed" group="open" access="rw"
             type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
             range="0:300" gran="0.001" default="0">
-        <text lang="en" label="BrkWhl speed trim">Single breaking wheel speed during trim passes (0:auto)</text>
+        <text lang="en" label="BrkWhl speed trim">Single breakout wheel speed during trim passes (0:auto)</text>
         <text lang="it" label="Vel RotApe rif">Velocità rotella di apertura rifilo (0:auto)</text>
-        <text lang="fr" label="V galet deb">Vitesse galet de rompage pendant ouverture debandage (0:auto)</text>
-        <text lang="es" label="V rueda rec">Velocidad de rueda de apertura para recorte (0:auto)</text>
-        <text lang="pt" label="V roda rec">Velocidade de roda de abertura para recorte (0:auto)</text>
+        <text lang="fr" label="V galet déb">Vitesse du galet de rompage pendant le débandage (0:auto)</text>
+        <text lang="es" label="V rueda rec">Velocidad de la rueda de tronzado para recorte (0:auto)</text>
+        <text lang="pt" label="V roda rec">Velocidade da roda de quebra para recorte (0:auto)</text>
         <text lang="ru" label="Скор ролика кромка">Скорость ролика разлома при отделении кромочной полосы (0:авто)</text>
         <text lang="pl" label="Pręd rolki brzeg">Prędkość rolki łamiącej dla pasa brzegowego (0:auto)</text>
         <text lang="de" label="Geschw Brechrad Rand">Geschwindigkeit des Brechrads beim Randstreifen (0:auto)</text>
         <text lang="nl" label="Snelh breekwiel rand">Snelheid van het breekwiel bij de randstrook (0:auto)</text>
         <text lang="ro" label="Viteză rotiță marg">Viteza rotiței de rupere pentru margine (0:auto)</text>
         <text lang="ja" label="ローラ速度(端材)">端材カット時の折割りローラ速度 (0:自動)</text>
-        <text lang="sq" label="Shpejt rrotës skaj">Shpejtësia e rrotës së thyerjes për skajin (0:auto)</text>
+        <text lang="sq" label="Shpejt rrotës skaj">Shpejtësia e rrotës së hapjes për skajin (0:auto)</text>
     </res>
 
 
@@ -2441,7 +2441,7 @@
             range="0:120" gran="0.1" default="0">
         <text lang="en" label="Additional heat time">Additional heating time for trim separation</text>
         <text lang="it" label="Tempo risc aggiuntivo">Tempo riscaldamento addizionale al preriscaldamento per ciclo rifilo</text>
-        <text lang="fr" label="T ch suppl deb">Temps de chauffage supplémentaire pour le cycle de debandage</text>
+        <text lang="fr" label="T ch suppl déb">Temps de chauffage supplémentaire pour le cycle de débandage</text>
         <text lang="es" label="T adicional calent. rec">Tiempo de calentamiento adicional para la separación de recorte</text>
         <text lang="pt" label="T adicional aquec. rec">Tempo de aquecimento adicional para a separação do recorte</text>
         <text lang="ru" label="Доп время нагр">Дополнительное время нагрева при отделении кромочной полосы</text>
@@ -2453,26 +2453,26 @@
         <text lang="sq" label="Koha shtesë ngr">Koha shtesë e ngrohjes për ndarjen e skajit</text>
     </res>
 
-    <res    id="t-heat-cut" tags="material,strato,mach-strato,work,detach,heat,time,stressed,hybrid" group="heat" access="rw"
+    <res    id="t-heat-cut" tags="material,strato,mach-strato,work,heat,time,stressed,hybrid" group="heat" access="rw"
             type="double" quantity="time" unit="s"
             range="0:120" gran="0.1" default="0">
         <text lang="en" label="Cut heat time">Heating time for scoring or opening operation for stressed glass</text>
-        <text lang="it" label="Tempo risc taglio">Tempo riscaldamento taglio per cicliche speciali vetro tensionato</text>
-        <text lang="fr" label="T ch découpe">Temps de chauffage découpe pour cycle spécial</text>
-        <text lang="es" label="T calent ciclos especiales">Tiempo de calentamiento para ciclos especiales</text>
-        <text lang="pt" label="T aquec. ciclos especiais">Tempo de aquecimento para ciclos especiais</text>
+        <text lang="it" label="Tempo risc taglio">Tempo riscaldamento taglio per cicli speciali vetro tensionato</text>
+        <text lang="fr" label="T ch découpe">Temps de chauffage pour l'incision ou le rompage du verre sous contrainte</text>
+        <text lang="es" label="T calent corte">Tiempo de calentamiento para el corte o el tronzado de vidrio tensionado</text>
+        <text lang="pt" label="T aquec. corte">Tempo de aquecimento para o corte ou a quebra de vidro tensionado</text>
         <text lang="ru" label="Время нагр реза">Время нагрева при резке или разломе напряжённого стекла</text>
         <text lang="pl" label="Czas grz cięcia">Czas nagrzewania przy nacinaniu lub łamaniu szkła z naprężeniami</text>
         <text lang="de" label="Heizzeit Schnitt">Heizzeit beim Ritzen oder Brechen von verspanntem Glas</text>
         <text lang="nl" label="Verwarmtijd snede">Verwarmingstijd bij snijden of breken van gespannen glas</text>
         <text lang="ro" label="Timp înc tăiere">Timpul de încălzire la incizarea sau ruperea sticlei tensionate</text>
         <text lang="ja" label="切断加熱時間">応力ガラスのスクライブ・折割り時の加熱時間</text>
-        <text lang="sq" label="Koha ngr prerje">Koha e ngrohjes për incizimin ose thyerjen e xhamit të tensionuar</text>
+        <text lang="sq" label="Koha ngr prerje">Koha e ngrohjes për incizimin ose hapjen e xhamit të tensionuar</text>
     </res>
 
 
     <!-- Curvilinear shapes on Strato -->
-    <res    id="f-lowe-curv" tags="material,strato,mach-strato,work,lowe,secondary,shape,curv,force" group="shapecurv" access="rw"
+    <res    id="f-lowe-curv" tags="material,strato,mach-strato,work,lowe,secondary,shape,curvilinear,force" group="shapecurv" access="rw"
             type="double" quantity="force" unit="N"
             range="0:250" gran="1" default="0">
         <text lang="en" label="Shape Low-E Push">Shape low-E wheel force</text>
@@ -2489,7 +2489,7 @@
         <text lang="sq" label="Shtypja disku formë">Forca e shtypjes së diskut low-E për forma</text>
     </res>
 
-    <res    id="v-lowe-curv" tags="material,strato,mach-strato,work,lowe,secondary,shape,curv,speed" group="shapecurv" access="rw"
+    <res    id="v-lowe-curv" tags="material,strato,mach-strato,work,lowe,secondary,shape,curvilinear,speed" group="shapecurv" access="rw"
             type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
             range="0:300" gran="0.001" default="0">
         <text lang="en" label="Shape Low-E Speed">Shape low-E wheel speed</text>
@@ -2507,7 +2507,7 @@
     </res>
 
 
-    <res    id="f-score-curv-sup" tags="material,strato,mach-strato,work,score,head,tsup2,shape,curv,force" group="shapecurv" access="rw"
+    <res    id="f-score-curv-sup" tags="material,strato,mach-strato,work,score,head,tsup2,shape,curvilinear,force" group="shapecurv" access="rw"
             type="double" quantity="force" unit="N"
             range="0:250" gran="1" default="0">
         <text lang="en" label="Shape Tsup push">Shape upper scoring head push force</text>
@@ -2524,7 +2524,7 @@
         <text lang="sq" label="Shtypja Tsup formë">Forca e shtypjes së kokës prerëse të sipërme për forma</text>
     </res>
 
-    <res    id="f-score-curv-inf" tags="material,strato,mach-strato,work,score,head,tinf2,shape,curv,force" group="shapecurv" access="rw"
+    <res    id="f-score-curv-inf" tags="material,strato,mach-strato,work,score,head,tinf2,shape,curvilinear,force" group="shapecurv" access="rw"
             type="double" quantity="force" unit="N"
             range="0:250" gran="1" default="0">
         <text lang="en" label="Shape Tinf push">Shape lower scoring head push force</text>
@@ -2541,7 +2541,7 @@
         <text lang="sq" label="Shtypja Tinf formë">Forca e shtypjes së kokës prerëse të poshtme për forma</text>
     </res>
 
-    <res    id="v-score-curv" tags="material,strato,mach-strato,work,score,head,tsup2,tinf2,shape,curv,speed" group="shapecurv" access="rw"
+    <res    id="v-score-curv" tags="material,strato,mach-strato,work,score,head,tsup2,tinf2,shape,curvilinear,speed" group="shapecurv" access="rw"
             type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
             range="0:300" gran="0.001" default="0">
         <text lang="en" label="Shape Score Speed">Shape scoring speed</text>
@@ -2559,55 +2559,55 @@
     </res>
 
 
-    <res    id="f-brk-curv-sup" tags="material,strato,mach-strato,work,open,break,hammer,rsup2,shape,curv,force" group="shapecurv" access="rw"
+    <res    id="f-brk-curv-sup" tags="material,strato,mach-strato,work,open,breakout,hammer,rsup2,shape,curvilinear,force" group="shapecurv" access="rw"
             type="double" quantity="force" unit="N"
             range="0:2500" gran="1" default="0">
         <text lang="en" label="Shape Rsup Push">Shape open upper tool push force</text>
         <text lang="it" label="Press Rsup sag">Spinta utensile superiore apertura sagomato curvilineo</text>
-        <text lang="fr" label="F Rsup Formes">Force outil supérieur Formes</text>
-        <text lang="es" label="F Rsup formas">Fuerza de empuje de la herramienta superior para formas</text>
-        <text lang="pt" label="F Rsup formas">Força de pressão da ferramenta superior para formas</text>
+        <text lang="fr" label="F Rsup Formes">Force de l'outil de rompage supérieur pour les formes</text>
+        <text lang="es" label="F Rsup formas">Fuerza de empuje de la herramienta de tronzado superior para formas</text>
+        <text lang="pt" label="F Rsup formas">Força de pressão da ferramenta de quebra superior para formas</text>
         <text lang="ru" label="Нажим Rsup фиг">Сила прижима верхнего инструмента разлома для фигур</text>
         <text lang="pl" label="Docisk Rsup kszt">Siła docisku górnego narzędzia łamiącego dla kształtów</text>
         <text lang="de" label="Druck Rsup Form">Anpresskraft des oberen Brechwerkzeugs für Formen</text>
         <text lang="nl" label="Druk Rsup vorm">Aandrukkracht van het bovenste breekgereedschap voor vormen</text>
         <text lang="ro" label="Presiune Rsup formă">Forța de apăsare a sculei superioare de rupere pentru forme</text>
         <text lang="ja" label="形状Rsup押付">形状加工用上折割りツールの押付力</text>
-        <text lang="sq" label="Shtypja Rsup formë">Forca e shtypjes së veglës së sipërme të thyerjes për forma</text>
+        <text lang="sq" label="Shtypja Rsup formë">Forca e shtypjes së veglës së sipërme të hapjes për forma</text>
     </res>
 
-    <res    id="f-brk-curv-inf" tags="material,strato,mach-strato,work,open,break,hammer,rinf2,shape,curv,force" group="shapecurv" access="rw"
+    <res    id="f-brk-curv-inf" tags="material,strato,mach-strato,work,open,breakout,hammer,rinf2,shape,curvilinear,force" group="shapecurv" access="rw"
             type="double" quantity="force" unit="N"
             range="0:2500" gran="1" default="0">
         <text lang="en" label="Shape Rinf Push">Shape open lower tool push force</text>
         <text lang="it" label="Press Rinf sag">Spinta utensile inferiore apertura sagomato curvilineo</text>
-        <text lang="fr" label="F Rinf Formes">Force outil inférieur Formes</text>
-        <text lang="es" label="F Rinf formas">Fuerza de empuje de la herramienta inferior para formas</text>
-        <text lang="pt" label="F Rinf formas">Força de pressão da ferramenta inferior para formas</text>
+        <text lang="fr" label="F Rinf Formes">Force de l'outil de rompage inférieur pour les formes</text>
+        <text lang="es" label="F Rinf formas">Fuerza de empuje de la herramienta de tronzado inferior para formas</text>
+        <text lang="pt" label="F Rinf formas">Força de pressão da ferramenta de quebra inferior para formas</text>
         <text lang="ru" label="Нажим Rinf фиг">Сила прижима нижнего инструмента разлома для фигур</text>
         <text lang="pl" label="Docisk Rinf kszt">Siła docisku dolnego narzędzia łamiącego dla kształtów</text>
         <text lang="de" label="Druck Rinf Form">Anpresskraft des unteren Brechwerkzeugs für Formen</text>
         <text lang="nl" label="Druk Rinf vorm">Aandrukkracht van het onderste breekgereedschap voor vormen</text>
         <text lang="ro" label="Presiune Rinf formă">Forța de apăsare a sculei inferioare de rupere pentru forme</text>
         <text lang="ja" label="形状Rinf押付">形状加工用下折割りツールの押付力</text>
-        <text lang="sq" label="Shtypja Rinf formë">Forca e shtypjes së veglës së poshtme të thyerjes për forma</text>
+        <text lang="sq" label="Shtypja Rinf formë">Forca e shtypjes së veglës së poshtme të hapjes për forma</text>
     </res>
 
-    <res    id="v-brk-curv" tags="material,strato,mach-strato,work,open,break,hammer,rsup2,rinf2,shape,curv,speed" group="shapecurv" access="rw"
+    <res    id="v-brk-curv" tags="material,strato,mach-strato,work,open,breakout,hammer,rsup2,rinf2,shape,curvilinear,speed" group="shapecurv" access="rw"
             type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
             range="0:300" gran="0.001" default="0">
         <text lang="en" label="Shape Open Speed">Shape open tool speed</text>
         <text lang="it" label="Vel apert sag">Velocità utensile apertura sagomato curvilineo</text>
-        <text lang="fr" label="V ouverture Formes">Vitesse ouverture Formes</text>
-        <text lang="es" label="V apertura formas">Velocidad de la herramienta de apertura para formas</text>
-        <text lang="pt" label="V abertura formas">Velocidade da ferramenta de abertura para formas</text>
+        <text lang="fr" label="V rompage Formes">Vitesse de l'outil de rompage pour les formes</text>
+        <text lang="es" label="V tronzado formas">Velocidad de la herramienta de tronzado para formas</text>
+        <text lang="pt" label="V quebra formas">Velocidade da ferramenta de quebra para formas</text>
         <text lang="ru" label="Скор разлома фиг">Скорость инструмента разлома для фигур</text>
         <text lang="pl" label="Pręd łam kszt">Prędkość narzędzia łamiącego dla kształtów</text>
         <text lang="de" label="Brechgeschw Form">Geschwindigkeit des Brechwerkzeugs für Formen</text>
         <text lang="nl" label="Breeksnelh vorm">Snelheid van het breekgereedschap voor vormen</text>
         <text lang="ro" label="Viteză rupere formă">Viteza sculei de rupere pentru forme</text>
         <text lang="ja" label="形状折割速度">形状加工用折割りツールの速度</text>
-        <text lang="sq" label="Shpejt thyerje formë">Shpejtësia e veglës së thyerjes për forma</text>
+        <text lang="sq" label="Shpejt hapje formë">Shpejtësia e veglës së hapjes për forma</text>
     </res>
 
 </group> <!-- material -->
@@ -2620,7 +2620,7 @@
 <group name="limits">
 
     <!-- Strato alignment limits -->
-    <res    id="align-max" tags="machine,strato,settings,features,characteristics,limits,align,threshold,maximum,width" access="r"
+    <res    id="align-max" tags="machine,strato,settings,features,limit,align,threshold,maximum,width" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="1000:20000" gran="0.1" default="3300">
         <text lang="en" label="Max align">Maximum align blocks position</text>
@@ -2637,7 +2637,7 @@
         <text lang="sq" label="Ndalesa maks">Pozicioni maksimal i ndalesave</text>
     </res>
 
-    <res    id="align-xmin-safe" tags="machine,strato,settings,features,characteristics,limits,align,threshold,minimum,safe,position" access="r"
+    <res    id="align-xmin-safe" tags="machine,strato,settings,features,limit,align,threshold,minimum,safe,position" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:500" gran="0.1" default="100">
         <text lang="en" label="Xmin safe">Minimum align blocks position below which they invade the cutting area</text>
@@ -2654,7 +2654,7 @@
         <text lang="sq" label="Xmin i sigurt">Pozicioni minimal i ndalesave nën të cilin hyjnë në zonën e prerjes</text>
     </res>
 
-    <res    id="align-height-min" tags="machine,strato,settings,features,characteristics,limits,auto,align,threshold,minimum,height" access="r"
+    <res    id="align-height-min" tags="machine,strato,settings,features,limit,auto,align,threshold,minimum,height" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:1000" gran="1">
         <text lang="en" label="Align min height">Minimum glass height that can be aligned automatically</text>
@@ -2671,7 +2671,7 @@
         <text lang="sq" label="Lart min rreshtim">Lartësia minimale e xhamit që mund të rreshtohet automatikisht</text>
     </res>
 
-    <res    id="fall-width" tags="machine,strato,features,characteristics,limits,sheet,fall,threshold,width" access="r"
+    <res    id="fall-width" tags="machine,strato,settings,features,limit,sheet,fall,threshold,width" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:1000" gran="0.1" default="400">
         <text lang="en" label="Fall width">Width threshold under which glass may fall in cut area</text>
@@ -2690,7 +2690,7 @@
 
 
     <!-- Strato cut limits -->
-    <res    id="cut-length-max" tags="machine,strato,settings,,features,characteristics,limits,cut,maximum,length,height" access="r"
+    <res    id="cut-length-max" tags="machine,strato,settings,features,limit,cut,maximum,length,height" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="1000:20000" gran="0.1" default="3400">
         <text lang="en" label="Max cut height">Maximum cuttable piece height</text>
@@ -2707,7 +2707,7 @@
         <text lang="sq" label="Lart maks prerje">Lartësia maksimale e pjesës që mund të pritet</text>
     </res>
 
-    <res    id="cut-length-min" tags="machine,strato,settings,features,characteristics,limits,cut,minimum,length,height" access="r"
+    <res    id="cut-length-min" tags="machine,strato,settings,features,limit,cut,minimum,length,height" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:500" gran="0.1" default="20">
         <text lang="en" label="Min cut height">Minimum piece to cut height, used to detect search errors</text>
@@ -2724,7 +2724,7 @@
         <text lang="sq" label="Lart min prerje">Lartësia minimale e pjesës për prerje, për zbulimin e gabimeve të kërkimit</text>
     </res>
 
-    <res    id="layer-thickness-max" tags="machine,strato,settings,features,characteristics,limits,sheet,cut,layer,glass,maximum,thickness" access="r"
+    <res    id="layer-thickness-max" tags="machine,strato,settings,features,limit,sheet,cut,layer,glass,maximum,thickness" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="1:50" gran="0.1" default="22">
         <text lang="en" label="Cut max layer thickness">Cuttable glass layer max thickness</text>
@@ -2741,7 +2741,7 @@
         <text lang="sq" label="Trash maks shtrese">Trashësia maksimale e shtresës së xhamit që mund të pritet</text>
     </res>
 
-    <res    id="pvb-thickness-max" tags="machine,strato,settings,features,characteristics,limits,sheet,cut,pvb,maximum,thickness" access="r"
+    <res    id="pvb-thickness-max" tags="machine,strato,settings,features,limit,sheet,cut,pvb,maximum,thickness" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="1:50" gran="0.1" default="22">
         <text lang="en" label="PVB max thickness">Cuttable plastic layer max thickness</text>
@@ -2758,7 +2758,7 @@
         <text lang="sq" label="Trash maks PVB">Trashësia maksimale e shtresës PVB që mund të pritet</text>
     </res>
 
-    <res    id="remn-trim-width-max" tags="machine,strato,settings,features,characteristics,limits,remnant,trim,threshold,width" access="r"
+    <res    id="remn-trim-width-max" tags="machine,strato,settings,features,limit,remnant,trim,threshold,width" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:500" gran="0.1" default="100">
         <text lang="en" label="Trim width threshold">Remnant width threshold for detach sequence selection</text>
@@ -2775,24 +2775,24 @@
         <text lang="sq" label="Pragu i skajit">Pragu i gjerësisë së mbetjes për zgjedhjen e sekuencës së ndarjes</text>
     </res>
 
-    <res    id="remn-open-width-min" tags="machine,strato,settings,features,characteristics,limits,threshold,remnant,open,breakout,minimum,width" access="r"
+    <res    id="remn-open-width-min" tags="machine,strato,settings,features,limit,threshold,remnant,open,breakout,minimum,width" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:1000" gran="0.1" default="20">
-        <text lang="en" label="Min remn width for breakout">Remnant minimum width for automatic breakout</text>
+        <text lang="en" label="Min remn width for breakout">Remnant minimum width for automatic open/breakout</text>
         <text lang="it" label="Rimanenza minima apribile">Larghezza minima rimanenza per apertura automatica</text>
         <text lang="fr" label="Chute min rompage">Largeur minimale de la chute pour le rompage automatique</text>
-        <text lang="es" label="Retal mín rotura">Anchura mínima del retal para la rotura automática</text>
-        <text lang="pt" label="Sobra mín rutura">Largura mínima da sobra para a rutura automática</text>
+        <text lang="es" label="Retal mín tronzado">Anchura mínima del retal para el tronzado automático</text>
+        <text lang="pt" label="Sobra mín quebra">Largura mínima da sobra para a quebra automática</text>
         <text lang="ru" label="Мин остаток разлом">Минимальная ширина остатка для автоматического разлома</text>
         <text lang="pl" label="Min resztka łam">Minimalna szerokość resztki do automatycznego łamania</text>
         <text lang="de" label="Min Rest Brechen">Minimale Breite der Restplatte für automatisches Brechen</text>
         <text lang="nl" label="Min rest breken">Minimale breedte van de restplaat voor automatisch breken</text>
         <text lang="ro" label="Rest min rupere">Lățimea minimă a restului pentru ruperea automată</text>
         <text lang="ja" label="折割最小残材幅">自動折割り可能な残材の最小幅</text>
-        <text lang="sq" label="Mbetja min thyerje">Gjerësia minimale e mbetjes për thyerjen automatike</text>
+        <text lang="sq" label="Mbetja min hapje">Gjerësia minimale e mbetjes për hapjen automatike</text>
     </res>
 
-    <res    id="remn-dtch-width-min" tags="machine,strato,settings,features,characteristics,limits,threshold,remnant,trim,detach,minimum,width" access="r"
+    <res    id="remn-dtch-width-min" tags="machine,strato,settings,features,limit,threshold,remnant,trim,detach,minimum,width" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:200" gran="0.1" default="20">
         <text lang="en" label="Min trim width for detach">Remnant minimum width for automatic detach</text>
@@ -2809,7 +2809,7 @@
         <text lang="sq" label="Mbetja min ndarje">Gjerësia minimale e mbetjes për ndarjen automatike</text>
     </res>
 
-    <res    id="prod-trim-width-max" tags="machine,strato,settings,features,characteristics,limits,product,head,trim,threshold,width" access="r"
+    <res    id="prod-trim-width-max" tags="machine,strato,settings,features,limit,product,head,trim,threshold,width" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:500" gran="0.1" default="100">
         <text lang="en" label="Prod width threshold">Product width threshold for detach sequence selection</text>
@@ -2826,24 +2826,24 @@
         <text lang="sq" label="Pragu i produktit">Pragu i gjerësisë së produktit për zgjedhjen e sekuencës së ndarjes</text>
     </res>
 
-    <res    id="prod-open-width-min" tags="machine,strato,settings,features,characteristics,limits,threshold,product,open,breakout,minimum,width" access="r"
+    <res    id="prod-open-width-min" tags="machine,strato,settings,features,limit,threshold,product,open,breakout,minimum,width" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:1000" gran="0.1" default="100">
-        <text lang="en" label="Min prod width for breakout">Product minimum width for automatic breakout</text>
+        <text lang="en" label="Min prod width for breakout">Product minimum width for automatic open/breakout</text>
         <text lang="it" label="Prod minimo apribile">Larghezza minima prodotto per apertura automatica</text>
         <text lang="fr" label="Produit min rompage">Largeur minimale du produit pour le rompage automatique</text>
-        <text lang="es" label="Producto mín rotura">Anchura mínima del producto para la rotura automática</text>
-        <text lang="pt" label="Produto mín rutura">Largura mínima do produto para a rutura automática</text>
+        <text lang="es" label="Producto mín tronzado">Anchura mínima del producto para el tronzado automático</text>
+        <text lang="pt" label="Produto mín quebra">Largura mínima do produto para a quebra automática</text>
         <text lang="ru" label="Мин изделие разлом">Минимальная ширина изделия для автоматического разлома</text>
         <text lang="pl" label="Min produkt łam">Minimalna szerokość produktu do automatycznego łamania</text>
         <text lang="de" label="Min Produkt Brechen">Minimale Produktbreite für automatisches Brechen</text>
         <text lang="nl" label="Min product breken">Minimale productbreedte voor automatisch breken</text>
         <text lang="ro" label="Produs min rupere">Lățimea minimă a produsului pentru ruperea automată</text>
         <text lang="ja" label="折割最小製品幅">自動折割り可能な製品の最小幅</text>
-        <text lang="sq" label="Produkti min thyerje">Gjerësia minimale e produktit për thyerjen automatike</text>
+        <text lang="sq" label="Produkti min hapje">Gjerësia minimale e produktit për hapjen automatike</text>
     </res>
 
-    <res    id="prod-dtch-width-min" tags="machine,strato,settings,features,characteristics,limits,threshold,product,detach,minimum,width" access="r"
+    <res    id="prod-dtch-width-min" tags="machine,strato,settings,features,limit,threshold,product,detach,minimum,width" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:1000" gran="0.1" default="200">
         <text lang="en" label="Min prod width for detach">Product minimum width for automatic detach</text>
@@ -2862,7 +2862,7 @@
 
 
     <!-- Float cut limits -->
-    <res    id="float-thickness-max" tags="machine,float,settings,features,characteristics,limits,sheet,cut,float,glass,maximum,thickness" access="r"
+    <res    id="float-thickness-max" tags="machine,float,settings,features,limit,sheet,cut,glass,maximum,thickness" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="1:50" gran="0.1" default="22">
         <text lang="en" label="Float cut max thickness">Cuttable glass max thickness</text>
@@ -2879,7 +2879,7 @@
         <text lang="sq" label="Trash maks float">Trashësia maksimale e xhamit që mund të pritet</text>
     </res>
 
-    <res    id="float-width-min" tags="machine,float,settings,features,characteristics,limits,threshold,float,cut,minimum,width" access="r"
+    <res    id="float-width-min" tags="machine,float,settings,features,limit,threshold,cut,minimum,width" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:1000" gran="0.1" default="300">
         <text lang="en" label="Min width for float cut">Product/remnant minimum width for float cut</text>
@@ -2898,7 +2898,7 @@
 
 
     <!-- Sheet handling limits -->
-    <res    id="shift-thickness-max" tags="machine,settings,features,characteristics,limits,auto,shift,sheet,size,maximum,thickness" access="r"
+    <res    id="shift-thickness-max" tags="machine,settings,features,limit,auto,shift,sheet,size,maximum,thickness" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="1:50" gran="0.1" default="22">
         <text lang="en" label="Sheet max thickness">Maximum sheet overall thickness that can be processed automatically</text>
@@ -2915,7 +2915,7 @@
         <text lang="sq" label="Trash maks pllake">Trashësia totale maksimale e pllakës që përpunohet automatikisht</text>
     </res>
 
-    <res    id="shift-width-min" tags="machine,settings,features,characteristics,limits,auto,shift,threshold,minimum,width" access="r"
+    <res    id="shift-width-min" tags="machine,settings,features,limit,auto,shift,threshold,minimum,width" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:1000" gran="1" default="400">
         <text lang="en" label="Shift min width">Minimum glass width that can be automatically moved with belts across modules</text>
@@ -2932,7 +2932,7 @@
         <text lang="sq" label="Gjer min transfer">Gjerësia minimale e xhamit që transferohet automatikisht me rripa ndërmjet moduleve</text>
     </res>
 
-    <res    id="shift-height-min" tags="machine,settings,features,characteristics,limits,auto,shift,threshold,minimum,height" access="r"
+    <res    id="shift-height-min" tags="machine,settings,features,limit,auto,shift,threshold,minimum,height" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="0:1000" gran="1" default="500">
         <text lang="en" label="Shift min height">Minimum glass height that can be automatically moved with belts across modules</text>
@@ -2951,7 +2951,7 @@
 
 
     <!-- Automatic rotation limits -->
-    <res    id="rot-height-min" tags="machine,strato,settings,features,characteristics,limits,rotation,limit,minimum,height" access="r"
+    <res    id="rot-height-min" tags="machine,strato,settings,features,limit,rotation,minimum,height" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="1:1000" gran="0.1" default="300">
         <text lang="en" label="Rot min height">Minimum height that can be automatically rotated</text>
@@ -2968,7 +2968,7 @@
         <text lang="sq" label="Lart min rrot">Lartësia (fillestare) minimale që mund të rrotullohet automatikisht</text>
     </res>
 
-    <res    id="rot-height-max-algn" tags="machine,strato,settings,features,characteristics,limits,rotation,limit,maximum,height,align" access="r"
+    <res    id="rot-height-max-algn" tags="machine,strato,settings,features,limit,rotation,maximum,height,align" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="1:10000" gran="0.1" default="3300">
         <text lang="en" label="Rot max height algn">Maximum height that can be automatically rotated on alignment side</text>
@@ -2985,7 +2985,7 @@
         <text lang="sq" label="Lart maks rrot rresht">Lartësia (fillestare) maksimale që mund të rrotullohet automatikisht në anën e rreshtimit</text>
     </res>
 
-    <res    id="rot-height-max-dtch" tags="machine,strato,settings,features,characteristics,limits,rotation,limit,maximum,height,detach" access="r"
+    <res    id="rot-height-max-dtch" tags="machine,strato,settings,features,limit,rotation,maximum,height,detach" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="1:10000" gran="0.1" default="3300">
         <text lang="en" label="Rot max height dtch">Maximum height that can be automatically rotated on detach side</text>
@@ -3002,7 +3002,7 @@
         <text lang="sq" label="Lart maks rrot ndarje">Lartësia (fillestare) maksimale që mund të rrotullohet automatikisht në anën e ndarjes</text>
     </res>
 
-    <res    id="rot-width-max-algn" tags="machine,strato,settings,features,characteristics,limits,rotation,limit,maximum,width,align" access="r"
+    <res    id="rot-width-max-algn" tags="machine,strato,settings,features,limit,rotation,maximum,width,align" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="1:10000" gran="0.1" default="3300">
         <text lang="en" label="Rot max width algn">Maximum width that can be automatically rotated on alignment side</text>
@@ -3019,7 +3019,7 @@
         <text lang="sq" label="Gjer maks rrot rresht">Gjerësia (fillestare) maksimale që mund të rrotullohet automatikisht në anën e rreshtimit</text>
     </res>
 
-    <res    id="rot-width-max-dtch" tags="machine,strato,settings,features,characteristics,limits,rotation,limit,maximum,width,detach" access="r"
+    <res    id="rot-width-max-dtch" tags="machine,strato,settings,features,limit,rotation,maximum,width,detach" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="1:10000" gran="0.1" default="3300">
         <text lang="en" label="Rot max width dtch">Maximum width that can be automatically rotated on detach side</text>
@@ -3036,7 +3036,7 @@
         <text lang="sq" label="Gjer maks rrot ndarje">Gjerësia (fillestare) maksimale që mund të rrotullohet automatikisht në anën e ndarjes</text>
     </res>
 
-    <res    id="rot-diag-max-proc" tags="machine,strato,settings,features,characteristics,limits,rotation,limit,maximum,diagonal" access="r"
+    <res    id="rot-diag-max-proc" tags="machine,strato,settings,features,limit,rotation,maximum,diagonal" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="1:10000" gran="0.1" default="4140">
         <text lang="en" label="Rot max diag">Maximum diagonal that can be automatically rotated in cut zone</text>
@@ -3055,7 +3055,7 @@
 
 
     <!-- Other limits -->
-    <res    id="latches-queue-max-size" tags="machine,limits,features,capabilities,characteristics,probe,latch,queue,max,size" access="r"
+    <res    id="latches-queue-max-size" tags="machine,limit,settings,features,probe,latch,queue,maximum,size" access="r"
             type="int">
         <text lang="en" label="MaxLatches">Maximum storable latches within the same movement</text>
         <text lang="it" label="CattureMax">Massimo numero di catture memorizzabili per ogni movimento</text>
@@ -3080,7 +3080,7 @@
      ╚══════════════════════════════════════════════════════════════════╝ -->
 <group name="mach-settings">
 
-    <res    id="mach-type" tags="machine,settings,features,capabilities,type"
+    <res    id="mach-type" tags="machine,settings,features,capability,type"
             type="string" range="float,strato,shifter,loader">
         <text lang="en" label="Machine type">Type of machine</text>
         <text lang="it" label="Tipo macchina">Tipologia di macchina</text>
@@ -3096,7 +3096,7 @@
         <text lang="sq" label="Lloji i makinës">Lloji i makinës</text>
     </res>
 
-    <res    id="mach-capabilities" tags="machine,settings,features,capabilities,equipment,tools"
+    <res    id="mach-capabilities" tags="machine,settings,features,capability,equipment,tools"
             type="strings" range="dummy,probe,probe2,T2,lowe,tpf,label,shift,rotate,buffer,sep-align-blocks,yfix,slantcuts,zprescore,shapecurv">
         <text lang="en" label="Capabilities">Available work skills of the machine</text>
         <text lang="it" label="Equipaggiamento">Capacità della macchina</text>
@@ -3112,7 +3112,7 @@
         <text lang="sq" label="Pajisjet">Aftësitë e punës në dispozicion të makinës</text>
     </res>
 
-    <res    id="version" tags="machine,settings,features,capabilities,version,info"
+    <res    id="version" tags="machine,settings,features,capability,version,info"
             type="int">
         <text lang="en" label="SW Version">Version of the machine software</text>
         <text lang="it" label="Versione SW">Versione software macchina</text>
@@ -3128,7 +3128,7 @@
         <text lang="sq" label="Versioni SW">Versioni i softuerit të makinës</text>
     </res>
 
-    <res    id="using-internal-materials-db" tags="machine,settings,features,capabilities,material,database"
+    <res    id="using-internal-materials-db" tags="machine,settings,features,capability,material,database"
             type="bool">
         <text lang="en" label="own-mats-db">The machine uses its own database for material parameters</text>
         <text lang="it" label="dati-mat-int">La macchina usa i propri parametri materiale</text>
@@ -3296,7 +3296,7 @@
     </res>
 
     <!-- Specific data for Strato machines
-    <res    id="nominal-bridge-size" tags="machine,strato,settings,strato,nominal,bridge,cut,size,y,height,transversal"
+    <res    id="nominal-bridge-size" tags="machine,strato,settings,nominal,bridge,cut,size,y,height,transversal"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="1000:20000" gran="0.1" default="4900">
         <text lang="en" label="Cut bridge size">Nominal size of cut bridge (4.0,4.9,6.0)</text>
@@ -3313,7 +3313,7 @@
         <text lang="sq" label="Ura e prerjes">Përmasa nominale e urës së prerjes (4.0,4.9,6.0)</text>
     </res>
 
-    <res    id="nominal-align-size" tags="machine,strato,settings,strato,nominal,align,size,x,width,longitudinal"
+    <res    id="nominal-align-size" tags="machine,strato,settings,nominal,align,size,x,width,longitudinal"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="1000:20000" gran="0.1" default="4600">
         <text lang="en" label="Align size">Nominal size of align table (3.2,4.6)</text>
@@ -3332,7 +3332,7 @@
     -->
 
     <!-- Preferred automatic rotations -->
-    <res    id="rot-dir-prod" tags="machine,strato,features,capabilities,characteristics,rotation,direction,product"
+    <res    id="rot-dir-prod" tags="machine,strato,settings,features,rotation,direction,product"
             type="int" quantity="angle" unit="deg" unit-coeff="0.01745329252"
             range="-90:+90" gran="90">
         <text lang="en" label="Prod rot dir">Direction of the automatic rotation after a cut</text>
@@ -3349,7 +3349,7 @@
         <text lang="sq" label="Kahu rrot produkt">Kahu i rrotullimit automatik pas një prerjeje</text>
     </res>
 
-    <res    id="rot-dir-incoming" tags="machine,strato,features,capabilities,characteristics,rotation,direction,incoming,sheet"
+    <res    id="rot-dir-incoming" tags="machine,strato,settings,features,rotation,direction,incoming,sheet"
             type="int" quantity="angle" unit="deg" unit-coeff="0.01745329252"
             range="-90:+90" gran="90">
         <text lang="en" label="Sheet rot dir">Direction of the automatic rotation of the incoming sheet</text>
@@ -3368,8 +3368,8 @@
 
 
     <!-- Slant cuts -->
-    <res    id="slant-angle-score-min" tags="machine,strato,settings,polygon,slant,angle,incidence,edge,min,score"
-            type="double" quantity="length" unit="deg" unit-coeff="0.01745329252"
+    <res    id="slant-angle-score-min" tags="machine,strato,settings,polygon,slant,angle,incidence,edge,minimum,score"
+            type="double" quantity="angle" unit="deg" unit-coeff="0.01745329252"
             range="0:90" gran="0.001" default="1">
         <text lang="en" label="Score min ang">Minimum angle of incidence with glass edge for scoring</text>
         <text lang="it" label="Ang min incis">Angolo di incidenza minimo con bordo vetro per incisione</text>
@@ -3385,25 +3385,25 @@
         <text lang="sq" label="Këndi min incizim">Këndi minimal i rënies me skajin e xhamit për incizim</text>
     </res>
 
-    <res    id="slant-angle-open-min" tags="machine,strato,settings,polygon,slant,angle,incidence,edge,min,open"
-            type="double" quantity="length" unit="deg" unit-coeff="0.01745329252"
+    <res    id="slant-angle-open-min" tags="machine,strato,settings,polygon,slant,angle,incidence,edge,minimum,open,breakout"
+            type="double" quantity="angle" unit="deg" unit-coeff="0.01745329252"
             range="0:90" gran="0.001" default="25">
-        <text lang="en" label="Open min ang">Minimum angle of incidence with glass edge for automatic breaking</text>
+        <text lang="en" label="Open min ang">Minimum angle of incidence with glass edge for automatic open/breakout</text>
         <text lang="it" label="Ang min apert">Angolo di incidenza minimo con bordo vetro per apertura automatica</text>
         <text lang="fr" label="Angle min rompage">Angle d'incidence minimal avec le bord du verre pour le rompage automatique</text>
-        <text lang="es" label="Áng mín rotura">Ángulo de incidencia mínimo con el borde del vidrio para la rotura automática</text>
-        <text lang="pt" label="Âng mín rutura">Ângulo de incidência mínimo com a borda do vidro para a rutura automática</text>
+        <text lang="es" label="Áng mín tronzado">Ángulo de incidencia mínimo con el borde del vidrio para el tronzado automático</text>
+        <text lang="pt" label="Âng mín quebra">Ângulo de incidência mínimo com a borda do vidro para a quebra automática</text>
         <text lang="ru" label="Мин угол разлома">Минимальный угол наклона к кромке стекла для автоматического разлома</text>
         <text lang="pl" label="Min kąt łam">Minimalny kąt natarcia względem krawędzi szkła przy automatycznym łamaniu</text>
         <text lang="de" label="Min Winkel Brechen">Minimaler Einfallswinkel zur Glaskante beim automatischen Brechen</text>
         <text lang="nl" label="Min hoek breken">Minimale invalshoek met de glasrand voor automatisch breken</text>
         <text lang="ro" label="Unghi min rupere">Unghiul minim de incidență cu muchia sticlei pentru ruperea automată</text>
         <text lang="ja" label="最小折割角">自動折割り時のガラス端との最小進入角</text>
-        <text lang="sq" label="Këndi min thyerje">Këndi minimal i rënies me skajin e xhamit për thyerjen automatike</text>
+        <text lang="sq" label="Këndi min hapje">Këndi minimal i rënies me skajin e xhamit për hapjen automatike</text>
     </res>
 
     <res    id="slant-fix-da" tags="machine,strato,settings,polygon,slant,angle,block,fix"
-            type="double" quantity="length" unit="deg" unit-coeff="0.01745329252"
+            type="double" quantity="angle" unit="deg" unit-coeff="0.01745329252"
             range="0:10" gran="0.001" default="3">
         <text lang="en" label="Fix angle">Surplus angle for block fixing push</text>
         <text lang="it" label="Ang corr">Sovrarotazione per correzione con piedino</text>
@@ -3557,7 +3557,7 @@
     See also 'proc-op' in 'job-args'
     -->
 
-    <res    id="work-selectors" tags="user,settings,machine,work,flags,selectors" access="rw"
+    <res    id="work-selectors" tags="user,settings,machine,work,flag,selector" access="rw"
             type="strings" >
         <text lang="en" label="WorkFlags">Work selectors</text>
         <text lang="it" label="Selettori">Selettori di lavoro</text>
@@ -3574,7 +3574,7 @@
     </res>
 
     <!-- Work settings for Strato machines -->
-    <res    id="strato-work-selectors" tags="user,settings,strato,work,flags,selectors"
+    <res    id="strato-work-selectors" tags="user,settings,strato,work,flag,selector"
             type="strings" range="enab-tools,enab-labels,edge-trim,enab-grabber,enab-bufrot,scrap-bin,reor-pieces,auto-tiltout,no-check-cutlen,check-thickness,auto-start,auto-load,auto-lowerect,auto-square,auto-measangle,scrap-out,stop-on-shape,heavy-sheet,more-heat,validate,technician">
         <text lang="en" label="WorkFlags">Work selectors for strato machine</text>
         <text lang="it" label="Selettori">Selettori di lavoro macchine laminato</text>
@@ -3608,7 +3608,7 @@
         <text lang="sq" label="Korrigj shpejt low-E">Korrigjimi i shpejtësisë së heqjes low-E</text>
     </res>
 
-    <res    id="float-work-selectors" tags="user,settings,float,work,flags,selectors"
+    <res    id="float-work-selectors" tags="user,settings,float,work,flag,selector"
             type="strings" range="enab-tools,enab-lowe,cut-lub,enab-labels,no-safety,man-speed,flip-x,park2,no-search,probe2,test-size,test-defects,auto-start,auto-load,auto-moveout,auto-lowerect,post-proc,confirm-start,batch-mode,technician,T2-only/T1+2">
         <text lang="en" label="WorkFlags">Work selectors for float machine</text>
         <text lang="it" label="Selettori">Selettori di lavoro macchine monolitico</text>
@@ -3624,7 +3624,7 @@
         <text lang="sq" label="Përzgjedhësit">Përzgjedhësit e punës për makinat e xhamit float</text>
     </res>
 
-        <res    id="sel-enab-tools" tags="user,settings,float,work,flag,selector,emulate,tools,score,cut" group="float-work-selectors"
+        <res    id="sel-enab-tools" tags="user,settings,float,work,flag,selector,emulate,tool,score,cut" group="float-work-selectors"
                 type="bool" range="enab-tools">
             <text lang="en" label="Enab tools">Enable cut tools (no emulation)</text>
             <text lang="it" label="Abil testina">Abilita testine di taglio (non simulare)</text>
@@ -3640,7 +3640,7 @@
             <text lang="sq" label="Aktiv veglat">Aktivizo veglat prerëse (pa simulim)</text>
         </res>
 
-        <res    id="sel-enab-lowe" tags="user,settings,float,work,flag,selector,emulate,tools,lowe,wheel" group="float-work-selectors"
+        <res    id="sel-enab-lowe" tags="user,settings,float,work,flag,selector,emulate,tool,lowe,wheel" group="float-work-selectors"
                 type="bool" range="enab-lowe">
             <text lang="en" label="Enab low-E">Enable low-E wheel (no emulation)</text>
             <text lang="it" label="Abil mola">Abilita discesa mola asportazione low-E (non simulare)</text>
@@ -3656,7 +3656,7 @@
             <text lang="sq" label="Aktiv low-E">Aktivizo diskun low-E (pa simulim)</text>
         </res>
 
-        <res    id="sel-cut-lub" tags="user,settings,float,work,flag,selector,emulate,lubrication,oil" group="float-work-selectors"
+        <res    id="sel-cut-lub" tags="user,settings,float,work,flag,selector,lubrication,oil" group="float-work-selectors"
                 type="bool" range="cut-lub">
             <text lang="en" label="Enab lub">Activate cut lubrication oil</text>
             <text lang="it" label="Abil lubrif">Attiva lubrificazione testine</text>
@@ -3865,7 +3865,7 @@
             <text lang="sq" label="AutoShkarkim">Shkarko automatikisht pllakën e përpunuar</text>
         </res>
 
-        <res    id="sel-auto-lowerect" tags="user,settings,float,work,flag,selector,strato,lowe,auto,rect" group="float-work-selectors"
+        <res    id="sel-auto-lowerect" tags="user,settings,float,work,flag,selector,lowe,auto,rectilinear" group="float-work-selectors"
                 type="bool" range="auto-lowerect">
             <text lang="en" label="Auto low-E rect">Enable the low-E wheel auto rectification</text>
             <text lang="it" label="Auto rett mola">Abilita la rettifica automatica della mola basso emissivo</text>
@@ -3886,15 +3886,15 @@
             <text lang="en" label="PostProc">Enable post-processing sequences (auto breakout, ...)</text>
             <text lang="it" label="PostProc">Abilita post-lavorazione in linea (troncatore, ...)</text>
             <text lang="fr" label="PostProc">Activer le post-traitement en ligne (rompage automatique, ...)</text>
-            <text lang="es" label="PostProc">Habilitar el postprocesamiento en línea (rotura automática, ...)</text>
-            <text lang="pt" label="PostProc">Ativar o pós-processamento em linha (rutura automática, ...)</text>
+            <text lang="es" label="PostProc">Habilitar el postprocesamiento en línea (tronzado automático, ...)</text>
+            <text lang="pt" label="PostProc">Ativar o pós-processamento em linha (quebra automática, ...)</text>
             <text lang="ru" label="PostProc">Включить постобработку в линии (автоматический разлом, ...)</text>
             <text lang="pl" label="PostProc">Włącz obróbkę końcową w linii (automatyczne łamanie, ...)</text>
             <text lang="de" label="PostProc">Nachbearbeitung in der Linie aktivieren (automatisches Brechen, ...)</text>
             <text lang="nl" label="PostProc">Nabewerking in de lijn inschakelen (automatisch breken, ...)</text>
             <text lang="ro" label="PostProc">Activează postprocesarea în linie (rupere automată, ...)</text>
             <text lang="ja" label="PostProc">ライン内後工程を有効化（自動折割り等）</text>
-            <text lang="sq" label="PostProc">Aktivizo pas-përpunimin në linjë (thyerje automatike, ...)</text>
+            <text lang="sq" label="PostProc">Aktivizo pas-përpunimin në linjë (hapje automatike, ...)</text>
         </res>
 
         <res    id="sel-confirm-start" tags="user,settings,float,work,flag,selector,confirm,start" group="float-work-selectors"
@@ -3947,7 +3947,7 @@
         </res>
         -->
 
-        <res    id="sel-score-mode" tags="float,score,mode,select,heads,T1,T2" group="float-work-selectors"
+        <res    id="sel-score-mode" tags="user,settings,float,work,flag,selector,score,head,mode,t1,t2" group="float-work-selectors"
                 type="string" range="T2-only,T1+2">
             <text lang="en" label="T1/2 Sel">Select cutting heads</text>
             <text lang="it" label="Sel T1/2">Selezione testine di incisione da usare</text>
@@ -3972,7 +3972,7 @@
      ╚══════════════════════════════════════════════════════════════════╝ -->
 <group name="events">
 
-    <res    id="timestamp" tags="event,date,time,timestamp,ISO8601"
+    <res    id="timestamp" tags="monitoring,event,date,time,timestamp,ISO8601"
             type="datetime" range="YYYY-MM-DDThh:mm:ss.zzz±hh:mm">
         <text lang="en" label="TimeStamp">Date and time</text>
         <text lang="it" label="DataOra">Istante temporale</text>
@@ -4029,7 +4029,7 @@
      ╚══════════════════════════════════════════════════════════════════╝ -->
 <group name="counters">
 
-    <res    id="sheets-done-count" tags="maintenance,statistics,counter,sheets,done"
+    <res    id="sheets-done-count" tags="maintenance,statistics,counter,sheet,done"
             type="int" range="0:">
         <text lang="en" label="Processed sheets">Processed sheets count</text>
         <text lang="it" label="Lastre lavorate">Contatore lastre lavorate</text>
@@ -4045,7 +4045,7 @@
         <text lang="sq" label="Pllaka të përpunuara">Numëruesi i pllakave të përpunuara</text>
     </res>
 
-    <res    id="cuts-done-count" tags="maintenance,statistics,counter,strato,cuts,done"
+    <res    id="cuts-done-count" tags="maintenance,statistics,counter,strato,cut,done"
             type="int" range="0:">
         <text lang="en" label="Processed cuts">Count of glass processing/cuts executed successfully</text>
         <text lang="it" label="Tagli eseguiti">Contatore tagli/processazioni eseguite con successo</text>
@@ -4061,7 +4061,7 @@
         <text lang="sq" label="Prerje të kryera">Numëruesi i prerjeve/përpunimeve të xhamit të kryera me sukses</text>
     </res>
 
-    <res    id="pieces-done-count" tags="maintenance,statistics,counter,strato,pieces,done"
+    <res    id="pieces-done-count" tags="maintenance,statistics,counter,strato,piece,done"
             type="int" range="0:">
         <text lang="en" label="Obtained pieces">Count of obtained finished pieces</text>
         <text lang="it" label="Pezzi ottenuti">Contatore pezzi finiti ottenuti dai tagli</text>
@@ -4125,36 +4125,36 @@
         <text lang="sq" label="T1 m">Gjatësia totale e incizuar me kokën prerëse kryesore</text>
     </res>
 
-    <res    id="rsup-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,usage,open,upper,wooden,break,wheel"
+    <res    id="rsup-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,usage,open,breakout,upper,wooden,wheel"
             type="double" quantity="length" unit="m">
-        <text lang="en" label="Rsup m">Overall opened length by upper wooden breaking wheel</text>
+        <text lang="en" label="Rsup m">Overall opened length by upper wooden breakout wheel</text>
         <text lang="it" label="Rsup m">Lunghezza cumulativa apertura con rotella superiore</text>
-        <text lang="fr" label="Rsup m">Longueur totale rompue avec le galet de rompage supérieur en bois</text>
-        <text lang="es" label="Rsup m">Longitud total abierta con la rueda de rotura superior de madera</text>
-        <text lang="pt" label="Rsup m">Comprimento total aberto com a roda de rutura superior de madeira</text>
+        <text lang="fr" label="Rsup m">Longueur totale de rompage avec le galet de rompage supérieur en bois</text>
+        <text lang="es" label="Rsup m">Longitud total abierta con la rueda de tronzado superior de madera</text>
+        <text lang="pt" label="Rsup m">Comprimento total aberto com a roda de quebra superior de madeira</text>
         <text lang="ru" label="Rsup m">Суммарная длина разлома верхним деревянным роликом</text>
         <text lang="pl" label="Rsup m">Łączna długość łamania górną drewnianą rolką</text>
         <text lang="de" label="Rsup m">Gesamte Brechlänge mit dem oberen Holz-Brechrad</text>
         <text lang="nl" label="Rsup m">Totale breeklengte met het bovenste houten breekwiel</text>
         <text lang="ro" label="Rsup m">Lungimea totală deschisă cu rotița superioară de rupere din lemn</text>
         <text lang="ja" label="Rsup m">上木製折割りローラの累積折割り長</text>
-        <text lang="sq" label="Rsup m">Gjatësia totale e hapur me rrotën e sipërme prej druri të thyerjes</text>
+        <text lang="sq" label="Rsup m">Gjatësia totale e hapur me rrotën e sipërme të hapjes prej druri</text>
     </res>
 
-    <res    id="rinf-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,usage,open,lower,wooden,break,wheel"
+    <res    id="rinf-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,usage,open,breakout,lower,wooden,wheel"
             type="double" quantity="length" unit="m">
-        <text lang="en" label="Rinf m">Overall opened length by lower wooden breaking wheel</text>
+        <text lang="en" label="Rinf m">Overall opened length by lower wooden breakout wheel</text>
         <text lang="it" label="Rinf m">Lunghezza cumulativa apertura con rotella inferiore</text>
-        <text lang="fr" label="Rinf m">Longueur totale rompue avec le galet de rompage inférieur en bois</text>
-        <text lang="es" label="Rinf m">Longitud total abierta con la rueda de rotura inferior de madera</text>
-        <text lang="pt" label="Rinf m">Comprimento total aberto com a roda de rutura inferior de madeira</text>
+        <text lang="fr" label="Rinf m">Longueur totale de rompage avec le galet de rompage inférieur en bois</text>
+        <text lang="es" label="Rinf m">Longitud total abierta con la rueda de tronzado inferior de madera</text>
+        <text lang="pt" label="Rinf m">Comprimento total aberto com a roda de quebra inferior de madeira</text>
         <text lang="ru" label="Rinf m">Суммарная длина разлома нижним деревянным роликом</text>
         <text lang="pl" label="Rinf m">Łączna długość łamania dolną drewnianą rolką</text>
         <text lang="de" label="Rinf m">Gesamte Brechlänge mit dem unteren Holz-Brechrad</text>
         <text lang="nl" label="Rinf m">Totale breeklengte met het onderste houten breekwiel</text>
         <text lang="ro" label="Rinf m">Lungimea totală deschisă cu rotița inferioară de rupere din lemn</text>
         <text lang="ja" label="Rinf m">下木製折割りローラの累積折割り長</text>
-        <text lang="sq" label="Rinf m">Gjatësia totale e hapur me rrotën e poshtme prej druri të thyerjes</text>
+        <text lang="sq" label="Rinf m">Gjatësia totale e hapur me rrotën e poshtme të hapjes prej druri</text>
     </res>
 
     <res    id="blade-travel" tags="maintenance,statistics,cumulative,travel,tool,strato,wearing,usage,pvb,blade"
@@ -4230,7 +4230,7 @@
      ╚══════════════════════════════════════════════════════════════════╝ -->
 <group name="metrics">
 
-    <res    id="sheets-per-hour" tags="monitoring,metrics,statistics,performance,kpi,sheets,hour"
+    <res    id="sheets-per-hour" tags="monitoring,metrics,statistics,performance,kpi,sheet,hour"
             type="double" quantity="time" unit="1/h">
         <text lang="en" label="sheets/h">Number of sheets processed per hour</text>
         <text lang="it" label="lastre/h">Numero lastre tagliate in un'ora</text>
@@ -4246,7 +4246,7 @@
         <text lang="sq" label="pllaka/h">Numri i pllakave të përpunuara në orë</text>
     </res>
 
-    <res    id="pieces-per-hour" tags="monitoring,metrics,statistics,performance,kpi,pieces,hour"
+    <res    id="pieces-per-hour" tags="monitoring,metrics,statistics,performance,kpi,piece,hour"
             type="double" quantity="time" unit="1/h">
         <text lang="en" label="pcs/h">Number of pieces cut per hour</text>
         <text lang="it" label="pezzi/h">Numero pezzi tagliati in un'ora</text>
@@ -4262,7 +4262,7 @@
         <text lang="sq" label="copë/h">Numri i pjesëve të prera në orë</text>
     </res>
 
-    <res    id="mean-time-between-stops" tags="monitoring,metrics,statistics,health,mean,time,between,stops"
+    <res    id="mean-time-between-stops" tags="monitoring,metrics,statistics,health,average,time,between,stops"
             type="double" quantity="time" unit="h">
         <text lang="en" label="MTBS">Mean Time Between Stops</text>
         <text lang="it" label="MTBS">Tempo medio ricorrenza fermi macchina</text>
@@ -4289,7 +4289,7 @@
 
     <!-- Common -->
 
-    <res    id="tpf-time-per-metre" tags="measure,time,duration,per-metre,float,processing,tpf"
+    <res    id="tpf-time-per-metre" tags="measure,time,per-metre,float,processing,tpf"
             type="double" quantity="time" unit="s/m" range="0:" gran="0.1" default="1.0">
         <text lang="en" label="TPF time">TPF pass average time per metre</text>
         <text lang="it" label="Tempo TPF">Tempo medio rimozione plastico per metro</text>
@@ -4305,7 +4305,7 @@
         <text lang="sq" label="Koha TPF">Koha mesatare e kalimit TPF për metër</text>
     </res>
 
-    <res    id="lowe-time-per-metre" tags="measure,time,duration,per-metre,strato,float,processing,lowe"
+    <res    id="lowe-time-per-metre" tags="measure,time,per-metre,strato,float,processing,lowe"
             type="double" quantity="time" unit="s/m" range="0:" gran="0.1" default="1.0">
         <text lang="en" label="Low-E time">Low-E pass average time per metre</text>
         <text lang="it" label="Tempo mola low-E">Tempo medio asportazione basso emissivo per metro</text>
@@ -4321,7 +4321,7 @@
         <text lang="sq" label="Koha low-E">Koha mesatare e heqjes low-E për metër</text>
     </res>
 
-    <res    id="score-time-per-metre" tags="measure,time,duration,per-metre,strato,float,processing,score,rectilinear"
+    <res    id="score-time-per-metre" tags="measure,time,per-metre,strato,float,processing,score,rectilinear"
             type="double" quantity="time" unit="s/m" range="0:" gran="0.1" default="0.5">
         <text lang="en" label="Score time">Rectilinear scoring average time per metre</text>
         <text lang="it" label="Tempo incisione">Tempo medio incisione rettilinea per metro</text>
@@ -4337,7 +4337,7 @@
         <text lang="sq" label="Koha incizimi">Koha mesatare e incizimit drejtvizor për metër</text>
     </res>
 
-    <res    id="score-curv-time-per-metre" tags="measure,time,duration,per-metre,strato,float,processing,score,curvilinear,shape"
+    <res    id="score-curv-time-per-metre" tags="measure,time,per-metre,strato,float,processing,score,curvilinear,shape"
             type="double" quantity="time" unit="s/m" range="0:" gran="0.1" default="1.0">
         <text lang="en" label="Score shape time">Curvilinear scoring average time per metre</text>
         <text lang="it" label="Tempo incisione sagome">Tempo medio incisione curvilinea per metro</text>
@@ -4353,26 +4353,26 @@
         <text lang="sq" label="Koha incizimi forma">Koha mesatare e incizimit lakor për metër</text>
     </res>
 
-    <res    id="open-time-per-metre" tags="measure,time,duration,per-metre,strato,processing,open"
+    <res    id="open-time-per-metre" tags="measure,time,per-metre,strato,processing,open,breakout"
             type="double" quantity="time" unit="s/m" range="0:" gran="0.1" default="5.0">
         <text lang="en" label="Open time">Opening average time per metre</text>
         <text lang="it" label="Tempo apertura">Tempo medio apertura per metro</text>
         <text lang="fr" label="Temps rompage">Temps moyen de rompage par mètre</text>
-        <text lang="es" label="Tiempo rotura">Tiempo medio de rotura por metro</text>
-        <text lang="pt" label="Tempo rutura">Tempo médio de rutura por metro</text>
+        <text lang="es" label="Tiempo tronzado">Tiempo medio de tronzado por metro</text>
+        <text lang="pt" label="Tempo quebra">Tempo médio de quebra por metro</text>
         <text lang="ru" label="Время разлома">Среднее время разлома на метр</text>
         <text lang="pl" label="Czas łamania">Średni czas łamania na metr</text>
         <text lang="de" label="Zeit Brechen">Mittlere Brechzeit pro Meter</text>
         <text lang="nl" label="Tijd breken">Gemiddelde breektijd per meter</text>
         <text lang="ro" label="Timp rupere">Timpul mediu de rupere pe metru</text>
         <text lang="ja" label="折割時間">メートルあたりの折割り平均時間</text>
-        <text lang="sq" label="Koha thyerjes">Koha mesatare e thyerjes për metër</text>
+        <text lang="sq" label="Koha e hapjes">Koha mesatare e hapjes për metër</text>
     </res>
 
 
     <!-- Strato machines -->
 
-    <res    id="step-average-time" tags="measure,time,duration,average,strato,step"
+    <res    id="step-average-time" tags="measure,time,average,strato,step"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="50.0">
         <text lang="en" label="Step avg time">Average duration of a single work step</text>
         <text lang="it" label="Tempo medio passo">Tempo medio di esecuzione di un passo</text>
@@ -4388,7 +4388,7 @@
         <text lang="sq" label="Koha mes hapi">Kohëzgjatja mesatare e një hapi pune</text>
     </res>
 
-    <res    id="feed-extraction-time" tags="measure,time,duration,average,strato,pre,incoming,subsheet,feed,extraction"
+    <res    id="feed-extraction-time" tags="measure,time,average,strato,pre,incoming,subsheet,feed,extraction"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="4.0">
         <text lang="en" label="Incoming rotation time">Average time for move and rotate an incoming subsheet</text>
         <text lang="it" label="Tempo rot lastra">Tempo medio di posizionamento e rotazione di una sottolastra in arrivo</text>
@@ -4404,7 +4404,7 @@
         <text lang="sq" label="Koha rrot pllake">Koha mesatare e pozicionimit dhe rrotullimit të një nënpllake hyrëse</text>
     </res>
 
-    <res    id="rot-incoming-time" tags="measure,time,duration,average,strato,pre,incoming,subsheet,rotation"
+    <res    id="rot-incoming-time" tags="measure,time,average,strato,pre,incoming,subsheet,rotation"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="10.0">
         <text lang="en" label="Incoming rotation time">Average time for move and rotate an incoming subsheet</text>
         <text lang="it" label="Tempo rot lastra">Tempo medio di posizionamento e rotazione di una sottolastra in arrivo</text>
@@ -4420,7 +4420,7 @@
         <text lang="sq" label="Koha rrot pllake">Koha mesatare e pozicionimit dhe rrotullimit të një nënpllake hyrëse</text>
     </res>
 
-    <res    id="align-time" tags="measure,time,duration,average,strato,pre,incoming,subsheet,align"
+    <res    id="align-time" tags="measure,time,average,strato,pre,incoming,subsheet,align"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="10.0">
         <text lang="en" label="Align time">Average time to move and align a subsheet</text>
         <text lang="it" label="Tempo riscontro">Tempo medio di posizionamento e riscontro</text>
@@ -4436,7 +4436,7 @@
         <text lang="sq" label="Koha rreshtimi">Koha mesatare e pozicionimit dhe rreshtimit të një nënpllake</text>
     </res>
 
-    <res    id="detach-time" tags="measure,time,duration,average,strato,processing,detach"
+    <res    id="detach-time" tags="measure,time,average,strato,processing,detach"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="15.0">
         <text lang="en" label="Detach time">Detach average time</text>
         <text lang="it" label="Tempo separazione">Tempo medio separazione</text>
@@ -4452,7 +4452,7 @@
         <text lang="sq" label="Koha ndarjes">Koha mesatare e ndarjes</text>
     </res>
 
-    <res    id="post-rot-ins-time" tags="measure,time,duration,average,strato,post,prod,rotation,remn,feed,insertion"
+    <res    id="post-rot-ins-time" tags="measure,time,average,strato,post,product,rotation,remnant,feed,insertion"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="20.0">
         <text lang="en" label="ProdRot+RemnIns time">Average time of product rotation and remnant feed insertion</text>
         <text lang="it" label="Tempo ProdRot+RemnIns">Tempo medio rotazione prodotto e inserimento rimanenza</text>
@@ -4468,7 +4468,7 @@
         <text lang="sq" label="Koha ProdRot+RemnIns">Koha mesatare e rrotullimit të produktit dhe rifutjes së mbetjes</text>
     </res>
 
-    <res    id="post-rot-take-time" tags="measure,time,duration,average,strato,post,prod,rotation,remn,take"
+    <res    id="post-rot-take-time" tags="measure,time,average,strato,post,product,rotation,remnant,take"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="20.0">
         <text lang="en" label="ProdRot+RemnTake time">Average time of product rotation and remnant removal</text>
         <text lang="it" label="Tempo ProdRot+RemnTake">Tempo medio rotazione prodotto e prelievo rimanenza</text>
@@ -4484,7 +4484,7 @@
         <text lang="sq" label="Koha ProdRot+RemnTake">Koha mesatare e rrotullimit të produktit dhe marrjes së mbetjes</text>
     </res>
 
-    <res    id="post-rot-none-time" tags="measure,time,duration,average,strato,post,prod,rotation,remn,none"
+    <res    id="post-rot-none-time" tags="measure,time,average,strato,post,product,rotation,remnant,none"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="15.0">
         <text lang="en" label="ProdRot time">Average time of product rotation without remnant</text>
         <text lang="it" label="Tempo ProdRot">Tempo medio rotazione prodotto senza rimanenza</text>
@@ -4500,7 +4500,7 @@
         <text lang="sq" label="Koha ProdRot">Koha mesatare e rrotullimit të produktit pa mbetje</text>
     </res>
 
-    <res    id="post-dlvr-dlvr-time" tags="measure,time,duration,average,strato,post,prod,remn,deliver"
+    <res    id="post-dlvr-dlvr-time" tags="measure,time,average,strato,post,product,remnant,deliver"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="30.0">
         <text lang="en" label="ProdDlvr+RemnDlvr time">Average time to deliver both product and remnant</text>
         <text lang="it" label="Tempo ProdDlvr+RemnDlvr">Tempo medio consegna prodotto e rimanenza</text>
@@ -4516,7 +4516,7 @@
         <text lang="sq" label="Koha ProdDlvr+RemnDlvr">Koha mesatare e dorëzimit të produktit dhe mbetjes</text>
     </res>
 
-    <res    id="post-dlvr-take-time" tags="measure,time,duration,average,strato,post,prod,deliver,remn,take"
+    <res    id="post-dlvr-take-time" tags="measure,time,average,strato,post,product,deliver,remnant,take"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="40.0">
         <text lang="en" label="ProdDlvr+RemnTake time">Average time for product deliver and remnant removal</text>
         <text lang="it" label="Tempo ProdDlvr+RemnTake">Tempo medio consegna prodotto e prelievo rimanenza</text>
@@ -4532,7 +4532,7 @@
         <text lang="sq" label="Koha ProdDlvr+RemnTake">Koha mesatare e dorëzimit të produktit dhe marrjes së mbetjes</text>
     </res>
 
-    <res    id="post-dlvr-none-time" tags="measure,time,duration,average,strato,post,prod,deliver,remn,none"
+    <res    id="post-dlvr-none-time" tags="measure,time,average,strato,post,product,deliver,remnant,none"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="20.0">
         <text lang="en" label="ProdDlvr time">Average time for product deliver without remnant</text>
         <text lang="it" label="Tempo ProdDlvr">Tempo medio consegna prodotto senza rimanenza</text>
@@ -4548,7 +4548,7 @@
         <text lang="sq" label="Koha ProdDlvr">Koha mesatare e dorëzimit të produktit pa mbetje</text>
     </res>
 
-    <res    id="post-none-time" tags="measure,time,duration,average,strato,post,prod,remn,none"
+    <res    id="post-none-time" tags="measure,time,average,strato,post,product,remnant,none"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="1.0">
         <text lang="en" label="NoPost time">Time in case of no post-operations</text>
         <text lang="it" label="Tempo NoPost">Tempo in caso di assenza di operazioni post-taglio</text>
@@ -4567,7 +4567,7 @@
 
     <!-- Float machines -->
 
-    <res    id="scheme-init-time" tags="measure,time,duration,fixed,float,job,scheme,initialization"
+    <res    id="scheme-init-time" tags="measure,time,fixed,float,job,scheme,initialization"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="10.0">
         <text lang="en" label="Scheme init time">Fixed time to prepare a scheme processing job (glass search, ...)</text>
         <text lang="it" label="Tempo inizio schema">Tempo fisso operazioni di preparazione lavorazione schema (rilevazione lastra, ...)</text>
@@ -4583,7 +4583,7 @@
         <text lang="sq" label="Koha fillimi skeme">Koha fikse e përgatitjes së përpunimit të një skeme (kërkimi i xhamit, ...)</text>
     </res>
 
-    <res    id="scheme-final-time" tags="measure,time,duration,fixed,float,job,scheme,finalization"
+    <res    id="scheme-final-time" tags="measure,time,fixed,float,job,scheme,finalization"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="10.0">
         <text lang="en" label="Scheme ending time">Fixed time to finalize a scheme processing job (park, ...)</text>
         <text lang="it" label="Tempo conclusione schema">Tempo fisso operazioni conclusive lavorazione schema (parcheggio, ...)</text>
@@ -4599,7 +4599,7 @@
         <text lang="sq" label="Koha mbyllje skeme">Koha fikse e përfundimit të përpunimit të një skeme (parkim, ...)</text>
     </res>
 
-    <res    id="move-time-per-metre" tags="measure,time,duration,per-metre,float,processing,rapid,move,G0"
+    <res    id="move-time-per-metre" tags="measure,time,per-metre,float,processing,rapid,move,G0"
             type="double" quantity="time" unit="s/m" range="0:" gran="0.1" default="0.4">
         <text lang="en" label="Move time">Movements without tools time per metre</text>
         <text lang="it" label="Tempo movimenti">Tempo spostamenti senza utensile per metro</text>
@@ -4615,7 +4615,7 @@
         <text lang="sq" label="Koha lëvizjeve">Koha e lëvizjeve pa vegël për metër</text>
     </res>
 
-    <res    id="label-time-per-metre" tags="measure,time,duration,per-metre,float,processing,label"
+    <res    id="label-time-per-metre" tags="measure,time,per-metre,float,processing,label"
             type="double" quantity="time" unit="s/m" range="0:" gran="0.1" default="0.5">
         <text lang="en" label="Label move time">Labeling movements time per metre</text>
         <text lang="it" label="Tempo posa etichette">Tempo spostamenti etichettatura per metro</text>
@@ -4631,8 +4631,8 @@
         <text lang="sq" label="Koha etiketimi">Koha e lëvizjeve për etiketim për metër</text>
     </res>
 
-    <res    id="label-fixed-time" tags="measure,time,duration,fixed,float,processing,label"
-            type="double" quantity="time" unit="s/m" range="0:" gran="0.1" default="5.0">
+    <res    id="label-fixed-time" tags="measure,time,fixed,float,processing,label"
+            type="double" quantity="time" unit="s" range="0:" gran="0.1" default="5.0">
         <text lang="en" label="Label fixed time">Fixed time for each label</text>
         <text lang="it" label="Tempo fisso etichette">Tempo fisso per ogni etichetta</text>
         <text lang="fr" label="Temps fixe étiquette">Temps fixe pour chaque étiquette</text>
@@ -4647,7 +4647,7 @@
         <text lang="sq" label="Koha fikse etikete">Koha fikse për çdo etiketë</text>
     </res>
 
-    <res    id="tpf-init-time" tags="measure,time,duration,fixed,float,processing,tpf,initialization"
+    <res    id="tpf-init-time" tags="measure,time,fixed,float,processing,tpf,initialization"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="1.0">
         <text lang="en" label="TPF init time">TPF section initialization time</text>
         <text lang="it" label="Tempo iniz TPF">Tempo inizializzazione sezione TPF</text>
@@ -4663,7 +4663,7 @@
         <text lang="sq" label="Koha nisje TPF">Koha e inicializimit të seksionit TPF</text>
     </res>
 
-    <res    id="lowe-init-time" tags="measure,time,duration,fixed,float,processing,lowe,initialization"
+    <res    id="lowe-init-time" tags="measure,time,fixed,float,processing,lowe,initialization"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="1.0">
         <text lang="en" label="Low-E init time">Low-E section initialization time</text>
         <text lang="it" label="Tempo iniz Low-E">Tempo inizializzazione sezione Low-E</text>
@@ -4679,7 +4679,7 @@
         <text lang="sq" label="Koha nisje low-E">Koha e inicializimit të seksionit low-E</text>
     </res>
 
-    <res    id="score-init-time" tags="measure,time,duration,fixed,float,processing,score,initialization"
+    <res    id="score-init-time" tags="measure,time,fixed,float,processing,score,initialization"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="1.0">
         <text lang="en" label="Score init time">Score section initialization time</text>
         <text lang="it" label="Tempo iniz incisione">Tempo inizializzazione sezione incisione</text>
@@ -4695,7 +4695,7 @@
         <text lang="sq" label="Koha nisje incizimi">Koha e inicializimit të seksionit të incizimit</text>
     </res>
 
-    <res    id="tpf-toolon-time" tags="measure,time,duration,average,float,processing,tpf,tool,engage,on"
+    <res    id="tpf-toolon-time" tags="measure,time,average,float,processing,tpf,tool,engage,on"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="1.0">
         <text lang="en" label="TPF tool engage time">TPF tool engage time</text>
         <text lang="it" label="Tempo discesa TPF">Tempo discesa utensile TPF</text>
@@ -4711,7 +4711,7 @@
         <text lang="sq" label="Koha zbritje TPF">Koha e zbritjes së veglës TPF</text>
     </res>
 
-    <res    id="lowe-toolon-time" tags="measure,time,duration,average,float,processing,lowe,tool,engage,on"
+    <res    id="lowe-toolon-time" tags="measure,time,average,float,processing,lowe,tool,engage,on"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="1.0">
         <text lang="en" label="Low-E tool engage time">Low-E wheel engage time</text>
         <text lang="it" label="Tempo discesa mola">Tempo discesa mola basso emissivo</text>
@@ -4727,7 +4727,7 @@
         <text lang="sq" label="Koha zbritje disku">Koha e zbritjes së diskut low-E</text>
     </res>
 
-    <res    id="score-toolon-time" tags="measure,time,duration,average,float,processing,score,tool,engage,on"
+    <res    id="score-toolon-time" tags="measure,time,average,float,processing,score,tool,engage,on"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="0.8">
         <text lang="en" label="Score tool engage time">Scoring head engage time</text>
         <text lang="it" label="Tempo discesa testina">Tempo discesa testina di incisione</text>
@@ -4743,7 +4743,7 @@
         <text lang="sq" label="Koha zbritje koke">Koha e zbritjes së kokës prerëse</text>
     </res>
 
-    <res    id="tpf-tooloff-time" tags="measure,time,duration,average,float,processing,tpf,tool,disengage,off"
+    <res    id="tpf-tooloff-time" tags="measure,time,average,float,processing,tpf,tool,disengage,off"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="0.8">
         <text lang="en" label="TPF tool disengage time">TPF tool disengage time</text>
         <text lang="it" label="Tempo salita TPF">Tempo salita utensile TPF</text>
@@ -4759,7 +4759,7 @@
         <text lang="sq" label="Koha ngritje TPF">Koha e ngritjes së veglës TPF</text>
     </res>
 
-    <res    id="lowe-tooloff-time" tags="measure,time,duration,average,float,processing,lowe,tool,disengage,off"
+    <res    id="lowe-tooloff-time" tags="measure,time,average,float,processing,lowe,tool,disengage,off"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="0.8">
         <text lang="en" label="Low-E tool disengage time">Low-E wheel disengage time</text>
         <text lang="it" label="Tempo salita mola">Tempo salita mola basso emissivo</text>
@@ -4775,7 +4775,7 @@
         <text lang="sq" label="Koha ngritje disku">Koha e ngritjes së diskut low-E</text>
     </res>
 
-    <res    id="score-tooloff-time" tags="measure,time,duration,average,float,processing,score,tool,disengage,off"
+    <res    id="score-tooloff-time" tags="measure,time,average,float,processing,score,tool,disengage,off"
             type="double" quantity="time" unit="s" range="0:" gran="0.1" default="0.5">
         <text lang="en" label="Score tool disengage time">Scoring head disengage time</text>
         <text lang="it" label="Tempo salita testina">Tempo salita testina di incisione</text>
