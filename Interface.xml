@@ -3,7 +3,7 @@
 <!--
     Unified Interface Dictionary for Macotec Machines
 -->
-<interface version="2026-11-09"
+<interface version="2026-11-24"
            name="MacoLayer"
            xmlns="http://www.macotec.it">
 
@@ -251,6 +251,44 @@
         <text lang="ro" label="Operație curentă">Operații aflate în execuție</text>
         <text lang="ja" label="現在の動作">実行中の動作</text>
         <text lang="sq" label="Operacioni aktual">Operacionet në ekzekutim</text>
+    </res>
+
+    <res    id="active-tool" tags="status,execution,operation,active,tool" access="r"
+            type="strings" range="probe,lowe,marker,score,knife,tpf,score-sup,score-inf,open-sup,open-inf,brkbar,lamp,pvb-blade,grabber,rotate-buf,bridge-gripper,clamp-detach,shift-in,shift-mach,shift-out">
+        <!--
+            probe: Sensor used to detect and measure the glass
+            lowe: Grinding wheel to remove low-e
+            marker: Tool for drawing on glass
+            score: Scoring head
+            knife: Sharp blade used to cut vinyl or adhesive paper (float machines)
+            tpf: Scraper to remove a temporary plastic film (float machines)
+            open: Wooden wheel or tapping tool to open glass
+            brkbar: Rising bar to open glass
+            lamp: Heating device (strato machines)
+            pvb-blade: Sharp blade used to cut the plastic layer (strato machines)
+            grabber: Rotating clamp tool mounted on carriage (strato machines)
+            rotate-buf: Glass rotation tool mounted upstream, usually a vacuum cup (strato machines)
+            bridge-gripper: Glass gripper mounted on the moving bridge (float machines)
+            clamp-detach: Glass clamped on detach side (strato machines)
+            shift-in: Upstream belts are on
+            shift-mach: Main table belts are on
+            shift-out: Downstream belts are on
+
+            xxx-sup: Upper tool (strato machines)
+            xxx-inf: Lower tool (strato machines)
+        -->
+        <text lang="en" label="Current tools">List of the tools currently in use</text>
+        <text lang="it" label="Ut. attivi">Lista degli utensili correntemente attivi</text>
+        <text lang="fr" label="Outils actifs">Liste des outils actuellement actifs</text>
+        <text lang="es" label="Herram. activas">Lista de las herramientas activas actualmente</text>
+        <text lang="pt" label="Ferr. ativas">Lista das ferramentas atualmente ativas</text>
+        <text lang="ru" label="Активные инстр.">Список инструментов, активных в данный момент</text>
+        <text lang="pl" label="Aktywne narz.">Lista aktualnie aktywnych narzędzi</text>
+        <text lang="de" label="Aktive Werkz.">Liste der aktuell aktiven Werkzeuge</text>
+        <text lang="nl" label="Actieve gereedsch.">Lijst van de momenteel actieve gereedschappen</text>
+        <text lang="ro" label="Scule active">Lista sculelor active în prezent</text>
+        <text lang="ja" label="使用中ツール">現在作動中のツールの一覧</text>
+        <text lang="sq" label="Veglat aktive">Lista e veglave aktive aktualisht</text>
     </res>
 
     <!--
@@ -913,7 +951,7 @@
      ╚══════════════════════════════════════════════════════════════════╝ -->
 <group name="tools">
 
-    <res    id="t2-offset" tags="tools,settings,offset,score,t2"
+    <res    id="score2-offset" tags="tools,settings,offset,score,secondary"
             type="tuple" range="(double,double)" quantity="length" unit="mm" unit-coeff="0.001">
         <text lang="en" label="T2 offset">Displacement of the secondary scoring head</text>
         <text lang="it" label="T2 offset">Posizione relativa testina incisione secondaria</text>
@@ -1153,7 +1191,7 @@
     </res>
 
 
-    <res    id="t1-hlevel" tags="tools,status,vertical,position,height,level,elevation,score,t1" access="r"
+    <res    id="score-hlevel" tags="tools,status,vertical,position,height,level,elevation,score" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="-5:200" gran="0.1">
         <text lang="en" label="T1 height">Elevation of the primary scoring head over the table reference plane</text>
@@ -1170,7 +1208,7 @@
         <text lang="sq" label="Lartësia T1">Lartësia e kokës prerëse kryesore mbi rrafshin referues të tavolinës</text>
     </res>
 
-    <res    id="t2-hlevel" tags="tools,status,vertical,position,height,level,elevation,score,t2" access="r"
+    <res    id="score2-hlevel" tags="tools,status,vertical,position,height,level,elevation,score,secondary" access="r"
             type="double" quantity="length" unit="mm" unit-coeff="0.001"
             range="-5:200" gran="0.1">
         <text lang="en" label="T2 height">Elevation of the secondary scoring head over the table reference plane</text>
@@ -2047,7 +2085,7 @@
 
 
     <!-- Float scoring -->
-    <res    id="f-score-init-1" tags="material,float,strato,mach-float,work,check-range,score,head,t1,initialization,force" group="score" access="rw"
+    <res    id="f-score-init-1" tags="material,float,strato,mach-float,work,check-range,score,head,primary,initialization,force" group="score" access="rw"
             type="double" quantity="force" unit="N"
             range="0:250" gran="1" default="0">
         <text lang="en" label="T1 push init">Head 1 initial push force</text>
@@ -2063,7 +2101,7 @@
         <text lang="ja" label="T1初期押付">ヘッド1の初期押付力</text>
         <text lang="sq" label="Shtypja fillest T1">Forca fillestare e shtypjes së kokës 1</text>
     </res>
-    <res    id="f-score-rect-1" tags="material,float,strato,mach-float,work,check-range,score,head,t1,rectilinear,force" group="score" access="rw"
+    <res    id="f-score-rect-1" tags="material,float,strato,mach-float,work,check-range,score,head,primary,rectilinear,force" group="score" access="rw"
             type="double" quantity="force" unit="N"
             range="0:250" gran="1" default="0">
         <text lang="en" label="T1 push rect">Head 1 rectilinear scoring push force</text>
@@ -2079,7 +2117,7 @@
         <text lang="ja" label="T1直線押付">ヘッド1の直線スクライブ押付力</text>
         <text lang="sq" label="Shtypja drejt T1">Forca e shtypjes së kokës 1 për incizim drejtvizor</text>
     </res>
-    <res    id="f-score-curv-1" tags="material,float,strato,mach-float,work,check-range,score,head,t1,shape,curvilinear,force" group="score" access="rw"
+    <res    id="f-score-curv-1" tags="material,float,strato,mach-float,work,check-range,score,head,primary,shape,curvilinear,force" group="score" access="rw"
             type="double" quantity="force" unit="N"
             range="0:250" gran="1" default="0">
         <text lang="en" label="T1 push curv">Head 1 curvilinear scoring push force</text>
@@ -2095,7 +2133,7 @@
         <text lang="ja" label="T1曲線押付">ヘッド1の曲線スクライブ押付力</text>
         <text lang="sq" label="Shtypja lakor T1">Forca e shtypjes së kokës 1 për incizim lakor</text>
     </res>
-    <res    id="v-score-rect-1" tags="material,float,strato,mach-float,work,score,head,t1,rectilinear,speed" group="score" access="rw"
+    <res    id="v-score-rect-1" tags="material,float,strato,mach-float,work,score,head,primary,rectilinear,speed" group="score" access="rw"
             type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
             range="0:300" gran="0.001" default="0">
         <text lang="en" label="T1 rect spd">Head 1 rectilinear scoring speed</text>
@@ -2111,7 +2149,7 @@
         <text lang="ja" label="T1直線速度">ヘッド1の直線スクライブ速度</text>
         <text lang="sq" label="Shpejt drejt T1">Shpejtësia e incizimit drejtvizor të kokës 1</text>
     </res>
-    <res    id="v-score-curv-1" tags="material,float,strato,mach-float,work,score,head,t1,shape,curvilinear,speed" group="score" access="rw"
+    <res    id="v-score-curv-1" tags="material,float,strato,mach-float,work,score,head,primary,shape,curvilinear,speed" group="score" access="rw"
             type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
             range="0:300" gran="0.001" default="0">
         <text lang="en" label="T1 curv spd">Head 1 curvilinear scoring speed</text>
@@ -2129,7 +2167,7 @@
     </res>
 
 
-    <res    id="f-score-init-2" tags="material,float,strato,mach-float,work,score,head,t2,initialization,force" group="score" access="rw"
+    <res    id="f-score-init-2" tags="material,float,strato,mach-float,work,score,head,secondary,initialization,force" group="score" access="rw"
             type="double" quantity="force" unit="N"
             range="0:250" gran="1" default="0">
         <text lang="en" label="T2 push init">Head 2 initial push force</text>
@@ -2145,7 +2183,7 @@
         <text lang="ja" label="T2初期押付">ヘッド2の初期押付力</text>
         <text lang="sq" label="Shtypja fillest T2">Forca fillestare e shtypjes së kokës 2</text>
     </res>
-    <res    id="f-score-rect-2" tags="material,float,strato,mach-float,work,score,head,t2,rectilinear,force" group="score" access="rw"
+    <res    id="f-score-rect-2" tags="material,float,strato,mach-float,work,score,head,secondary,rectilinear,force" group="score" access="rw"
             type="double" quantity="force" unit="N"
             range="0:250" gran="1" default="0">
         <text lang="en" label="T2 push rect">Head 2 rectilinear scoring push force (0:auto)</text>
@@ -2161,7 +2199,7 @@
         <text lang="ja" label="T2直線押付">ヘッド2の直線スクライブ押付力 (0:自動)</text>
         <text lang="sq" label="Shtypja drejt T2">Forca e shtypjes së kokës 2 për incizim drejtvizor (0:auto)</text>
     </res>
-    <res    id="f-score-curv-2" tags="material,float,strato,mach-float,work,score,head,t2,shape,curvilinear,force" group="score" access="rw"
+    <res    id="f-score-curv-2" tags="material,float,strato,mach-float,work,score,head,secondary,shape,curvilinear,force" group="score" access="rw"
             type="double" quantity="force" unit="N"
             range="0:250" gran="1" default="0">
         <text lang="en" label="T2 push curv">Head 2 curvilinear scoring push force (0:auto)</text>
@@ -2177,7 +2215,7 @@
         <text lang="ja" label="T2曲線押付">ヘッド2の曲線スクライブ押付力 (0:自動)</text>
         <text lang="sq" label="Shtypja lakor T2">Forca e shtypjes së kokës 2 për incizim lakor (0:auto)</text>
     </res>
-    <res    id="v-score-rect-2" tags="material,float,strato,mach-float,work,score,head,t2,rectilinear,speed" group="score" access="rw"
+    <res    id="v-score-rect-2" tags="material,float,strato,mach-float,work,score,head,secondary,rectilinear,speed" group="score" access="rw"
             type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
             range="0:300" gran="0.001" default="0">
         <text lang="en" label="T2 rect spd">Head 2 rectilinear scoring speed (0:auto)</text>
@@ -2193,7 +2231,7 @@
         <text lang="ja" label="T2直線速度">ヘッド2の直線スクライブ速度 (0:自動)</text>
         <text lang="sq" label="Shpejt drejt T2">Shpejtësia e incizimit drejtvizor të kokës 2 (0:auto)</text>
     </res>
-    <res    id="v-score-curv-2" tags="material,float,strato,mach-float,work,score,head,t2,shape,curvilinear,speed" group="score" access="rw"
+    <res    id="v-score-curv-2" tags="material,float,strato,mach-float,work,score,head,secondary,shape,curvilinear,speed" group="score" access="rw"
             type="double" quantity="speed" unit="m/min" unit-coeff="0.016667"
             range="0:300" gran="0.001" default="0">
         <text lang="en" label="T2 curv spd">Head 2 curvilinear scoring speed (0:auto)</text>
@@ -3947,7 +3985,7 @@
         </res>
         -->
 
-        <res    id="sel-score-mode" tags="user,settings,float,work,flag,selector,score,head,mode,t1,t2" group="float-work-selectors"
+        <res    id="sel-score-mode" tags="user,settings,float,work,flag,selector,score,head,mode" group="float-work-selectors"
                 type="string" range="T2-only,T1+2">
             <text lang="en" label="T1/2 Sel">Select cutting heads</text>
             <text lang="it" label="Sel T1/2">Selezione testine di incisione da usare</text>
@@ -4109,7 +4147,7 @@
         <text lang="sq" label="Tinf m">Gjatësia totale e incizuar me kokën prerëse të poshtme</text>
     </res>
 
-    <res    id="t1-travel" tags="maintenance,statistics,cumulative,travel,tool,float,wearing,usage,score,primary,head"
+    <res    id="score-travel" tags="maintenance,statistics,cumulative,travel,tool,float,wearing,usage,score,primary,head"
             type="double" quantity="length" unit="m">
         <text lang="en" label="T1 m">Overall scored length with primary cutting head</text>
         <text lang="it" label="T1 m">Lunghezza cumulativa incisione con testina primaria</text>
